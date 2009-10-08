@@ -38,3 +38,19 @@ Exporting private keys (take care):
 
   gpg --armor --export-secret-keys
 
+TODO
+====
+
+  - Enhanced documentation.
+  - Better intregation with gpg.
+  - Smarter scripts, support for "groups" of users in a way an user
+    can encrypt a given key just to some users.
+  - Interface with ssss where the scripts automatically splits passphrases
+    into ssss tokens and encrypt those to different groups of users.
+  - Security checks.
+  - Hidden recipient support.
+  - Git automation, including:
+    - Automatic repository maintenance functions.
+    - Hooks to inform users.
+    - Removal of old history.
+

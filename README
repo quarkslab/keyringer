@@ -1,0 +1,40 @@
+Keyringer
+=========
+
+Encrypting a key
+----------------
+
+  scripts/encrypt <file>
+
+Decrypting a key (only to stdout)
+---------------------------------
+
+  scripts/decrypt <file>
+
+Re-encrypting a key
+-------------------
+
+  scripts/recrypt <file>
+
+Notes
+-----
+
+  1. The <file> is any file inside the keys/ folder.
+
+  2. Never decrypt a key and write it to the disk, except
+     if you're adding it to your personall keyring.
+
+  3. Recipients are defined at file config/recipients.
+     Please add just trustable recipients.
+
+Using with GNU Privacy Guard
+----------------------------
+
+Exporting public keys:
+
+  gpg --armor --export <keyid>
+
+Exporting private keys (take care):
+
+  gpg --armor --export-secret-keys
+

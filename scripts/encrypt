@@ -1,0 +1,18 @@
+#!/bin/bash
+# encrypt to multiple recipients
+
+FILE="$1"
+BASENAME="`basename $0`"
+RECIPIENTS="config/recipients"
+
+if [ -z "$FILE" ]; then
+  echo "Usage: `basename $0` <file>"
+  exit 1
+elif [ ! -f "$RECIPIENTS" ]; then
+  echo "No recipient config was found"
+  exit 1
+fi
+
+mkdir -p keys/`dirname $FILE`
+recipients="$(awk '{ print "-r " $2 }' $RECIPIENTS | xargs)"
+gpg --armor -e -s $recipients - > keys/$FILE

@@ -38,8 +38,57 @@ Exporting private keys (take care):
 
   gpg --armor --export-secret-keys
 
+Concepts
+--------
+
+Basic idea is:
+
+  - Encrypt stuff with ppl's gpg pubkeys and push the output
+    in a git repo.
+
+  - Let ppl keep it in sync with the repo and the keys are
+    shared :)
+
+For "key" it's meant anything as the script work with stdin and output things to
+files, so it can be passphrases, private keys or other kind of info.
+
+It's possible to share keys using an encrypted mailing list, but the main
+difficulty is to track the message where the keys are.
+
+With theses scripts, the workflow is more or less like this:
+
+  - You have a git repo for secret keys.
+
+  - You run the "encrypt" command and paste your private key to this
+    command (so no plaintext disk write).
+
+  - The encrypt command writes an encrypted file to the repo.
+
+  - You manually add it to git and push it to remote repositories.
+
+  - Optionally, other ppl pulls the changes but they dont need to
+    decrypt anything until they need to use the keys.
+
+So it's just gpg-encrypted data atop of a git repository (one can think of a
+kind of distributed encrypted filesystem).
+
+Git was chosen to host encrypted info mostly for two reasos: easy to distribute
+and its the only VCS known to make easier repository history manipulation.
+
+One possible drawback: the repo has pubkey information attached, which can be
+linked to real ppl (and then disclose the information about who has access to a
+given key), but it's possible to:
+
+  - Keep the repo just atop of an encrypted and non-public place.        
+
+  - Or to consider an integration with gpg's --hidden-recipient option.
+
 TODO
-====
+----
+
+Currently the script just handle encrypt/decrypt of files but no automatic git
+operation (which needs to be managed by hand). There are lots of things that
+can be enhanced:
 
   - Enhanced documentation.
   - Better intregation with gpg.
@@ -53,4 +102,10 @@ TODO
     - Automatic repository maintenance functions.
     - Hooks to inform users.
     - Removal of old history.
+                                                                         
+Development
+-----------
 
+Currently there are have no solid plans to package these scripts but it might
+be possible instead to integrate the scripts and the keys using git's submodule
+feature.

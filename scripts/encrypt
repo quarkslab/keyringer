@@ -15,4 +15,5 @@ fi
 
 mkdir -p keys/`dirname $FILE`
 recipients="$(awk '{ print "-r " $2 }' $RECIPIENTS | xargs)"
+echo "Type your message and finish your input with EOF (Ctrl-D)."
 gpg --armor -e -s $recipients - > keys/$FILE

@@ -1,5 +1,7 @@
 #!/bin/bash
-# re-encrypt to multiple recipients
+#
+# Re-encrypt files to multiple recipients.
+#
 
 FILE="$1"
 BASENAME="`basename $0`"

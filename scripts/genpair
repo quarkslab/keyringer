@@ -7,7 +7,7 @@
 # 
 
 # Generate a keypair, ssh version
-function keygen_ssh {
+function genpair_ssh {
   echo "Make sure that $homedir is atop of an encrypted volume."
   read -p "Hit ENTER to continue." prompt
 
@@ -19,7 +19,7 @@ function keygen_ssh {
 }
 
 # Generate a keypair, gpg version
-function keygen_gpg {
+function genpair_gpg {
   echo "Make sure that $homedir is atop of an encrypted volume."
   read -p "Enter password for the private key: " passphrase
   
@@ -64,4 +64,4 @@ if [ "$?" != "0" ]; then
 fi
 
 # Dispatch
-keygen_$keytype
+genpair_$keytype

@@ -1,5 +1,7 @@
 #!/bin/bash
-# decrypt
+#
+# Decrypt files.
+#
 
 FILE="$1"
 BASENAME="`basename $0`"

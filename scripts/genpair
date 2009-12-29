@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+# Generate keypairs.
+#
+# This script is just a wrapper to easily generate keys for
+# automated systems.
+# 
+
+# Generate a keypair, ssh version
+function keygen_ssh {
+  echo "Make sure that $homedir is atop of an encrypted volume."
+  read -p "Hit ENTER to continue." prompt
+
+  # TODO: programatically enter blank passphrase twice
+  ssh-keygen -t dsa -f $homedir/id_dsa -C "root@$hostname"
+
+  echo "Now make sure to save this key in a safe location."
+  echo "You can export it by securely copying $contents to $hostname."
+}
+
+# Generate a keypair, gpg version
+function keygen_gpg {
+  echo "Make sure that $homedir is atop of an encrypted volume."
+  read -p "Enter password for the private key: " passphrase
+  
+  # TODO: insert 279 random bytes
+  gpg --homedir $homedir --gen-key <<EOF
+    Key-Type: DSA
+    Key-Length: 1024
+    Subkey-Type: ELG-E
+    Subkey-Length: 4096
+    Name-Real: $hostname
+    Name-Comment: backupninja   
+    Name-Email: root@$hostname
+    Expire-Date: 0
+    Passphrase: $passphrase
+    %commit
+EOF                  
+  
+  echo "Now make sure to save this key in a safe location."
+  echo "You can export it using 'gpg --homedir $homedir --armor --export-secret-keys'."
+  echo "Then securely copy it to $hostname."
+}
+
+# Setup
+keytype="$1"
+homedir="$2"
+hostname="$3"
+
+# Verify
+if [ -z "$hostname" ]; then
+  echo "Usage: `basename $0` <gpg|ssh> <homedir> <hostname>"
+  exit 1
+elif [ -e "$homedir" ]; then
+  echo "Folder $homedir already exists, leaving"
+  exit 1
+fi
+
+# Prepare
+mkdir -p $homedir && chmod 700 $homedir
+if [ "$?" != "0" ]; then
+  echo "Error setting up $homedir"
+  exit 1
+fi
+
+# Dispatch
+keygen_$keytype

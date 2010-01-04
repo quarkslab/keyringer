@@ -30,10 +30,10 @@ Creating a keyringer repository
 -------------------------------
 
 The first step will would like to take is to setup a keyring.  Keyringer suport
-management of multiple isolated keyrings.  To create a new keyring (or register
+management of multiple isolated keyrings.  To start a new keyring (or register
 an existing one at your config file), type
 
-  keyringer <keyring> create <path> [remote]
+  keyringer <keyring> init <path> [remote]
 
 This will 
 
@@ -42,7 +42,7 @@ This will
 
 For example,
 
-  keyringer friends create $HOME/keyrings/friends
+  keyringer friends init $HOME/keyrings/friends
 
 will create an alias "friends" pointing to $HOME/keyrings/friends. Call all
 other keyring actions using this alias.

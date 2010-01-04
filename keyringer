@@ -18,13 +18,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-function keyringer_create {
+function keyringer_init {
   BASEDIR="$3"
   URL="$4"
 
   # Parse
   if [ -z "$BASEDIR" ]; then
-    echo "Usage: $BASENAME <keyring> create <path> [url]"
+    echo "Usage: $BASENAME <keyring> init <path> [url]"
     exit 1
   elif grep -q -e "^$KEYRING=" $CONFIG; then
     echo "Keyring $KEYRING already defined"
@@ -99,8 +99,8 @@ if [ -z "$ACTION" ]; then
   exit 1
 fi
 
-if [ "$ACTION" == "create" ]; then
-  keyringer_create $*
+if [ "$ACTION" == "init" ]; then
+  keyringer_init $*
 elif keyringer_has_action $ACTION; then
   keyringer_dispatch $*
 else

@@ -1,42 +1,105 @@
 Keyringer
 =========
 
+Keyringer lets you manage and share secrets using GPG and git in a distributed
+fashion. It has custom commands to encrypt, decrypt, recrypt, create key pairs,
+etc.
+
+Requirements
+------------
+
+Keyringer needs:
+
+  - Bash - http://tiswww.case.edu/php/chet/bash/bashtop.html
+  - Git - http://git-scm.com
+  - GNU Privacy Guard - http://gnupg.org
+  - OpenSSL - http://www.openssl.org
+  - Grep, awk, tail, cut, sed and other GNU tools
+
+Installation
+------------
+
+Just clone
+
+	git clone git://git.sarava.org/keyringer.git
+
+And then leave it somewhere, optionally adding it to your $PATH environment variable.
+You can also package it to your preferred distro.
+
+Creating a keyringer repository
+-------------------------------
+
+The first step will would like to take is to setup a keyring.  Keyringer suport
+management of multiple isolated keyrings.  To create a new keyring (or register
+an existing one at your config file), type
+
+  keyringer <keyring> create <path> [remote]
+
+This will 
+
+  1. Add an entry at $HOME/.keyringer aliasing 'keyring' to 'path'.
+  2. Initialize a git repository if needed.
+
+For example,
+
+  keyringer friends create $HOME/keyrings/friends
+
+will create an alias "friends" pointing to $HOME/keyrings/friends. Call all
+other keyring actions using this alias.
+
+If there is an existing remote keyring repository and you just want to checkout
+it, use
+
+  keyringer friends create $HOME/keyrings/friends <repository-url>
+
+Managing recipients
+-------------------
+
+Your next step is tell keyringer the GPG key ids to encrypt files to:
+
+  keyringer <keyring> recipients edit
+  keyringer <keyring> recipients ls
+
 Encrypting a key
 ----------------
 
-  scripts/encrypt <file>
+  keyringer <keyring> encrypt <file>
 
 Decrypting a key (only to stdout)
 ---------------------------------
 
-  scripts/decrypt <file>
+  keyringer <keyring> decrypt <file>
 
 Re-encrypting a key
 -------------------
 
-  scripts/recrypt <file>
+  keyringer <keyring> recrypt <file>
+
+Listing keys
+------------
+
+  keyringer <keyring> ls [arguments]
+
+Git wrapper
+-----------
+
+Keyringer comes with a git wrapper to ease common management tasks:
+
+  keyringer <keyring> git remote add keyringer <url>
+  keyringer <keyring> git push keyringer master
+  keyringer <keyring> git pull
 
 Notes
 -----
 
-  1. The <file> is any file inside the keys/ folder.
+  1. The <file> is any file inside the keys/ folder of your
+     keyring directory.
 
   2. Never decrypt a key and write it to the disk, except
      if you're adding it to your personall keyring.
 
   3. Recipients are defined at file config/recipients.
      Please add just trustable recipients.
-
-Using with GNU Privacy Guard
-----------------------------
-
-Exporting public keys:
-
-  gpg --armor --export <keyid>
-
-Exporting private keys (take care):
-
-  gpg --armor --export-secret-keys
 
 Concepts
 --------
@@ -83,29 +146,26 @@ given key), but it's possible to:
 
   - Or to consider an integration with gpg's --hidden-recipient option.
 
+Notes: Using with GNU Privacy Guard
+-----------------------------------
+
+Exporting public keys:
+
+  gpg --armor --export <keyid>
+
+Exporting private keys (take care):
+
+  gpg --armor --export-secret-keys
+
 TODO
 ----
 
-Currently the script just handle encrypt/decrypt of files but no automatic git
-operation (which needs to be managed by hand). There are lots of things that
-can be enhanced:
+There are lots of things that can be enhanced, like:
 
   - Enhanced documentation.
-  - Better intregation with gpg.
-  - Smarter scripts, support for "groups" of users in a way an user
-    can encrypt a given key just to some users.
+
   - Interface with ssss where the scripts automatically splits passphrases
     into ssss tokens and encrypt those to different groups of users.
-  - Security checks.
-  - Hidden recipient support.
-  - Git automation, including:
-    - Automatic repository maintenance functions.
-    - Hooks to inform users.
-    - Removal of old history.
-                                                                         
-Development
------------
 
-Currently there are have no solid plans to package these scripts but it might
-be possible instead to integrate the scripts and the keys using git's submodule
-feature.
+  - Hidden recipient support (including recipients file).
+

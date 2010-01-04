@@ -1,0 +1,35 @@
+#!/bin/bash
+#
+# Encrypt files to multiple recipients.
+#
+
+# Load functions
+LIB="`dirname $0`/../../lib/keyringer/functions"
+source $LIB
+
+# Config
+ACTIONS="`dirname $0`"
+BASEDIR="$1"
+FILE="`keyringer_filename $2`"
+KEYDIR="$BASEDIR/keys"
+RECIPIENTS="$BASEDIR/config/recipients"
+BASENAME="`basename $0`"
+
+# Setup
+if [ -z "$FILE" ]; then
+  echo "Usage: `basename $0` <basedir> <file>"
+  exit 1
+elif [ ! -f "$RECIPIENTS" ]; then
+  echo "No recipient config was found"
+  exit 1
+fi
+
+# Encrypt
+mkdir -p $KEYDIR/`dirname $FILE`
+echo "Type your message and finish your input with EOF (Ctrl-D)."
+gpg --armor -e -s $(keyringer_recipients $RECIPIENTS) - > $KEYDIR/$FILE
+
+# Stage
+if [ -d "$BASEDIR/.git" ]; then
+  keyringer_exec git $KEYDIR add $FILE
+fi

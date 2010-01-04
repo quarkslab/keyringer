@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# Git wrapper.
+#
+
+BASEDIR="$1"
+CWD="`pwd`"
+
+if [ -z "$BASEDIR" ]; then
+  echo "Usage: `basename $0` <basedir> [arguments]"
+  exit 1
+fi
+
+shift
+mkdir -p $BASEDIR && cd $BASEDIR && git $*
+cd $CWD

@@ -1,0 +1,17 @@
+#!/bin/bash
+#
+# List keys.
+#
+
+BASEDIR="$1"
+KEYDIR="$BASEDIR/keys"
+CWD="`pwd`"
+
+if [ -z "$KEYDIR" ]; then
+  echo "Usage: `basename $0` <basedir> [arguments]"
+  exit 1
+fi
+
+shift
+cd $KEYDIR && ls $*
+cd $CWD

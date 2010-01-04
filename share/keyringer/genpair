@@ -1,0 +1,111 @@
+#!/bin/bash
+#
+# Generate keypairs.
+#
+# This script is just a wrapper to easily generate keys for
+# automated systems.
+# 
+
+# Generate a keypair, ssh version
+function genpair_ssh {
+  echo "Make sure that $KEYDIR is atop of an encrypted volume."
+  read -p "Hit ENTER to continue." prompt
+
+  # TODO: programatically enter blank passphrase twice
+  ssh-keygen -t dsa -f $WORK/id_dsa -C "root@$NODE"
+
+  # Encrypt the result
+  cat $WORK/id_dsa     | keyringer_exec encrypt $BASEDIR $FILE
+  cat $WORK/id_dsa.pub | keyringer_exec encrypt $BASEDIR $FILE.pub
+
+  echo "Done"  
+}
+
+# Generate a keypair, gpg version
+function genpair_gpg {
+  echo "Make sure that $KEYDIR is atop of an encrypted volume."
+  read -s -p "Enter password for the private key: " passphrase
+  
+  # TODO: insert 279 random bytes
+  gpg --homedir $WORK --gen-key --batch <<EOF
+    Key-Type: DSA
+    Key-Length: 1024
+    Subkey-Type: ELG-E
+    Subkey-Length: 4096
+    Name-Real: $NODE
+    Name-Comment: backupninja
+    Name-Email: root@$NODE
+    Expire-Date: 0
+    Passphrase: $passphrase
+    %commit
+EOF
+
+  # Encrypt the result
+  gpg --homedir $WORK --export-secret-keys | keyringer_exec encrypt $BASEDIR $FILE
+  gpg --homedir $WORK --export             | keyringer_exec encrypt $BASEDIR $FILE.pub
+  echo "Passphrase for $FILE: $passphrase" | keyringer_exec encrypt $BASEDIR $FILE.passwd
+
+  echo "Done"  
+}
+
+# Generate a keypair, ssl version
+function genpair_ssl {
+  echo "Make sure that $KEYDIR is atop of an encrypted volume."
+  read -p "Hit ENTER to continue." prompt
+
+  # Setup
+  cd $WORK
+
+  # Generate certificate
+  $LIB/csr.sh $NODE
+
+  # Self-sign
+  openssl x509 -in $NODE"_csr.pem" -out $NODE.crt -req -signkey $NODE"_privatekey.pem" -days 365
+  chmod 600 $NODE"_privatekey.pem"
+
+  # Encrypt the result
+  cat $NODE"_privatekey.pem" | keyringer_exec encrypt $BASEDIR $FILE.pem
+  cat $NODE"_csr.pem"        | keyringer_exec encrypt $BASEDIR $FILE.csr.pem
+  cat $NODE.crt              | keyringer_exec encrypt $BASEDIR $FILE.crt
+
+  echo "Done"
+  cd $CWD
+}
+
+# Load functions
+LIB="`dirname $0`/../../lib/keyringer"
+source $LIB/functions
+
+# Config
+ACTIONS="`dirname $0`"
+BASEDIR="$1"
+KEYDIR="$BASEDIR/keys"
+KEYTYPE="$2"
+FILE="$3"
+NODE="$4"
+BASENAME="`basename $0`"
+CWD="`pwd`"
+
+# Verify
+if [ -z "$NODE" ]; then
+  echo "Usage: $BASENAME <keydir> <gpg|ssh|ssl> <file> <hostname>"
+  exit 1
+elif [ ! -e "$KEYDIR" ]; then
+  echo "Folder not found: $KEYDIR, leaving"
+  exit 1
+fi
+
+# Prepare
+mkdir -p $KEYDIR && chmod 700 $KEYDIR
+WORK="`mktemp -d $KEYDIR/genpair.XXXXXX`"
+if [ "$?" != "0" ]; then
+  echo "Error setting up $WORK"
+  exit 1
+fi
+
+# Dispatch
+genpair_$KEYTYPE
+
+# Cleanup
+cd $CWD
+rm -rf $WORK

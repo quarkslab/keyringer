@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# Recipient management.
+#
+
+# Config
+BASEDIR="$1"
+COMMAND="$2"
+BASENAME="`basename $0`"
+RECIPIENTS="$BASEDIR/config/recipients"
+
+if [ -z "$COMMAND" ]; then
+  echo "Usage: `basename $0` <basedir> <command> [arguments]"
+  exit 1
+elif [ ! -f "$RECIPIENTS" ]; then
+  echo "No recipient config was found"
+  exit 1
+fi
+
+if [ "$COMMAND" == "ls" ]; then
+  cat $RECIPIENTS
+elif [ "$COMMAND" == "edit" ]; then
+  $EDITOR $RECIPIENTS
+else
+  echo "$BASENAME: No such command $COMMAND"
+  exit 1
+fi

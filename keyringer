@@ -1,0 +1,109 @@
+#!/bin/bash
+#
+# Keyringer key management system.
+#
+# Copyright (C) 2010 Silvio Rhatto - rhatto at riseup.net
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Affero General Public License for more details.
+# 
+# You should have received a copy of the GNU Affero General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
+
+function keyringer_create {
+  BASEDIR="$3"
+  URL="$4"
+
+  # Parse
+  if [ -z "$BASEDIR" ]; then
+    echo "Usage: $BASENAME <keyring> create <path> [url]"
+    exit 1
+  elif grep -q -e "^$KEYRING=" $CONFIG; then
+    echo "Keyring $KEYRING already defined"
+    exit 1
+  fi
+
+  # Setup
+  if [ ! -z "$URL" ]; then
+    git clone $URL $BASEDIR
+    if [ "$?" != "0" ]; then
+      echo "Error cloning remote $URL"
+      exit 1
+    fi
+  else
+    mkdir -p $BASEDIR/{config,keys}
+    echo "# Use entries in the form of 'john@doe.com XXXXXXXX" > $BASEDIR/config/recipients
+    echo "" >> $BASEDIR/config/recipients
+    chmod 600 $BASEDIR/config/recipients
+  fi
+
+  # Reparse basedir to force absolute folder
+  BASEDIR="`cd $BASEDIR && pwd`"
+
+  # Add entry
+  chmod 700 $BASEDIR
+  echo "$KEYRING=\"$BASEDIR\"" >> $CONFIG
+
+  # Init
+  if [ ! -d "BASEDIR/.git" ]; then
+    keyringer_exec git $BASEDIR init
+    keyringer_exec git $BASEDIR add .
+    keyringer_exec git $BASEDIR commit -m Importing
+  fi
+}
+
+function keyringer_dispatch {
+  BASEDIR="`keyringer_config $KEYRING`"
+
+  # Dispatch
+  if [ ! -z "$BASEDIR" ]; then
+    shift 2
+    keyringer_exec $ACTION $BASEDIR $*
+    exit $?
+  else
+    echo "No keydir configured for $KEYRING"
+    exit 1
+  fi
+}
+
+# Config
+NAME="keyringer"
+CONFIG="$HOME/.$NAME"
+BASENAME="`basename $0`"
+KEYRING="$1"
+ACTION="$2"
+ACTIONS="`dirname $0`/share/$NAME"
+
+# Load functions
+LIB="`dirname $0`/lib/$NAME/functions"
+source $LIB
+
+if [ ! -e "$CONFIG" ]; then
+  echo "Creating $CONFIG..."
+  touch $CONFIG
+  chmod 600 $CONFIG
+  echo "# Keyringer config file." > $CONFIG
+  echo "" >> $CONFIG
+fi
+
+if [ -z "$ACTION" ]; then
+  echo "Usage: $BASENAME <keyring> <action> [arguments]"
+  exit 1
+fi
+
+if [ "$ACTION" == "create" ]; then
+  keyringer_create $*
+elif keyringer_has_action $ACTION; then
+  keyringer_dispatch $*
+else
+  echo "No such action $ACTION"
+  exit 1
+fi

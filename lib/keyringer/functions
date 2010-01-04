@@ -1,0 +1,49 @@
+#!/bin/bash
+#
+# Common functions.
+#
+
+function keyringer_config {
+  if [ -z "$CONFIG" ]; then
+    echo "Your have to set CONFIG variable in the code"
+    exit 1
+  elif [ -e "$CONFIG" ]; then
+    grep -e "^$1=" $CONFIG | tail -n 1 | cut -d = -f 2 | sed -e 's/"//g' -e "s/'//g" | sed -e 's/ *#.*$//'
+  else
+    echo "Config file not found: $CONFIG"
+    exit 1
+  fi
+}
+
+function keyringer_recipients {
+  grep -v '^#' $1 | grep -v '^$' | awk '{ print "-r " $2 }' | xargs
+}
+
+function keyringer_has_action {
+ if [ -z "$ACTIONS" ]; then
+   echo "Your have to set ACTIONS variable in the code"
+   exit 1
+ fi
+
+ if [ -e "$ACTIONS/$1" ]; then
+   true
+ else
+   false
+ fi
+}
+
+function keyringer_exec {
+  # Setup
+  action="$1"
+  basedir="$2"
+  shift 2
+  
+  # Dispatch
+  if keyringer_has_action $action; then
+    $ACTIONS/$action $basedir $*
+  fi
+}
+
+function keyringer_filename {
+  echo `dirname $1`/`basename $1 .gpg`.gpg
+}

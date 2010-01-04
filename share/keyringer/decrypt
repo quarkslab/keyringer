@@ -1,0 +1,23 @@
+#!/bin/bash
+#
+# Decrypt files.
+#
+
+# Load functions
+LIB="`dirname $0`/../../lib/keyringer/functions"
+source $LIB
+
+BASEDIR="$1"
+FILE="`keyringer_filename $2`"
+KEYDIR="$BASEDIR/keys"
+BASENAME="`basename $0`"
+
+if [ -z "$FILE" ]; then
+  echo "Usage: `basename $0` <basedir> <file>"
+  exit 1
+elif [ ! -f "$KEYDIR/$FILE" ]; then
+  echo "File not found: $KEYDIR/$FILE"
+  exit 1
+fi
+
+gpg -d $KEYDIR/$FILE

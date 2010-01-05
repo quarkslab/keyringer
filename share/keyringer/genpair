@@ -15,7 +15,9 @@ function genpair_ssh {
   ssh-keygen -t dsa -f $WORK/id_dsa -C "root@$NODE"
 
   # Encrypt the result
+  echo "Encrypting secret key into keyringer..."
   cat $WORK/id_dsa     | keyringer_exec encrypt $BASEDIR $FILE
+  echo "Encrypting public key into keyringer..."
   cat $WORK/id_dsa.pub | keyringer_exec encrypt $BASEDIR $FILE.pub
 
   echo "Done"  
@@ -41,8 +43,11 @@ function genpair_gpg {
 EOF
 
   # Encrypt the result
+  echo "Encrypting secret key into keyringer..."
   gpg --homedir $WORK --export-secret-keys | keyringer_exec encrypt $BASEDIR $FILE
+  echo "Encrypting public key into keyringer..."
   gpg --homedir $WORK --export             | keyringer_exec encrypt $BASEDIR $FILE.pub
+  echo "Encrypting passphrase into keyringer..."
   echo "Passphrase for $FILE: $passphrase" | keyringer_exec encrypt $BASEDIR $FILE.passwd
 
   echo "Done"  
@@ -64,8 +69,11 @@ function genpair_ssl {
   chmod 600 $NODE"_privatekey.pem"
 
   # Encrypt the result
+  echo "Encrypting private key into keyringer..."
   cat $NODE"_privatekey.pem" | keyringer_exec encrypt $BASEDIR $FILE.pem
+  echo "Encrypting certificate request into keyringer..."
   cat $NODE"_csr.pem"        | keyringer_exec encrypt $BASEDIR $FILE.csr.pem
+  echo "Encrypting certificate into keyringer..."
   cat $NODE.crt              | keyringer_exec encrypt $BASEDIR $FILE.crt
 
   echo "Done"

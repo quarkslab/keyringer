@@ -83,7 +83,7 @@ Listing keys
 Git wrapper
 -----------
 
-Keyringer comes with a git wrapper to ease common management tasks:
+Keyringer comes with a simple git wrapper to ease common management tasks:
 
   keyringer <keyring> git remote add keyringer <url>
   keyringer <keyring> git push keyringer master

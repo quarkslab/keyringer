@@ -46,9 +46,16 @@ function keyringer_init {
         exit 1
       fi
     else
+      # Setup folders
       mkdir -p $BASEDIR/{config,keys}
+
+      # Setup recipients
       echo "# Use entries in the form of 'john@doe.com XXXXXXXX" > $RECIPIENTS
       echo "" >> $RECIPIENTS
+
+      # Setup README
+      echo "Keyring repository powered by http://git.sarava.org/?p=keyringer.git;a=summary" > $BASEDIR/README
+      echo "" >> $BASEDIR/README
     fi
 
     # Secure

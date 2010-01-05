@@ -3,6 +3,7 @@
 # Common functions.
 #
 
+# Load a parameter from config
 function keyringer_config {
   if [ -z "$CONFIG" ]; then
     echo "Your have to set CONFIG variable in the code"
@@ -15,10 +16,12 @@ function keyringer_config {
   fi
 }
 
+# Return the list of recipients
 function keyringer_recipients {
   grep -v '^#' $1 | grep -v '^$' | awk '{ print "-r " $2 }' | xargs
 }
 
+# Check if keyringer has a given action
 function keyringer_has_action {
  if [ -z "$ACTIONS" ]; then
    echo "Your have to set ACTIONS variable in the code"
@@ -32,6 +35,7 @@ function keyringer_has_action {
  fi
 }
 
+# Execute an action
 function keyringer_exec {
   # Setup
   action="$1"
@@ -44,6 +48,27 @@ function keyringer_exec {
   fi
 }
 
+# Return a filename with correct extension
 function keyringer_filename {
   echo `dirname $1`/`basename $1 .gpg`.gpg
+}
+
+# Check if a folder is inside a git repository
+function keyringer_is_git {
+  if [ -z "$1" ]; then
+    false
+  elif [ ! -d "$1" ]; then
+    false
+  elif [ -d "$1/.git" ]; then
+    true
+  else
+    cwd="`pwd`"
+    cd $1 && git="`git status &> /dev/null`" && cd $cwd
+
+    if [ "$git" != "128" ]; then
+      true
+    else
+      false
+    fi
+  fi
 }

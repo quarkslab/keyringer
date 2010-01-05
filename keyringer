@@ -21,6 +21,7 @@
 function keyringer_init {
   BASEDIR="$3"
   URL="$4"
+  RECIPIENTS="$BASEDIR/config/recipients"
 
   # Parse
   if [ -z "$BASEDIR" ]; then
@@ -39,10 +40,19 @@ function keyringer_init {
       exit 1
     fi
   else
-    mkdir -p $BASEDIR/{config,keys}
-    echo "# Use entries in the form of 'john@doe.com XXXXXXXX" > $BASEDIR/config/recipients
-    echo "" >> $BASEDIR/config/recipients
-    chmod 600 $BASEDIR/config/recipients
+    if [ -e "$BASEDIR" ]; then
+      if [ ! -d "$BASEDIR/keys" ] || [ ! -e "$RECIPIENTS" ]; then
+        echo "Invalid keyring $BASEDIR: incomplete installation"
+        exit 1
+      fi
+    else
+      mkdir -p $BASEDIR/{config,keys}
+      echo "# Use entries in the form of 'john@doe.com XXXXXXXX" > $RECIPIENTS
+      echo "" >> $RECIPIENTS
+    fi
+
+    # Secure
+    chmod 600 $RECIPIENTS
   fi
 
   # Reparse basedir to force absolute folder
@@ -53,7 +63,7 @@ function keyringer_init {
   echo "$KEYRING=\"$BASEDIR\"" >> $CONFIG
 
   # Init
-  if [ ! -d "BASEDIR/.git" ]; then
+  if ! keyringer_is_git $BASEDIR; then
     keyringer_exec git $BASEDIR init
     keyringer_exec git $BASEDIR add .
     keyringer_exec git $BASEDIR commit -m Importing

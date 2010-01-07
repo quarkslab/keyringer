@@ -50,7 +50,11 @@ function keyringer_exec {
 
 # Return a filename with correct extension
 function keyringer_filename {
-  echo `dirname $1`/`basename $1 .asc`.asc
+  if [ -z "$1" ]; then
+    return
+  else
+    echo `dirname $1`/`basename $1 .asc`.asc
+  fi
 }
 
 # Check if a folder is inside a git repository

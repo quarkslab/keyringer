@@ -72,7 +72,7 @@ function genpair_ssl {
   echo "Encrypting private key into keyringer..."
   cat $NODE"_privatekey.pem" | keyringer_exec encrypt $BASEDIR $FILE.pem
   echo "Encrypting certificate request into keyringer..."
-  cat $NODE"_csr.pem"        | keyringer_exec encrypt $BASEDIR $FILE.csr.pem
+  cat $NODE"_csr.pem"        | keyringer_exec encrypt $BASEDIR $FILE.csr
   echo "Encrypting certificate into keyringer..."
   cat $NODE.crt              | keyringer_exec encrypt $BASEDIR $FILE.crt
 

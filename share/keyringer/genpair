@@ -138,6 +138,8 @@ WORK="`mktemp -d $KEYDIR/genpair.XXXXXX`"
 if [ "$?" != "0" ]; then
   echo "Error setting up $WORK"
   exit 1
+else
+  trap "rm -rf $WORK" EXIT
 fi
 
 # Dispatch
@@ -147,3 +149,4 @@ genpair_$KEYTYPE
 # Cleanup
 cd $CWD
 rm -rf $WORK
+trap - EXIT

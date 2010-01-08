@@ -8,7 +8,7 @@ KEYDIR="$BASEDIR/keys"
 CWD="`pwd`"
 
 if [ -z "$KEYDIR" ]; then
-  echo "Usage: keyringer `basename $0` [arguments]"
+  echo "Usage: keyringer <keyring> `basename $0` [arguments]"
   exit 1
 fi
 

@@ -25,4 +25,4 @@ elif [ ! -f "$KEYDIR/$FILE" ]; then
   exit 1
 fi
 
-gpg -d $KEYDIR/$FILE | gpg --armor -e -s $(keyringer_recipients $RECIPIENTS) > $KEYDIR/$FILE
+gpg --use-agent -d $KEYDIR/$FILE | gpg --use-agent --armor -e -s $(keyringer_recipients $RECIPIENTS) > $KEYDIR/$FILE

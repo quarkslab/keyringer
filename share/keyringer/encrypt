@@ -27,7 +27,7 @@ fi
 # Encrypt
 mkdir -p $KEYDIR/`dirname $FILE`
 echo "Type your message and finish your input with EOF (Ctrl-D)."
-gpg --armor -e -s $(keyringer_recipients $RECIPIENTS) - > $KEYDIR/$FILE
+gpg --use-agent --armor -e -s $(keyringer_recipients $RECIPIENTS) - > $KEYDIR/$FILE
 
 # Stage
 if [ -d "$BASEDIR/.git" ]; then

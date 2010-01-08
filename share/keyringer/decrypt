@@ -13,7 +13,7 @@ KEYDIR="$BASEDIR/keys"
 BASENAME="`basename $0`"
 
 if [ -z "$FILE" ]; then
-  echo "Usage: `basename $0` <basedir> <file>"
+  echo "Usage: keyringer `basename $0` <file>"
   exit 1
 elif [ ! -f "$KEYDIR/$FILE" ]; then
   echo "File not found: $KEYDIR/$FILE"

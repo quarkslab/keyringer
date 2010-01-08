@@ -10,7 +10,7 @@ BASENAME="`basename $0`"
 RECIPIENTS="$BASEDIR/config/recipients"
 
 if [ -z "$COMMAND" ]; then
-  echo "Usage: `basename $0` <basedir> <command> [arguments]"
+  echo "Usage: keyringer `basename $0` <command> [arguments]"
   exit 1
 elif [ ! -f "$RECIPIENTS" ]; then
   echo "No recipient config was found"

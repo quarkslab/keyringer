@@ -96,7 +96,7 @@ CWD="`pwd`"
 
 # Verify
 if [ -z "$NODE" ]; then
-  echo "Usage: $BASENAME <keydir> <gpg|ssh|ssl> <file> <hostname>"
+  echo "Usage: keyringer $BASENAME <gpg|ssh|ssl> <file> <hostname>"
   exit 1
 elif [ ! -e "$KEYDIR" ]; then
   echo "Folder not found: $KEYDIR, leaving"

@@ -7,7 +7,7 @@ BASEDIR="$1"
 CWD="`pwd`"
 
 if [ -z "$BASEDIR" ]; then
-  echo "Usage: `basename $0` <basedir> [arguments]"
+  echo "Usage: keyringer `basename $0` [arguments]"
   exit 1
 fi
 

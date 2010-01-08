@@ -15,7 +15,7 @@ RECIPIENTS="$BASEDIR/config/recipients"
 BASENAME="`basename $0`"
 
 if [ -z "$FILE" ]; then
-  echo "Usage: `basename $0` <basedir> <file>"
+  echo "Usage: keyringer `basename $0` <file>"
   exit 1
 elif [ ! -f "$RECIPIENTS" ]; then
   echo "No recipient config was found"

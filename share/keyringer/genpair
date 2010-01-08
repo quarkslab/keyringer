@@ -20,6 +20,13 @@ function genpair_ssh {
   echo "Encrypting public key into keyringer..."
   cat $WORK/id_dsa.pub | keyringer_exec encrypt $BASEDIR $FILE.pub
 
+  if [ ! -z "$OUTFILE" ]; then
+    mkdir -p `dirname $OUTFILE`
+    echo Saving copies at $OUTFILE and $OUTFILE.pub
+    cat $WORK/id_dsa     > $OUTFILE.pub
+    cat $WORK/id_dsa.pub > $OUTFILE.pub
+  fi
+
   echo "Done"  
 }
 
@@ -50,6 +57,13 @@ EOF
   echo "Encrypting passphrase into keyringer..."
   echo "Passphrase for $FILE: $passphrase" | keyringer_exec encrypt $BASEDIR $FILE.passwd
 
+  if [ ! -z "$OUTFILE" ]; then
+    mkdir -p `dirname $OUTFILE`
+    echo Saving copies at $OUTFILE and $OUTFILE.pub
+    gpg --homedir $WORK --export-secret-keys > $OUTFILE
+    gpg --homedir $WORK --export             > $OUTFILE.pub
+  fi
+
   echo "Done"  
 }
 
@@ -76,8 +90,17 @@ function genpair_ssl {
   echo "Encrypting certificate into keyringer..."
   cat $NODE.crt              | keyringer_exec encrypt $BASEDIR $FILE.crt
 
-  echo "Done"
   cd $CWD
+
+  if [ ! -z "$OUTFILE" ]; then
+    mkdir -p `dirname $OUTFILE`
+    echo Saving copies at $OUTFILE.pem, $OUTFILE.csr and $OUTFILE.crt
+    cat $WORK/$NODE"_privatekey.pem" > $OUTFILE.pem
+    cat $WORK/$NODE"_csr.pem"        > $OUTFILE.csr
+    cat $WORK/$NODE.crt              > $OUTFILE.crt
+  fi
+
+  echo "Done"
 }
 
 # Load functions
@@ -91,12 +114,18 @@ KEYDIR="$BASEDIR/keys"
 KEYTYPE="$2"
 FILE="$3"
 NODE="$4"
+OUTFILE="$5"
 BASENAME="`basename $0`"
 CWD="`pwd`"
 
 # Verify
 if [ -z "$NODE" ]; then
-  echo "Usage: keyringer <keyring> $BASENAME <gpg|ssh|ssl> <file> <hostname>"
+  echo -e "Usage: keyringer <keyring> $BASENAME <gpg|ssh|ssl> <file> <hostname> [outfile]"
+  echo -e "Options:"
+  echo -e "\t gpg|ssh|ssl: key type."
+  echo -e "\t file       : base file name for encrypted output (relative to keys folder)"
+  echo -e "\t hostname   : host for the key pair"
+  echo -e "\t outfile    : optional unencrypted output file, useful for deployment"
   exit 1
 elif [ ! -e "$KEYDIR" ]; then
   echo "Folder not found: $KEYDIR, leaving"
@@ -112,6 +141,7 @@ if [ "$?" != "0" ]; then
 fi
 
 # Dispatch
+echo "Generating $KEYTYPE for $NODE..."
 genpair_$KEYTYPE
 
 # Cleanup

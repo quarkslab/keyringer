@@ -23,7 +23,7 @@ function genpair_ssh {
   if [ ! -z "$OUTFILE" ]; then
     mkdir -p `dirname $OUTFILE`
     echo Saving copies at $OUTFILE and $OUTFILE.pub
-    cat $WORK/id_dsa     > $OUTFILE.pub
+    cat $WORK/id_dsa     > $OUTFILE
     cat $WORK/id_dsa.pub > $OUTFILE.pub
   fi
 

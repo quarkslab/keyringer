@@ -51,17 +51,17 @@ EOF
 
   # Encrypt the result
   echo "Encrypting secret key into keyringer..."
-  gpg --homedir $WORK --export-secret-keys | keyringer_exec encrypt $BASEDIR $FILE
+  gpg --armor --homedir $WORK --export-secret-keys | keyringer_exec encrypt $BASEDIR $FILE
   echo "Encrypting public key into keyringer..."
-  gpg --homedir $WORK --export             | keyringer_exec encrypt $BASEDIR $FILE.pub
+  gpg --armor --homedir $WORK --export             | keyringer_exec encrypt $BASEDIR $FILE.pub
   echo "Encrypting passphrase into keyringer..."
-  echo "Passphrase for $FILE: $passphrase" | keyringer_exec encrypt $BASEDIR $FILE.passwd
+  echo "Passphrase for $FILE: $passphrase"         | keyringer_exec encrypt $BASEDIR $FILE.passwd
 
   if [ ! -z "$OUTFILE" ]; then
     mkdir -p `dirname $OUTFILE`
     echo Saving copies at $OUTFILE and $OUTFILE.pub
-    gpg --homedir $WORK --export-secret-keys > $OUTFILE
-    gpg --homedir $WORK --export             > $OUTFILE.pub
+    gpg --armor --homedir $WORK --export-secret-keys > $OUTFILE
+    gpg --armor --homedir $WORK --export             > $OUTFILE.pub
   fi
 
   echo "Done"  

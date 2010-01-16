@@ -50,7 +50,7 @@ other keyring actions using this alias.
 If there is an existing remote keyring repository and you just want to checkout
 it, use
 
-  keyringer friends create $HOME/keyrings/friends <repository-url>
+  keyringer friends init $HOME/keyrings/friends <repository-url>
 
 Managing recipients
 -------------------

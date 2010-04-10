@@ -22,6 +22,7 @@ function keyringer_init {
   BASEDIR="$3"
   URL="$4"
   RECIPIENTS="$BASEDIR/config/recipients"
+  OPTIONS="$BASEDIR/config/options"
 
   # Parse
   if [ -z "$BASEDIR" ]; then
@@ -52,6 +53,9 @@ function keyringer_init {
       # Setup recipients
       echo "# Use entries in the form of 'john@doe.com XXXXXXXX" > $RECIPIENTS
       echo "" >> $RECIPIENTS
+
+      # Setup options
+      touch $OPTIONS
 
       # Setup README
       echo "Keyring repository powered by http://git.sarava.org/?p=keyringer.git;a=summary" > $BASEDIR/README

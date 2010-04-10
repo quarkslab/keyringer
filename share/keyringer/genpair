@@ -20,6 +20,7 @@ function genpair_ssh {
   echo "Encrypting public key into keyringer..."
   cat $WORK/id_dsa.pub | keyringer_exec encrypt $BASEDIR $FILE.pub
 
+  # TODO: add outfiles into version control
   if [ ! -z "$OUTFILE" ]; then
     mkdir -p `dirname $OUTFILE`
     echo Saving copies at $OUTFILE and $OUTFILE.pub
@@ -57,6 +58,7 @@ EOF
   echo "Encrypting passphrase into keyringer..."
   echo "Passphrase for $FILE: $passphrase"         | keyringer_exec encrypt $BASEDIR $FILE.passwd
 
+  # TODO: add outfiles into version control
   if [ ! -z "$OUTFILE" ]; then
     mkdir -p `dirname $OUTFILE`
     echo Saving copies at $OUTFILE and $OUTFILE.pub

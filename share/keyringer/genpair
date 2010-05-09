@@ -37,6 +37,8 @@ function genpair_gpg {
   read -s -p "Enter password for the private key: " passphrase
   
   # TODO: insert 279 random bytes
+  # TODO: custom Name-Comment and Name-Email
+  # TODO: allow for empty passphrases
   gpg --homedir $WORK --gen-key --batch <<EOF
     Key-Type: DSA
     Key-Length: 1024

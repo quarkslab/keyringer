@@ -1,0 +1,68 @@
+#!/bin/bash
+#
+# Create keys for new nodes.
+#
+
+# Config
+ACTIONS="`dirname $0`"
+BASEDIR="$1"
+COMMAND="$2"
+BASENAME="`basename $0`"
+OPTIONS="$BASEDIR/config/options"
+
+function newkeys_nodes {
+  # See http://www.mail-archive.com/puppet-users@googlegroups.com/msg01615.html
+  grep ^node $* | sed -e 's/^node //' | awk -F, '{for(i=1;i<=NF;i++) {print $i}}' | cut -d "'" -f2
+}
+
+function newkeys_puppet {
+  # Generates ssh and gpg keys for new nodes
+  # GPG keys should be manually imported in the nodes
+
+  if [ -e "$PUPPET/manifests/nodes.pp" ]; then
+    nodes="`newkeys_nodes $PUPPET/manifests/nodes.pp`"
+  fi
+
+  if [ -d "$PUPPET/manifests/nodes" ]; then
+    nodes="$nodes `newkeys_nodes $PUPPET/manifests/nodes/*`"
+  fi
+
+  for host in $nodes; do
+    node="`echo $host | cut -d . -f 1`"
+    privkey="$PUPPET/$PUPPET_KEYS/"$node"_id_dsa"
+    pubkey="$privkey.pub"
+    if [ ! -e "$privkey" ] || [ ! -e "$pubkey" ]; then
+      keyringer_exec genpair $BASEDIR ssh $node/ssh/id_dsa $host $privkey
+      keyringer_exec genpair $BASEDIR gpg $node/gpg/key    $host
+
+      # Add key into puppet git repository
+      ( cd $PUPPET_KEYS && git add $privkey $pubkey )
+    fi
+  done
+}
+
+# Load functions
+LIB="`dirname $0`/../../lib/keyringer"
+source $LIB/functions
+
+if [ -z "$COMMAND" ]; then
+  echo "Usage: keyringer <keyring> `basename $0` <command> [arguments]"
+  exit 1
+elif [ ! -f "$OPTIONS" ]; then
+  echo "No option config was found"
+  exit 1
+fi
+
+source $OPTIONS
+
+if [ -z "$PUPPET_KEYS" ]; then
+  PUPPET_KEYS="$PUPPET/files/keys"
+fi
+
+# Right now just puppet backend is supported
+if [ "$COMMAND" == "puppet" ]; then
+  newkeys_puppet
+else
+  echo "No such option $COMMAND"
+  exit 1
+fi

@@ -1,0 +1,39 @@
+#!/bin/bash
+#
+# Recipient management.
+#
+
+# Config
+ACTIONS="`dirname $0`"
+BASEDIR="$1"
+COMMAND="$2"
+BASENAME="`basename $0`"
+OPTIONS="$BASEDIR/config/options"
+
+# Load functions
+LIB="`dirname $0`/../../lib/keyringer"
+source $LIB/functions
+
+if [ -z "$COMMAND" ]; then
+  echo "Usage: keyringer <keyring> `basename $0` <command> [arguments]"
+  exit 1
+fi
+
+# Create options file if old repository
+if [ ! -e "$OPTIONS" ]; then
+  echo "Creating options file..."
+  touch $OPTIONS
+  keyringer_exec git $BASEDIR add config/options
+fi
+
+if [ "$COMMAND" == "ls" ]; then
+  cat $OPTIONS
+elif [ "$COMMAND" == "edit" ]; then
+  $EDITOR $OPTIONS
+elif [ "$COMMAND" == "add" ]; then
+  shift 2
+  echo $* >> $OPTIONS 
+else
+  echo "$BASENAME: No such command $COMMAND"
+  exit 1
+fi

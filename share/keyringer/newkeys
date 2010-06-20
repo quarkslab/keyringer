@@ -29,7 +29,7 @@ function newkeys_puppet {
 
   for host in $nodes; do
     node="`echo $host | cut -d . -f 1`"
-    privkey="$PUPPET/$PUPPET_KEYS/"$node"_id_dsa"
+    privkey="$PUPPET_KEYS/"$node"_id_dsa"
     pubkey="$privkey.pub"
     if [ ! -e "$privkey" ] || [ ! -e "$pubkey" ]; then
       keyringer_exec genpair $BASEDIR ssh $node/ssh/id_dsa $host $privkey

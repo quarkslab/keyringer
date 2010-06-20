@@ -56,6 +56,10 @@ fi
 source $OPTIONS
 keyringer_config_load_preferences
 
+if [ -z "$PUPPET" ]; then
+  "Error: you have to setup PUPPET path at your preferences for this keyring."
+fi
+
 if [ -z "$PUPPET_KEYS" ]; then
   PUPPET_KEYS="$PUPPET/files/keys"
 fi

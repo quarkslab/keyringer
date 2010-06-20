@@ -3,6 +3,34 @@
 # Common functions.
 #
 
+# Setup main configuration and load preferences
+function keyringer_config_load {
+  if [ -f "$HOME/.$NAME" ]; then
+    echo "Converting legacy configuration scheme..."
+    mv $HOME/.$NAME $HOME/.$NAME.tmp
+    mkdir $HOME/.$NAME
+    mv $HOME/.$NAME.tmp $CONFIG
+  fi
+
+  if [ ! -e "$CONFIG" ]; then
+    echo "Creating $CONFIG..."
+    mkdir `dirname $CONFIG`
+    touch $CONFIG
+    chmod 600 $CONFIG
+    echo "# Keyringer config file." > $CONFIG
+    echo "" >> $CONFIG
+  fi
+
+  keyringer_config_load_preferences
+}
+
+function keyringer_config_load_preferences {
+  # Load custom keyring preferences
+  if [ ! -z "$PREFERENCES" ] && [ -e "$PREFERENCES" ]; then
+    source $PREFERENCES
+  fi
+}
+
 # Load a parameter from config
 function keyringer_config {
   if [ -z "$CONFIG" ]; then

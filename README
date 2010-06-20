@@ -21,7 +21,7 @@ Installation
 
 Just clone
 
-	git clone git://git.sarava.org/keyringer.git
+    git clone git://git.sarava.org/keyringer.git
 
 And then leave it somewhere, optionally adding it to your $PATH environment variable.
 You can also package it to your preferred distro.
@@ -33,7 +33,7 @@ The first step will would like to take is to setup a keyring.  Keyringer suport
 management of multiple isolated keyrings.  To start a new keyring (or register
 an existing one at your config file), type
 
-  keyringer <keyring> init <path> [remote]
+    keyringer <keyring> init <path> [remote]
 
 This will 
 
@@ -42,7 +42,7 @@ This will
 
 For example,
 
-  keyringer friends init $HOME/keyrings/friends
+    keyringer friends init $HOME/keyrings/friends
 
 will create an alias "friends" pointing to $HOME/keyrings/friends. Call all
 other keyring actions using this alias.
@@ -50,44 +50,44 @@ other keyring actions using this alias.
 If there is an existing remote keyring repository and you just want to checkout
 it, use
 
-  keyringer friends init $HOME/keyrings/friends <repository-url>
+    keyringer friends init $HOME/keyrings/friends <repository-url>
 
 Managing recipients
 -------------------
 
 Your next step is tell keyringer the GPG key ids to encrypt files to:
 
-  keyringer <keyring> recipients edit
-  keyringer <keyring> recipients ls
+    keyringer <keyring> recipients edit
+    keyringer <keyring> recipients ls
 
 Encrypting a key
 ----------------
 
-  keyringer <keyring> encrypt <file>
+    keyringer <keyring> encrypt <file>
 
 Decrypting a key (only to stdout)
 ---------------------------------
 
-  keyringer <keyring> decrypt <file>
+    keyringer <keyring> decrypt <file>
 
 Re-encrypting a key
 -------------------
 
-  keyringer <keyring> recrypt <file>
+    keyringer <keyring> recrypt <file>
 
 Listing keys
 ------------
 
-  keyringer <keyring> ls [arguments]
+    keyringer <keyring> ls [arguments]
 
 Git wrapper
 -----------
 
 Keyringer comes with a simple git wrapper to ease common management tasks:
 
-  keyringer <keyring> git remote add keyringer <url>
-  keyringer <keyring> git push keyringer master
-  keyringer <keyring> git pull
+    keyringer <keyring> git remote add keyringer <url>
+    keyringer <keyring> git push keyringer master
+    keyringer <keyring> git pull
 
 Managing puppet node keys
 -------------------------
@@ -95,13 +95,25 @@ Managing puppet node keys
 Keyringer is able to manage node keys for puppet nodes. First add the puppet
 main and key folders into your keyring configuration:
 
-  keyringer <keyring> options add PUPPET=/path/to/puppet/config
-  keyringer <keyring> options add PUPPET_KEYS=/path/to/puppet/keys
+    keyringer <keyring> preferences add PUPPET=/path/to/puppet/config
+    keyringer <keyring> preferences add PUPPET_KEYS=/path/to/puppet/keys
 
 Then you just need to issue the following command every time you have to create
 keys for new nodes:
 
-  keyringer <keyring> newkeys puppet
+    keyringer <keyring> newkeys puppet
+
+Configuration files, preferences and options
+--------------------------------------------
+
+  1. Main config file: $HOME/.keyringer/config: store the location of
+     each keyring.
+
+  2. User preferences per keyring: $HOME/.keyringer/<keyring>: managed by
+     "keyringer <keyring> preferences".
+
+  3. Custom keyring options: $KEYRING_FOLDER/config/options: managed by
+     "keyringer <keyring> options".
 
 Notes
 -----
@@ -165,11 +177,11 @@ Notes: Using with GNU Privacy Guard
 
 Exporting public keys:
 
-  gpg --armor --export <keyid>
+    gpg --armor --export <keyid>
 
 Exporting private keys (take care):
 
-  gpg --armor --export-secret-keys
+    gpg --armor --export-secret-keys
 
 TODO
 ----

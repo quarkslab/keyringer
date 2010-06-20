@@ -54,6 +54,7 @@ elif [ ! -f "$OPTIONS" ]; then
 fi
 
 source $OPTIONS
+keyringer_config_load_preferences
 
 if [ -z "$PUPPET_KEYS" ]; then
   PUPPET_KEYS="$PUPPET/files/keys"

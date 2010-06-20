@@ -95,25 +95,50 @@ function keyringer_dispatch {
   fi
 }
 
+function keyringer_preferences {
+  COMMAND="$3"
+
+  if [ -z "$COMMAND" ]; then
+    echo "Usage: keyringer <keyring> `basename $0` <command> [arguments]"
+    exit 1
+  fi
+  
+  # Create options file if old repository
+  if [ ! -e "$PREFERENCES" ]; then
+    echo "Creating preferences file..."
+    touch $PREFERENCES
+  fi
+  
+  if [ "$COMMAND" == "ls" ]; then
+    cat $PREFERENCES
+  elif [ "$COMMAND" == "edit" ]; then
+    $EDITOR $PREFERENCES
+  elif [ "$COMMAND" == "add" ]; then
+    shift 3
+    echo $* >> $PREFERENCES 
+  else
+    echo "$BASENAME: No such command $COMMAND"
+    exit 1
+  fi
+}
+
 # Config
 NAME="keyringer"
-CONFIG="$HOME/.$NAME"
+CONFIG="$HOME/.$NAME/config"
 BASENAME="`basename $0`"
 KEYRING="$1"
 ACTION="$2"
 ACTIONS="`dirname $0`/share/$NAME"
 
+# Export preferences for other scripts
+export PREFERENCES="`dirname $CONFIG`/$KEYRING"
+
 # Load functions
 LIB="`dirname $0`/lib/$NAME/functions"
 source $LIB
 
-if [ ! -e "$CONFIG" ]; then
-  echo "Creating $CONFIG..."
-  touch $CONFIG
-  chmod 600 $CONFIG
-  echo "# Keyringer config file." > $CONFIG
-  echo "" >> $CONFIG
-fi
+# Setup main configuration and load preferences
+keyringer_config_load
 
 if [ -z "$ACTION" ]; then
   echo "Usage: $BASENAME <keyring> <action> [arguments]"
@@ -122,6 +147,8 @@ fi
 
 if [ "$ACTION" == "init" ]; then
   keyringer_init $*
+elif [ "$ACTION" == "preferences" ]; then
+  keyringer_preferences $*
 elif keyringer_has_action $ACTION; then
   keyringer_dispatch $*
 else

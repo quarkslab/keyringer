@@ -104,6 +104,9 @@ function genpair_ssl {
     cat $WORK/$NODE.crt              > $OUTFILE.crt
   fi
 
+  # Show cert fingerprint
+  openssl x509 -noout -in $WORK/$NODE.crt -fingerprint
+
   echo "Done"
 }
 

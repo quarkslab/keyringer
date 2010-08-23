@@ -40,8 +40,8 @@ function genpair_gpg {
   # TODO: custom Name-Comment and Name-Email
   # TODO: allow for empty passphrases
   gpg --homedir $WORK --gen-key --batch <<EOF
-    Key-Type: DSA
-    Key-Length: 1024
+    Key-Type: RSA
+    Key-Length: 4096
     Subkey-Type: ELG-E
     Subkey-Length: 4096
     Name-Real: $NODE

@@ -8,6 +8,7 @@ LIB="`dirname $0`/../../lib/keyringer/functions"
 source $LIB
 
 # Config
+ACTIONS="`dirname $0`"
 BASEDIR="$1"
 FILE="`keyringer_filename $2`"
 KEYDIR="$BASEDIR/keys"

@@ -112,22 +112,23 @@ function keyringer_set_tmpfile {
     exit 1
   fi
 
-  mkdir -p $BASEDIR/tmp
-
   if [ -z "$1" ]; then
     template="$BASEDIR/tmp/keyringer.XXXXXXXXXX"
   else
     template="$BASEDIR/tmp/$1.XXXXXXXXXX"
   fi
 
-  TMPFILE="`mktemp $template`" || exit 1
+  mkdir -p $BASEDIR/tmp
+  keyringer_git_ignore 'tmp/*'
+
+  tmpfile="`mktemp $template`"
   
   if [ "$?" != "0" ]; then
-    echo "Error: can't set tmpfile $TMPFILE"
+    echo "Error: can't set tmpfile $tmpfile"
     exit 1
   fi
 
-  echo $TMPFILE
+  echo $tmpfile
 }
 
 # Remove a temporary file
@@ -141,5 +142,17 @@ function keyringer_unset_tmpfile {
   if [ "$?" != "0" ]; then
     echo "Warning: could not delete file $1. Please delete it manually as it might have sensitive information."
     exit 1
+  fi
+}
+
+# Add a pattern into gitignore
+function keyringer_git_ignore {
+  if [ ! -z "$BASEDIR/.gitignore" ]; then
+    echo $1 > $BASEDIR/.gitignore
+    keyringer_exec git $BASEDIR add .gitignore
+  else
+    if ! grep -q -e "^$1$" $BASEDIR/.gitignore; then
+      echo $1 >> $BASEDIR/.gitignore
+    fi
   fi
 }

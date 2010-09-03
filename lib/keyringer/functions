@@ -104,3 +104,42 @@ function keyringer_is_git {
     fi
   fi
 }
+
+# Setup a temporary file
+function keyringer_set_tmpfile {
+  if [ -z "$BASEDIR" ]; then
+    echo "Please set BASEDIR before creating a tmp file"
+    exit 1
+  fi
+
+  mkdir -p $BASEDIR/tmp
+
+  if [ -z "$1" ]; then
+    template="$BASEDIR/tmp/keyringer.XXXXXXXXXX"
+  else
+    template="$BASEDIR/tmp/$1.XXXXXXXXXX"
+  fi
+
+  TMPFILE="`mktemp $template`" || exit 1
+  
+  if [ "$?" != "0" ]; then
+    echo "Error: can't set tmpfile $TMPFILE"
+    exit 1
+  fi
+
+  echo $TMPFILE
+}
+
+# Remove a temporary file
+function keyringer_unset_tmpfile {
+  if [ -z "$1" ]; then
+    echo "No tmp file set"
+  fi
+
+  rm -f $1
+
+  if [ "$?" != "0" ]; then
+    echo "Warning: could not delete file $1. Please delete it manually as it might have sensitive information."
+    exit 1
+  fi
+}

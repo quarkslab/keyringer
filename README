@@ -75,6 +75,16 @@ Re-encrypting a key
 
     keyringer <keyring> recrypt <file>
 
+Editing a key
+-------------
+
+To edit a key, use
+
+    keyringer <keyring> edit <file>
+
+Use this option with caution as it keeps temporary unencrypted data into keyringer
+temp folder and at your $EDITOR temp files.
+
 Listing keys
 ------------
 

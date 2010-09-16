@@ -3,16 +3,13 @@
 # Recipient management.
 #
 
-# Config
-ACTIONS="`dirname $0`"
-BASEDIR="$1"
-COMMAND="$2"
-BASENAME="`basename $0`"
-OPTIONS="$BASEDIR/config/options"
-
 # Load functions
 LIB="`dirname $0`/../../lib/keyringer"
 source $LIB/functions
+keyringer_set_env $*
+
+# Aditional parameters
+COMMAND="$2"
 
 if [ -z "$COMMAND" ]; then
   echo "Usage: keyringer <keyring> `basename $0` <command> [arguments]"

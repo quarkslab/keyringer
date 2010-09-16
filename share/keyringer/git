@@ -3,7 +3,12 @@
 # Git wrapper.
 #
 
-BASEDIR="$1"
+# Load functions
+LIB="`dirname $0`/../../lib/keyringer/functions"
+source $LIB
+keyringer_set_env $*
+
+# Aditional parameters
 CWD="`pwd`"
 
 if [ -z "$BASEDIR" ]; then

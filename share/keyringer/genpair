@@ -113,16 +113,13 @@ function genpair_ssl {
 # Load functions
 LIB="`dirname $0`/../../lib/keyringer"
 source $LIB/functions
+keyringer_set_env $*
 
-# Config
-ACTIONS="`dirname $0`"
-BASEDIR="$1"
-KEYDIR="$BASEDIR/keys"
+# Aditional parameters
 KEYTYPE="$2"
 FILE="$3"
 NODE="$4"
 OUTFILE="$5"
-BASENAME="`basename $0`"
 CWD="`pwd`"
 
 # Verify

@@ -156,3 +156,18 @@ function keyringer_git_ignore {
     fi
   fi
 }
+
+# Set needed environment variables.
+function keyringer_set_env {
+  if [ -z "$1" ]; then
+    echo "Error: missing arguments for keyringer_set_env"
+    exit 1    
+  fi
+
+  ACTIONS="`dirname $0`"
+  BASENAME="`basename $0`"
+  BASEDIR="$1"
+  KEYDIR="$BASEDIR/keys"
+  RECIPIENTS="$BASEDIR/config/recipients"
+  OPTIONS="$BASEDIR/config/options"
+}

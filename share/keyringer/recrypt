@@ -6,13 +6,10 @@
 # Load functions
 LIB="`dirname $0`/../../lib/keyringer/functions"
 source $LIB
+keyringer_set_env $*
 
-# Config
-BASEDIR="$1"
+# Aditional parameters
 FILE="`keyringer_filename $2`"
-KEYDIR="$BASEDIR/keys"
-RECIPIENTS="$BASEDIR/config/recipients"
-BASENAME="`basename $0`"
 
 if [ -z "$FILE" ]; then
   echo "Usage: keyringer <keyring> `basename $0` <file>"

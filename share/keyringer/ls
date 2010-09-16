@@ -3,8 +3,12 @@
 # List keys.
 #
 
-BASEDIR="$1"
-KEYDIR="$BASEDIR/keys"
+# Load functions
+LIB="`dirname $0`/../../lib/keyringer/functions"
+source $LIB
+keyringer_set_env $*
+
+# Aditional parameters
 CWD="`pwd`"
 
 if [ -z "$KEYDIR" ]; then

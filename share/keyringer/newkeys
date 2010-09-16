@@ -3,12 +3,13 @@
 # Create keys for new nodes.
 #
 
-# Config
-ACTIONS="`dirname $0`"
-BASEDIR="$1"
+# Load functions
+LIB="`dirname $0`/../../lib/keyringer/functions"
+source $LIB
+keyringer_set_env $*
+
+# Aditional parameters
 COMMAND="$2"
-BASENAME="`basename $0`"
-OPTIONS="$BASEDIR/config/options"
 
 function newkeys_nodes {
   # See http://www.mail-archive.com/puppet-users@googlegroups.com/msg01615.html

@@ -75,6 +75,11 @@ Re-encrypting a key
 
     keyringer <keyring> recrypt <file>
 
+Appending information to a key
+------------------------------
+
+    keyringer <keyring> append <file>
+
 Editing a key
 -------------
 

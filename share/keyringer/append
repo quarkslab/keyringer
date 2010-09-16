@@ -1,0 +1,43 @@
+#!/bin/bash
+#
+# Append information into encrypted files.
+#
+
+# Load functions
+LIB="`dirname $0`/../../lib/keyringer/functions"
+source $LIB
+
+# Config
+ACTIONS="`dirname $0`"
+BASEDIR="$1"
+FILE="`keyringer_filename $2`"
+KEYDIR="$BASEDIR/keys"
+RECIPIENTS="$BASEDIR/config/recipients"
+BASENAME="`basename $0`"
+
+if [ -z "$FILE" ]; then
+  echo "Usage: keyringer <keyring> `basename $0` <file>"
+  exit 1
+elif [ ! -f "$RECIPIENTS" ]; then
+  echo "No recipient config was found"
+  exit 1
+elif [ ! -f "$KEYDIR/$FILE" ]; then
+  echo "File not found: $KEYDIR/$FILE"
+  exit 1
+fi
+
+CONTENT=($(keyringer_exec decrypt $BASEDIR $FILE))
+
+echo "This is the current content of $FILE:"
+echo " "
+echo "$CONTENT"
+echo " "
+echo "Now please write the content to be appended on $FILE, finnishing with Ctrl-D:"
+
+APPEND=($(cat -))
+
+NEW=( ${CONTENT[@]} ${APPEND[@]} )
+
+for element in $(seq 0 $((${#NEW[@]} - 1))); do
+  echo ${NEW[$element]}
+done | keyringer_exec encrypt $BASEDIR $FILE

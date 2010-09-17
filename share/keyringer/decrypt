@@ -19,4 +19,4 @@ elif [ ! -f "$KEYDIR/$FILE" ]; then
   exit 1
 fi
 
-gpg --use-agent -d $KEYDIR/$FILE
+gpg --quiet --use-agent -d $KEYDIR/$FILE

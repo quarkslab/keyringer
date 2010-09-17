@@ -22,6 +22,9 @@ elif [ ! -f "$KEYDIR/$FILE" ]; then
   exit 1
 fi
 
+OLDIFS=$IFS
+IFS=$'\n'
+
 CONTENT=($(keyringer_exec decrypt $BASEDIR $FILE))
 
 echo "This is the current content of $FILE:"
@@ -37,3 +40,5 @@ NEW=( ${CONTENT[@]} ${APPEND[@]} )
 for element in $(seq 0 $((${#NEW[@]} - 1))); do
   echo ${NEW[$element]}
 done | keyringer_exec encrypt $BASEDIR $FILE
+
+IFS="$OLDIFS"

@@ -27,9 +27,8 @@ IFS=$'\n'
 
 CONTENT=($(keyringer_exec decrypt $BASEDIR $FILE))
 
-echo "This is the current content of $FILE:"
 echo " "
-echo "$CONTENT"
+echo "$FILE currently has ${#CONTENT[@]} lines"
 echo " "
 echo "Now please write the content to be appended on $FILE, finnishing with Ctrl-D:"
 

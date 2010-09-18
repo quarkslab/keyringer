@@ -213,6 +213,16 @@ function keyringer_get_file {
   fi
 }
 
+# Get a new file argument
+function keyringer_get_new_file {
+  FILE="`keyringer_filename $1`"
+  
+  if [ -z "$FILE" ]; then
+    keyringer_action_usage
+    exit 1
+  fi
+}
+
 # Run the action usage
 function keyringer_action_usage {
   if [ "`type -t "keyringer_usage_$BASENAME"`" == "function" ]; then

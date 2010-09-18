@@ -238,3 +238,6 @@ function keyringer_get_command {
     exit 1
   fi
 }
+
+# Setup environment
+keyringer_set_env $*

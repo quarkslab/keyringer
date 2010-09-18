@@ -11,11 +11,6 @@ keyringer_set_env $*
 # Get file
 keyringer_get_file $2
 
-if [ -z "$EDITOR" ]; then
-  echo "You have to set EDITOR env variable"
-  exit 1
-fi
-
 echo "Make sure that $BASEDIR is atop of an encrypted volume."
 
 # Set a tmp file

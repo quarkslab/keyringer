@@ -175,6 +175,11 @@ function keyringer_set_env {
     echo "No recipient config was found"
     exit 1
   fi
+
+  if [ -z "$EDITOR" ]; then
+    echo "You have to set EDITOR env variable"
+    exit 1
+  fi
 }
 
 # Get a single argument

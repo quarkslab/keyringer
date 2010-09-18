@@ -8,13 +8,8 @@ LIB="`dirname $0`/../../lib/keyringer"
 source $LIB/functions
 keyringer_set_env $*
 
-# Aditional parameters
-COMMAND="$2"
-
-if [ -z "$COMMAND" ]; then
-  echo "Usage: keyringer <keyring> `basename $0` <command> [arguments]"
-  exit 1
-fi
+# Command parser
+keyringer_get_command $2
 
 if [ "$COMMAND" == "ls" ]; then
   cat $RECIPIENTS

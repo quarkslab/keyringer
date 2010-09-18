@@ -192,16 +192,6 @@ function keyringer_set_env {
   fi
 }
 
-# Get a single argument
-function keyringer_get_arg {
-  if [ -z "$1" ]; then
-    keyringer_action_usage
-    exit 1
-  fi
-
-  echo $1
-}
-
 # Get a file argument
 function keyringer_get_file {
   FILE="`keyringer_filename $1`"
@@ -222,6 +212,21 @@ function keyringer_action_usage {
     keyringer_usage_$BASENAME
   else
     # Default usage
-    echo "Usage: keyringer <keyring> $BASENAME <file>"
+    if [ "$1" == "command" ]; then
+      echo "Usage: keyringer <keyring> $BASENAME <command> [arguments]"
+    else
+      echo "Usage: keyringer <keyring> $BASENAME <file>"
+    fi
+  fi
+}
+
+# Get a command argument
+function keyringer_get_command {
+  # Aditional parameters
+  COMMAND="$1"
+  
+  if [ -z "$COMMAND" ]; then
+    keyringer_action_usage command
+    exit 1
   fi
 }

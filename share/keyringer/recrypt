@@ -11,4 +11,5 @@ keyringer_set_env $*
 # Get file
 keyringer_get_file $2
 
+# Recrypt
 gpg --use-agent -d $KEYDIR/$FILE | gpg --use-agent --armor -e -s $(keyringer_recipients $RECIPIENTS) > $KEYDIR/$FILE

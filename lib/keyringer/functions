@@ -223,6 +223,17 @@ function keyringer_get_new_file {
   fi
 }
 
+# Get a command argument
+function keyringer_get_command {
+  # Aditional parameters
+  COMMAND="$1"
+  
+  if [ -z "$COMMAND" ]; then
+    keyringer_action_usage command
+    exit 1
+  fi
+}
+
 # Run the action usage
 function keyringer_action_usage {
   if [ "`type -t "keyringer_usage_$BASENAME"`" == "function" ]; then
@@ -235,17 +246,6 @@ function keyringer_action_usage {
     else
       echo "Usage: keyringer <keyring> $BASENAME <file>"
     fi
-  fi
-}
-
-# Get a command argument
-function keyringer_get_command {
-  # Aditional parameters
-  COMMAND="$1"
-  
-  if [ -z "$COMMAND" ]; then
-    keyringer_action_usage command
-    exit 1
   fi
 }
 

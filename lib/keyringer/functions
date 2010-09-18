@@ -157,7 +157,7 @@ function keyringer_git_ignore {
   fi
 }
 
-# Set needed environment variables.
+# Set needed environment variables and do basic checks.
 function keyringer_set_env {
   if [ -z "$1" ]; then
     echo "Error: missing arguments for keyringer_set_env"
@@ -170,4 +170,9 @@ function keyringer_set_env {
   KEYDIR="$BASEDIR/keys"
   RECIPIENTS="$BASEDIR/config/recipients"
   OPTIONS="$BASEDIR/config/options"
+
+  if [ ! -f "$RECIPIENTS" ]; then
+    echo "No recipient config was found"
+    exit 1
+  fi
 }

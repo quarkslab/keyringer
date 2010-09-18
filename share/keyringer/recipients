@@ -14,9 +14,6 @@ COMMAND="$2"
 if [ -z "$COMMAND" ]; then
   echo "Usage: keyringer <keyring> `basename $0` <command> [arguments]"
   exit 1
-elif [ ! -f "$RECIPIENTS" ]; then
-  echo "No recipient config was found"
-  exit 1
 fi
 
 if [ "$COMMAND" == "ls" ]; then

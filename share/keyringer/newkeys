@@ -49,9 +49,6 @@ source $LIB/functions
 if [ -z "$COMMAND" ]; then
   echo "Usage: keyringer <keyring> `basename $0` <command> [arguments]"
   exit 1
-elif [ ! -f "$OPTIONS" ]; then
-  echo "No option config was found"
-  exit 1
 fi
 
 source $OPTIONS

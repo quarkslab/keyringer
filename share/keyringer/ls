@@ -11,11 +11,7 @@ keyringer_set_env $*
 # Aditional parameters
 CWD="`pwd`"
 
-if [ -z "$KEYDIR" ]; then
-  echo "Usage: keyringer <keyring> `basename $0` [arguments]"
-  exit 1
-fi
-
+# Run list command
 shift
 cd $KEYDIR && ls $*
 cd $CWD

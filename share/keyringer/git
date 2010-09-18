@@ -11,11 +11,7 @@ keyringer_set_env $*
 # Aditional parameters
 CWD="`pwd`"
 
-if [ -z "$BASEDIR" ]; then
-  echo "Usage: keyringer <keyringer> `basename $0` [arguments]"
-  exit 1
-fi
-
+# Run git command
 shift
 mkdir -p $BASEDIR && cd $BASEDIR && git $*
 cd $CWD

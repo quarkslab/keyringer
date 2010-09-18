@@ -11,4 +11,5 @@ keyringer_set_env $*
 # Get file
 keyringer_get_file $2
 
+# Decrypt
 gpg --quiet --use-agent -d $KEYDIR/$FILE

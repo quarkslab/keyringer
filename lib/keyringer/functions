@@ -250,4 +250,6 @@ function keyringer_action_usage {
 }
 
 # Setup environment
-keyringer_set_env $*
+if [ "`basename $0`" != "keyringer" ]; then
+  keyringer_set_env $*
+fi

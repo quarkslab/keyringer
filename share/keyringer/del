@@ -8,17 +8,8 @@ LIB="`dirname $0`/../../lib/keyringer/functions"
 source $LIB
 keyringer_set_env $*
 
-# Aditional parameters
-FILE="`keyringer_filename $2`"
-
-# Setup
-if [ -z "$FILE" ]; then
-  echo "Usage: keyringer <keyring> `basename $0` <file>"
-  exit 1
-elif [ ! -f "$KEYDIR/$FILE" ]; then
-  echo "File not found: $KEYDIR/$FILE"
-  exit 1
-fi
+# Get file
+keyringer_get_file $2
 
 # Remove
 if [ -d "$KEYDIR/.git" ]; then

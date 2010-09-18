@@ -176,3 +176,37 @@ function keyringer_set_env {
     exit 1
   fi
 }
+
+# Get a single argument
+function keyringer_get_arg {
+  if [ -z "$1" ]; then
+    keyringer_action_usage
+    exit 1
+  fi
+
+  echo $1
+}
+
+# Get a file argument
+function keyringer_get_file {
+  FILE="`keyringer_filename $1`"
+  
+  if [ -z "$FILE" ]; then
+    keyringer_action_usage
+    exit 1
+  elif [ ! -f "$KEYDIR/$FILE" ]; then
+    echo "File not found: $KEYDIR/$FILE"
+    exit 1
+  fi
+}
+
+# Run the action usage
+function keyringer_action_usage {
+  if [ "`type -t "keyringer_usage_$BASENAME"`" == "function" ]; then
+    # Use custom action usage
+    keyringer_usage_$BASENAME
+  else
+    # Default usage
+    echo "Usage: keyringer <keyring> $BASENAME <file>"
+  fi
+}

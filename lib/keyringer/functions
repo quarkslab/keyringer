@@ -122,14 +122,18 @@ function keyringer_set_tmpfile {
   mkdir -p $BASEDIR/tmp
   keyringer_git_ignore 'tmp/*'
 
-  tmpfile="`mktemp $template`"
+  if [ "$2" == "-d" ]; then
+    TMPWORK="`mktemp -d $template`"
+  else
+    TMPWORK="`mktemp $template`"
+  fi
   
   if [ "$?" != "0" ]; then
-    echo "Error: can't set tmpfile $tmpfile"
+    echo "Error: can't set TMPWORK $TMPWORK"
     exit 1
   fi
 
-  echo $tmpfile
+  trap "keyringer_unset_tmpfile $TMPWORK; exit" INT TERM EXIT
 }
 
 # Remove a temporary file
@@ -191,6 +195,9 @@ function keyringer_set_env {
     echo "No option config was found"
     exit 1
   fi
+
+  # Ensure that keydir exists
+  mkdir -p $KEYDIR && chmod 700 $KEYDIR
 }
 
 # Get a file argument

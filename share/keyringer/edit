@@ -15,19 +15,18 @@ keyringer_get_file $2
 echo "Make sure that $BASEDIR is atop of an encrypted volume."
 
 # Set a tmp file
-TMPFILE="`keyringer_set_tmpfile edit`"
-trap "keyringer_unset_tmpfile $TMPFILE ; exit" INT TERM EXIT
+keyringer_set_tmpfile edit
 
 # Decrypt the information to the file
-gpg --yes -o $TMPFILE --use-agent -d $KEYDIR/$FILE
+gpg --yes -o $TMPWORK --use-agent -d $KEYDIR/$FILE
 
 # Prompt
 echo "Press any key to open the decrypted data into $EDITOR, Ctrl-C to abort"
 read key
-$EDITOR $TMPFILE
+$EDITOR $TMPWORK
 
 # Encrypt again
-gpg --yes -o $KEYDIR/$FILE --use-agent --armor -e -s $(keyringer_recipients $RECIPIENTS) $TMPFILE
+gpg --yes -o $KEYDIR/$FILE --use-agent --armor -e -s $(keyringer_recipients $RECIPIENTS) $TMPWORK
 
 # Remove temp file
-keyringer_unset_tmpfile $TMPFILE
+keyringer_unset_tmpfile $TMPWORK

@@ -12,20 +12,20 @@ function genpair_ssh {
   read -p "Hit ENTER to continue." prompt
 
   # TODO: programatically enter blank passphrase twice
-  ssh-keygen -t dsa -f $WORK/id_dsa -C "root@$NODE"
+  ssh-keygen -t dsa -f $TMPWORK/id_dsa -C "root@$NODE"
 
   # Encrypt the result
   echo "Encrypting secret key into keyringer..."
-  cat $WORK/id_dsa     | keyringer_exec encrypt $BASEDIR $FILE
+  cat $TMPWORK/id_dsa     | keyringer_exec encrypt $BASEDIR $FILE
   echo "Encrypting public key into keyringer..."
-  cat $WORK/id_dsa.pub | keyringer_exec encrypt $BASEDIR $FILE.pub
+  cat $TMPWORK/id_dsa.pub | keyringer_exec encrypt $BASEDIR $FILE.pub
 
   # TODO: add outfiles into version control
   if [ ! -z "$OUTFILE" ]; then
     mkdir -p `dirname $OUTFILE`
     echo Saving copies at $OUTFILE and $OUTFILE.pub
-    cat $WORK/id_dsa     > $OUTFILE
-    cat $WORK/id_dsa.pub > $OUTFILE.pub
+    cat $TMPWORK/id_dsa     > $OUTFILE
+    cat $TMPWORK/id_dsa.pub > $OUTFILE.pub
   fi
 
   echo "Done"  
@@ -39,7 +39,7 @@ function genpair_gpg {
   # TODO: insert 279 random bytes
   # TODO: custom Name-Comment and Name-Email
   # TODO: allow for empty passphrases
-  gpg --homedir $WORK --gen-key --batch <<EOF
+  gpg --homedir $TMPWORK --gen-key --batch <<EOF
     Key-Type: RSA
     Key-Length: 4096
     Subkey-Type: ELG-E
@@ -54,9 +54,9 @@ EOF
 
   # Encrypt the result
   echo "Encrypting secret key into keyringer..."
-  gpg --armor --homedir $WORK --export-secret-keys | keyringer_exec encrypt $BASEDIR $FILE
+  gpg --armor --homedir $TMPWORK --export-secret-keys | keyringer_exec encrypt $BASEDIR $FILE
   echo "Encrypting public key into keyringer..."
-  gpg --armor --homedir $WORK --export             | keyringer_exec encrypt $BASEDIR $FILE.pub
+  gpg --armor --homedir $TMPWORK --export             | keyringer_exec encrypt $BASEDIR $FILE.pub
   echo "Encrypting passphrase into keyringer..."
   echo "Passphrase for $FILE: $passphrase"         | keyringer_exec encrypt $BASEDIR $FILE.passwd
 
@@ -64,8 +64,8 @@ EOF
   if [ ! -z "$OUTFILE" ]; then
     mkdir -p `dirname $OUTFILE`
     echo Saving copies at $OUTFILE and $OUTFILE.pub
-    gpg --armor --homedir $WORK --export-secret-keys > $OUTFILE
-    gpg --armor --homedir $WORK --export             > $OUTFILE.pub
+    gpg --armor --homedir $TMPWORK --export-secret-keys > $OUTFILE
+    gpg --armor --homedir $TMPWORK --export             > $OUTFILE.pub
   fi
 
   echo "Done"  
@@ -77,7 +77,7 @@ function genpair_ssl {
   read -p "Hit ENTER to continue." prompt
 
   # Setup
-  cd $WORK
+  cd $TMPWORK
 
   # Generate certificate
   $LIB/csr.sh $NODE
@@ -99,13 +99,13 @@ function genpair_ssl {
   if [ ! -z "$OUTFILE" ]; then
     mkdir -p `dirname $OUTFILE`
     echo Saving copies at $OUTFILE.pem, $OUTFILE.csr and $OUTFILE.crt
-    cat $WORK/$NODE"_privatekey.pem" > $OUTFILE.pem
-    cat $WORK/$NODE"_csr.pem"        > $OUTFILE.csr
-    cat $WORK/$NODE.crt              > $OUTFILE.crt
+    cat $TMPWORK/$NODE"_privatekey.pem" > $OUTFILE.pem
+    cat $TMPWORK/$NODE"_csr.pem"        > $OUTFILE.csr
+    cat $TMPWORK/$NODE.crt              > $OUTFILE.crt
   fi
 
   # Show cert fingerprint
-  openssl x509 -noout -in $WORK/$NODE.crt -fingerprint
+  openssl x509 -noout -in $TMPWORK/$NODE.crt -fingerprint
 
   echo "Done"
 }
@@ -136,19 +136,8 @@ elif [ ! -e "$KEYDIR" ]; then
   exit 1
 fi
 
-# Prepare
-mkdir -p $KEYDIR && chmod 700 $KEYDIR
-
-WORK="`keyringer_set_tmpfile genpair`"
-trap "keyringer_unset_tmpfile $WORK; exit" INT TERM EXIT
-
-WORK="`mktemp -d $KEYDIR/genpair.XXXXXX`"
-if [ "$?" != "0" ]; then
-  echo "Error setting up $WORK"
-  exit 1
-else
-  trap "rm -rf $WORK" EXIT
-fi
+# Set a tmp file
+keyringer_set_tmpfile genpair -d
 
 # Dispatch
 echo "Generating $KEYTYPE for $NODE..."
@@ -156,5 +145,5 @@ genpair_$KEYTYPE
 
 # Cleanup
 cd $CWD
-rm -rf $WORK
+rm -rf $TMPWORK
 trap - EXIT

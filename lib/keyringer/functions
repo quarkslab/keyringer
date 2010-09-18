@@ -24,6 +24,7 @@ function keyringer_config_load {
   keyringer_config_load_preferences
 }
 
+# Load config preferences
 function keyringer_config_load_preferences {
   # Load custom keyring preferences
   if [ ! -z "$PREFERENCES" ] && [ -f "$PREFERENCES" ]; then

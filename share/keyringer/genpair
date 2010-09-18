@@ -138,6 +138,10 @@ fi
 
 # Prepare
 mkdir -p $KEYDIR && chmod 700 $KEYDIR
+
+WORK="`keyringer_set_tmpfile genpair`"
+trap "keyringer_unset_tmpfile $WORK; exit" INT TERM EXIT
+
 WORK="`mktemp -d $KEYDIR/genpair.XXXXXX`"
 if [ "$?" != "0" ]; then
   echo "Error setting up $WORK"

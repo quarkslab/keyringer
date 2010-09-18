@@ -11,6 +11,7 @@ keyringer_set_env $*
 # Get file
 keyringer_get_file $2
 
+# Warn user
 echo "Make sure that $BASEDIR is atop of an encrypted volume."
 
 # Set a tmp file
@@ -20,6 +21,7 @@ trap "keyringer_unset_tmpfile $TMPFILE ; exit" INT TERM EXIT
 # Decrypt the information to the file
 gpg --yes -o $TMPFILE --use-agent -d $KEYDIR/$FILE
 
+# Prompt
 echo "Press any key to open the decrypted data into $EDITOR, Ctrl-C to abort"
 read key
 $EDITOR $TMPFILE

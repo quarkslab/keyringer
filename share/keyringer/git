@@ -5,7 +5,7 @@
 
 # Load functions
 LIB="`dirname $0`/../../lib/keyringer/functions"
-source $LIB
+source $LIB || exit 1
 keyringer_set_env $*
 
 # Aditional parameters

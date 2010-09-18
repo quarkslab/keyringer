@@ -112,7 +112,7 @@ function genpair_ssl {
 
 # Load functions
 LIB="`dirname $0`/../../lib/keyringer"
-source $LIB/functions
+source $LIB/functions || exit 1
 keyringer_set_env $*
 
 # Aditional parameters

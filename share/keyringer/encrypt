@@ -8,7 +8,7 @@ LIB="`dirname $0`/../../lib/keyringer/functions"
 source $LIB || exit 1
 
 # Aditional parameters
-FILE="`keyringer_get_new_file $2`"
+keyringer_get_new_file $2
 
 # Encrypt
 mkdir -p $KEYDIR/`dirname $FILE`

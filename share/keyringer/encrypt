@@ -17,5 +17,5 @@ gpg --use-agent --armor -e -s $(keyringer_recipients $RECIPIENTS) - > $KEYDIR/$F
 
 # Stage
 if [ -d "$BASEDIR/.git" ]; then
-  keyringer_exec git $KEYDIR add $FILE
+  keyringer_exec git $BASEDIR add "keys/$FILE"
 fi

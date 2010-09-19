@@ -15,10 +15,13 @@ IFS=$'\n'
 
 CONTENT=($(keyringer_exec decrypt $BASEDIR $FILE))
 
-echo " "
-echo "$FILE currently has ${#CONTENT[@]} lines"
-echo " "
-echo "Now please write the content to be appended on $FILE, finnishing with Ctrl-D:"
+if [ "$1" = "append" ]; then
+  # only display directions if we're running append, not append-batch
+  echo " "
+  echo "$FILE currently has ${#CONTENT[@]} lines"
+  echo " "
+  echo "Now please write the content to be appended on $FILE, finnishing with Ctrl-D:"
+fi
 
 APPEND=($(cat -))
 
@@ -26,6 +29,6 @@ NEW=( ${CONTENT[@]} ${APPEND[@]} )
 
 for element in $(seq 0 $((${#NEW[@]} - 1))); do
   echo ${NEW[$element]}
-done | keyringer_exec encrypt $BASEDIR $FILE
+done | keyringer_exec encrypt-batch $BASEDIR $FILE
 
 IFS="$OLDIFS"

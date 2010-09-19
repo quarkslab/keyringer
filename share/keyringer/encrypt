@@ -13,8 +13,8 @@ keyringer_get_new_file $2
 # Encrypt
 mkdir -p $KEYDIR/`dirname $FILE`
 
-if [ "$1" = "encrypt" ]; then
-  # only display directions if we're running encrypt, not encrypt-batch
+if [ "$BASENAME" == "encrypt" ]; then
+  # Only display directions if we're running encrypt, not encrypt-batch
   echo "Type your message and finish your input with EOF (Ctrl-D)."
 fi
 

@@ -15,7 +15,7 @@ IFS=$'\n'
 
 CONTENT=($(keyringer_exec decrypt $BASEDIR $FILE))
 
-if [ "$1" = "append" ]; then
+if [ "$BASENAME" == "append" ]; then
   # only display directions if we're running append, not append-batch
   echo " "
   echo "$FILE currently has ${#CONTENT[@]} lines"

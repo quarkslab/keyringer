@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Sample wrapper program for simplying the use of keyringer.
+# This wrapper assumes you are using one key file with many
+# stored secrets. It helps users find keys and appends new
+# keys in a standard format.
+#
+# You can copy this program into your bin directory and then
+# modify as needed.
+#
+# Usage
+# Search for a matching secret in your key file:
+# pass <search-string> 
+# 
+# Add a new secret to your key file, responding to prompts:
+# pass
+
+# modify these variables
+keyring=mfpl
+file=mfpl.asc
+remote_git_repo=mfpl
+remote_git_branch=master
+
+if [ -z "$1" ]; then
+  echo 
+  echo "Adding a new secret. You will need to enter your passphrase"
+  echo "twice. Once to decrypt, and again to re-encrypt."
+  echo
+	# collect variables
+	read -p "Host/Description: "
+	host="$REPLY"
+  read -p "User: "
+	user="$REPLY"
+	default_password=$(pwgen -s 15 1)
+	read -p "Password [$default_password]: "
+	pass="$REPLY"
+	[ -z "$pass" ] && pass="$default_password"
+  echo "$host : $user : $pass" | keyringer "$keyring" append-batch "$file" 
+  read -p "Commit changes? [Yn] "
+  if [ "$REPLY" = "y" ] || [ "$REPLY" = "Y" ] || [ -z "$REPLY" ]; then
+    keyringer "$keyring" git commit "keys/$file"
+    keyringer "$keyring" git push "$remote_git_repo" "$remote_git_branch"
+  else
+    echo "Not committing changes."
+  fi
+
+else
+	keyringer "$keyring" decrypt "$file"  | egrep -i "$1"
+fi
+echo

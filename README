@@ -29,15 +29,17 @@ You can also package it to your preferred distro.
 Creating a keyringer repository
 -------------------------------
 
-The first step will would like to take is to setup a keyring.  Keyringer suport
-management of multiple isolated keyrings.  To start a new keyring (or register
-an existing one at your config file), type
+The first step is to setup a keyring.
+
+Keyringer supports management of multiple isolated keyrings.  To start
+a new keyring (or register an existing one with your config file),
+run:
 
     keyringer <keyring> init <path> [remote]
 
 This will 
 
-  1. Add an entry at $HOME/.keyringer aliasing 'keyring' to 'path'.
+  1. Add an entry at $HOME/.keyringer/config aliasing 'keyring' to 'path'.
   2. Initialize a git repository if needed.
 
 For example,
@@ -47,8 +49,8 @@ For example,
 will create an alias "friends" pointing to $HOME/keyrings/friends. Call all
 other keyring actions using this alias.
 
-If there is an existing remote keyring repository and you just want to checkout
-it, use
+If there is an existing remote keyring git repository and you just
+want to checkout it, use
 
     keyringer friends init $HOME/keyrings/friends <repository-url>
 
@@ -98,8 +100,8 @@ To edit a key, use
 
     keyringer <keyring> edit <file>
 
-Use this option with caution as it keeps temporary unencrypted data into keyringer
-temp folder and at your $EDITOR temp files.
+Use this option with caution as it keeps temporary unencrypted data
+into keyringer temp folder and at your editor's temp files.
 
 Listing keys
 
@@ -221,6 +223,8 @@ There are lots of things that can be enhanced, like:
   - Hidden recipient support (including recipients file).
 
   - Rewrite using an object-oriented programming language?
+
+  - tab completion subcommand support for popular shells like bash
 
 Development
 -----------

@@ -5,26 +5,26 @@
 
 # Load functions
 LIB="`dirname $0`/../../lib/keyringer"
-source $LIB/functions || exit 1
+source "$LIB/functions" || exit 1
 
 # Command parser
-keyringer_get_command $2
+keyringer_get_command "$2"
 
 # Create options file if old repository
 if [ ! -e "$OPTIONS" ]; then
   echo "Creating options file..."
-  touch $OPTIONS
-  keyringer_exec git $BASEDIR add config/options
+  touch "$OPTIONS"
+  keyringer_exec git "$BASEDIR" add config/options
 fi
 
 if [ "$COMMAND" == "ls" ]; then
-  cat $OPTIONS
+  cat "$OPTIONS"
 elif [ "$COMMAND" == "edit" ]; then
-  $EDITOR $OPTIONS
+  "$EDITOR" "$OPTIONS"
 elif [ "$COMMAND" == "add" ]; then
   shift 2
-  echo $* >> $OPTIONS 
+  echo $* >> "$OPTIONS"
 else
-  echo "$BASENAME: No such command $COMMAND"
+  printf "%s: No such command %s\n"  "$BASENAME" "$COMMAND"
   exit 1
 fi

@@ -35,7 +35,7 @@ function keyringer_init {
 
   # Setup
   if [ ! -z "$URL" ]; then
-    git clone $URL $BASEDIR
+    git clone "$URL" "$BASEDIR"
     if [ "$?" != "0" ]; then
       echo "Error cloning remote $URL"
       exit 1
@@ -48,36 +48,36 @@ function keyringer_init {
       fi
     else
       # Setup folders
-      mkdir -p $BASEDIR/{config,keys}
+      mkdir -p "$BASEDIR/"{config,keys}
 
       # Setup recipients
-      echo "# Use entries in the form of 'john@doe.com XXXXXXXX" > $RECIPIENTS
-      echo "" >> $RECIPIENTS
+      echo "# Use entries in the form of 'john@doe.com XXXXXXXX" > "$RECIPIENTS"
+      echo "" >> "$RECIPIENTS"
 
       # Setup options
-      touch $OPTIONS
+      touch "$OPTIONS"
 
       # Setup README
-      echo "Keyring repository powered by http://git.sarava.org/?p=keyringer.git;a=summary" > $BASEDIR/README
-      echo "" >> $BASEDIR/README
+      echo "Keyring repository powered by http://git.sarava.org/?p=keyringer.git;a=summary" > "$BASEDIR/README"
+      echo "" >> "$BASEDIR/README"
     fi
 
     # Secure
-    chmod 600 $RECIPIENTS
+    chmod 600 "$RECIPIENTS"
   fi
 
   # Reparse basedir to force absolute folder
   BASEDIR="`cd $BASEDIR && pwd`"
 
   # Add entry
-  chmod 700 $BASEDIR
-  echo "$KEYRING=\"$BASEDIR\"" >> $CONFIG
+  chmod 700 "$BASEDIR"
+  echo "$KEYRING=\"$BASEDIR\"" >> "$CONFIG"
 
   # Init
-  if ! keyringer_is_git $BASEDIR; then
-    keyringer_exec git $BASEDIR init
-    keyringer_exec git $BASEDIR add .
-    keyringer_exec git $BASEDIR commit -m Importing
+  if ! keyringer_is_git "$BASEDIR"; then
+    keyringer_exec git "$BASEDIR" init
+    keyringer_exec git "$BASEDIR" add .
+    keyringer_exec git "$BASEDIR" commit -m Importing
   fi
 }
 
@@ -87,7 +87,7 @@ function keyringer_dispatch {
   # Dispatch
   if [ ! -z "$BASEDIR" ]; then
     shift 2
-    keyringer_exec $ACTION $BASEDIR $*
+    keyringer_exec "$ACTION" "$BASEDIR" $*
     exit $?
   else
     echo "No keydir configured for $KEYRING"
@@ -106,18 +106,18 @@ function keyringer_preferences {
   # Create options file if old repository
   if [ ! -e "$PREFERENCES" ]; then
     echo "Creating preferences file..."
-    touch $PREFERENCES
+    touch "$PREFERENCES"
   fi
   
   if [ "$COMMAND" == "ls" ]; then
-    cat $PREFERENCES
+    cat "$PREFERENCES"
   elif [ "$COMMAND" == "edit" ]; then
-    $EDITOR $PREFERENCES
+    "$EDITOR" "$PREFERENCES"
   elif [ "$COMMAND" == "add" ]; then
     shift 3
-    echo $* >> $PREFERENCES 
+    echo $* >> "$PREFERENCES"
   else
-    echo "$BASENAME: No such command $COMMAND"
+    printf "%s: No such command %s\n" "$BASENAME" "$COMMAND"
     exit 1
   fi
 }
@@ -135,13 +135,13 @@ export PREFERENCES="`dirname $CONFIG`/$KEYRING"
 
 # Load functions
 LIB="`dirname $(readlink -f $0)`/lib/$NAME/functions"
-source $LIB
+source "$LIB"
 
 # Setup main configuration and load preferences
 keyringer_config_load
 
 if [ -z "$ACTION" ]; then
-  echo "Usage: $BASENAME <keyring> <action> [arguments]"
+  printf "Usage: %s <keyring> <action> [arguments]\n" "$BASENAME"
   exit 1
 fi
 
@@ -149,7 +149,7 @@ if [ "$ACTION" == "init" ]; then
   keyringer_init $*
 elif [ "$ACTION" == "preferences" ]; then
   keyringer_preferences $*
-elif keyringer_has_action $ACTION; then
+elif keyringer_has_action "$ACTION"; then
   keyringer_dispatch $*
 else
   echo "No such action $ACTION"

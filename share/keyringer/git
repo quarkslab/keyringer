@@ -5,12 +5,12 @@
 
 # Load functions
 LIB="`dirname $0`/../../lib/keyringer/functions"
-source $LIB || exit 1
+source "$LIB" || exit 1
 
 # Aditional parameters
 CWD="`pwd`"
 
 # Run git command
 shift
-mkdir -p $BASEDIR && cd $BASEDIR && git $*
-cd $CWD
+mkdir -p "$BASEDIR" && cd "$BASEDIR" && git $*
+cd "$CWD"

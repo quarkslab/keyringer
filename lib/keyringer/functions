@@ -7,18 +7,18 @@
 function keyringer_config_load {
   if [ -f "$HOME/.$NAME" ]; then
     echo "Converting legacy configuration scheme..."
-    mv $HOME/.$NAME $HOME/.$NAME.tmp
-    mkdir $HOME/.$NAME
-    mv $HOME/.$NAME.tmp $CONFIG
+    mv "$HOME/.$NAME" "$HOME/.$NAME.tmp"
+    mkdir "$HOME/.$NAME"
+    mv "$HOME/.$NAME.tmp" "$CONFIG"
   fi
 
   if [ ! -e "$CONFIG" ]; then
     echo "Creating $CONFIG..."
     mkdir -p `dirname $CONFIG`
-    touch $CONFIG
-    chmod 600 $CONFIG
-    echo "# Keyringer config file." > $CONFIG
-    echo "" >> $CONFIG
+    touch "$CONFIG"
+    chmod 600 "$CONFIG"
+    echo "# Keyringer config file." > "$CONFIG"
+    echo "" >> "$CONFIG"
   fi
 
   keyringer_config_load_preferences
@@ -28,7 +28,7 @@ function keyringer_config_load {
 function keyringer_config_load_preferences {
   # Load custom keyring preferences
   if [ ! -z "$PREFERENCES" ] && [ -f "$PREFERENCES" ]; then
-    source $PREFERENCES
+    source "$PREFERENCES"
   fi
 }
 
@@ -38,7 +38,7 @@ function keyringer_config {
     echo "Your have to set CONFIG variable in the code"
     exit 1
   elif [ -e "$CONFIG" ]; then
-    grep -e "^$1=" $CONFIG | tail -n 1 | cut -d = -f 2 | sed -e 's/"//g' -e "s/'//g" | sed -e 's/ *#.*$//'
+    grep -e "^$1=" "$CONFIG" | tail -n 1 | cut -d = -f 2 | sed -e 's/"//g' -e "s/'//g" | sed -e 's/ *#.*$//'
   else
     echo "Config file not found: $CONFIG"
     exit 1
@@ -47,7 +47,7 @@ function keyringer_config {
 
 # Return the list of recipients
 function keyringer_recipients {
-  grep -v '^#' $1 | grep -v '^$' | awk '{ print "-r " $2 }' | xargs
+  grep -v '^#' "$1" | grep -v '^$' | awk '{ print "-r " $2 }' | xargs
 }
 
 # Check if keyringer has a given action
@@ -72,8 +72,8 @@ function keyringer_exec {
   shift 2
   
   # Dispatch
-  if keyringer_has_action $action; then
-    $ACTIONS/$action $basedir $*
+  if keyringer_has_action "$action"; then
+    "$ACTIONS/$action" "$basedir" $*
   fi
 }
 
@@ -82,7 +82,7 @@ function keyringer_filename {
   if [ -z "$1" ]; then
     return
   else
-    echo `dirname $1`/`basename $1 .asc`.asc
+    printf "%s/%s.asc\n" "$(dirname "$1")" "$(basename "$1" .asc)"
   fi
 }
 
@@ -96,7 +96,7 @@ function keyringer_is_git {
     true
   else
     cwd="`pwd`"
-    cd $1 && git="`git status &> /dev/null`" && cd $cwd
+    cd "$1" && git="`git status &> /dev/null`" && cd "$cwd"
 
     if [ "$git" != "128" ]; then
       true
@@ -119,17 +119,17 @@ function keyringer_set_tmpfile {
     template="$BASEDIR/tmp/$1.XXXXXXXXXX"
   fi
 
-  mkdir -p $BASEDIR/tmp
+  mkdir -p "$BASEDIR/tmp"
   keyringer_git_ignore 'tmp/*'
 
   if [ "$2" == "-d" ]; then
-    TMPWORK="`mktemp -d $template`"
+    TMPWORK="$(mktemp -d "$template")"
   else
-    TMPWORK="`mktemp $template`"
+    TMPWORK="$(mktemp "$template")"
   fi
   
   if [ "$?" != "0" ]; then
-    echo "Error: can't set TMPWORK $TMPWORK"
+    printf "Error: can't set TMPWORK %s\n" "$TMPWORK"
     exit 1
   fi
 
@@ -142,7 +142,7 @@ function keyringer_unset_tmpfile {
     echo "No tmp file set"
   fi
 
-  rm -f $1
+  rm -f "$1"
 
   if [ "$?" != "0" ]; then
     echo "Warning: could not delete file $1. Please delete it manually as it might have sensitive information."
@@ -153,11 +153,11 @@ function keyringer_unset_tmpfile {
 # Add a pattern into gitignore
 function keyringer_git_ignore {
   if [ ! -z "$BASEDIR/.gitignore" ]; then
-    echo $1 > $BASEDIR/.gitignore
-    keyringer_exec git $BASEDIR add .gitignore
+    echo "$1" > "$BASEDIR/.gitignore"
+    keyringer_exec git "$BASEDIR" add .gitignore
   else
-    if ! grep -q -e "^$1$" $BASEDIR/.gitignore; then
-      echo $1 >> $BASEDIR/.gitignore
+    if ! grep -q -e "^$1$" "$BASEDIR/.gitignore"; then
+      echo "$1" >> "$BASEDIR/.gitignore"
     fi
   fi
 }
@@ -196,18 +196,19 @@ function keyringer_set_env {
           exit 1
       fi
   fi
+
   if [ ! -f "$OPTIONS" ]; then
     echo "No option config was found"
     exit 1
   fi
 
   # Ensure that keydir exists
-  mkdir -p $KEYDIR && chmod 700 $KEYDIR
+  mkdir -p "$KEYDIR" && chmod 700 "$KEYDIR"
 }
 
 # Get a file argument
 function keyringer_get_file {
-  FILE="`keyringer_filename $1`"
+  FILE="$(keyringer_filename "$1")"
   
   if [ -z "$FILE" ]; then
     keyringer_action_usage
@@ -220,7 +221,7 @@ function keyringer_get_file {
 
 # Get a new file argument
 function keyringer_get_new_file {
-  FILE="`keyringer_filename $1`"
+  FILE="$(keyringer_filename "$1")"
   
   if [ -z "$FILE" ]; then
     keyringer_action_usage
@@ -243,7 +244,7 @@ function keyringer_get_command {
 function keyringer_action_usage {
   if [ "`type -t "keyringer_usage_$BASENAME"`" == "function" ]; then
     # Use custom action usage
-    keyringer_usage_$BASENAME
+    "keyringer_usage_$BASENAME"
   else
     # Default usage
     if [ "$1" == "command" ]; then
@@ -255,6 +256,6 @@ function keyringer_action_usage {
 }
 
 # Setup environment
-if [ "`basename $0`" != "keyringer" ]; then
+if [ "$(basename "$0")" != "keyringer" ]; then
   keyringer_set_env $*
 fi

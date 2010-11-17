@@ -5,16 +5,16 @@
 
 # Load functions
 LIB="`dirname $0`/../../lib/keyringer"
-source $LIB/functions || exit 1
+source "$LIB/functions" || exit 1
 
 # Command parser
-keyringer_get_command $2
+keyringer_get_command "$2"
 
 if [ "$COMMAND" == "ls" ]; then
-  cat $RECIPIENTS
+  cat "$RECIPIENTS"
 elif [ "$COMMAND" == "edit" ]; then
-  $EDITOR $RECIPIENTS
+  "$EDITOR" "$RECIPIENTS"
 else
-  echo "$BASENAME: No such command $COMMAND"
+  printf "%s: No such command %s\n" "$BASENAME" "$COMMAND"
   exit 1
 fi

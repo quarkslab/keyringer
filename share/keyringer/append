@@ -5,23 +5,24 @@
 
 # Load functions
 LIB="`dirname $0`/../../lib/keyringer/functions"
-source $LIB || exit 1
+source "$LIB" || exit 1
 
 # Get file
-keyringer_get_file $2
+keyringer_get_file "$2"
 
-OLDIFS=$IFS
+OLDIFS="$IFS"
 IFS=$'\n'
 
-CONTENT=($(keyringer_exec decrypt $BASEDIR $FILE))
+CONTENT=($(keyringer_exec decrypt "$BASEDIR" "$FILE"))
 
 if [ "$BASENAME" == "append" ]; then
   # only display directions if we're running append, not append-batch
-  echo " "
-  echo "$FILE currently has ${#CONTENT[@]} lines"
-  echo " "
-  echo "Now please write the content to be appended on $FILE, finnishing with Ctrl-D:"
+  printf "\n%s currently has %d lines\n\n" "$FILE" "${#CONTENT[@]}"
+  printf "Now please write the content to be appended on %s, finnishing with Ctrl-D:\n" "$FILE"
 fi
+
+# FIXME: dkg doesn't know how to check that this does proper escaping
+# (2010-11-16)
 
 APPEND=($(cat -))
 

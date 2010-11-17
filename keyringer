@@ -128,13 +128,13 @@ CONFIG="$HOME/.$NAME/config"
 BASENAME="`basename $0`"
 KEYRING="$1"
 ACTION="$2"
-ACTIONS="`dirname $0`/share/$NAME"
+ACTIONS="`dirname $(readlink -f $0)`/share/$NAME"
 
 # Export preferences for other scripts
 export PREFERENCES="`dirname $CONFIG`/$KEYRING"
 
 # Load functions
-LIB="`dirname $0`/lib/$NAME/functions"
+LIB="`dirname $(readlink -f $0)`/lib/$NAME/functions"
 source $LIB
 
 # Setup main configuration and load preferences

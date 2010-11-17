@@ -14,7 +14,7 @@ function keyringer_config_load {
 
   if [ ! -e "$CONFIG" ]; then
     echo "Creating $CONFIG..."
-    mkdir `dirname $CONFIG`
+    mkdir -p `dirname $CONFIG`
     touch $CONFIG
     chmod 600 $CONFIG
     echo "# Keyringer config file." > $CONFIG

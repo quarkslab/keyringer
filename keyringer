@@ -135,7 +135,7 @@ export PREFERENCES="`dirname $CONFIG`/$KEYRING"
 
 # Load functions
 LIB="`dirname $(readlink -f $0)`/lib/$NAME/functions"
-source "$LIB" | exit 1
+source "$LIB" || exit 1
 
 # Setup main configuration and load preferences
 keyringer_config_load

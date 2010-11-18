@@ -172,6 +172,7 @@ function keyringer_set_env {
   ACTIONS="`dirname $0`"
   BASENAME="`basename $0`"
   BASEDIR="$1"
+  SUBCOMMAND="$2"
   KEYDIR="$BASEDIR/keys"
   RECIPIENTS="$BASEDIR/config/recipients"
   OPTIONS="$BASEDIR/config/options"
@@ -201,6 +202,9 @@ function keyringer_set_env {
     echo "No option config was found"
     exit 1
   fi
+
+  # Check recipients file
+  keyringer_check_recipients $SUBCOMMAND
 
   # Ensure that keydir exists
   mkdir -p "$KEYDIR" && chmod 700 "$KEYDIR"
@@ -253,6 +257,41 @@ function keyringer_action_usage {
       echo "Usage: keyringer <keyring> $BASENAME <file>"
     fi
   fi
+}
+
+# Check recipients
+function keyringer_check_recipients {
+  if [ "$1" == "edit" ]; then
+    # Don't check recipients at edit mode.
+    return
+  fi
+
+  for recipient in $(cat "$RECIPIENTS" | grep -v '^#' | awk '{ print $2 }'); do
+    size=$(echo "$recipient" | wc -c)
+    if (( $size < 41 )); then
+      echo "Fatal: please set the full GPG signature hash for key ID $recipient:"
+      cat <<-EOF
+
+Recipients file can't have 32-bit keyids (e.g.  DEADBEEF or DECAF123).  These
+are trivial to spoof.  With a few gigs of disk space and a day of time on
+cheap, readily-available hardware, it's possible to build keys to match every
+possible 32-bit keyid.  The search space just isn't big enough.
+
+If you're going to specify keys by keyid, they should be specified by full
+160-bit OpenPGP fingerprint.  It would be very bad if someone spoofed a keyID
+and caused another participant in a keyringer instance to reencrypt a secret
+store to the spoofed key in addition to your own.
+EOF
+      exit 1
+    else
+      gpg --list-key $recipient &> /dev/null
+      if [ "$?" != "0" ]; then
+        echo "Fatal: no such key $recipient on your GPG keyring."
+        echo "Please check for this key or fix the recipient file."
+        exit 1
+      fi
+    fi
+  done
 }
 
 # Setup environment

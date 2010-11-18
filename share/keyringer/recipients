@@ -14,6 +14,7 @@ if [ "$COMMAND" == "ls" ]; then
   cat "$RECIPIENTS"
 elif [ "$COMMAND" == "edit" ]; then
   "$EDITOR" "$RECIPIENTS"
+  keyringer_check_recipients
 else
   printf "%s: No such command %s\n" "$BASENAME" "$COMMAND"
   exit 1

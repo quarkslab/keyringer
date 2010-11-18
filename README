@@ -224,7 +224,13 @@ There are lots of things that can be enhanced, like:
 
   - Rewrite using an object-oriented programming language?
 
-  - tab completion subcommand support for popular shells like bash
+  - Tab completion subcommand support for popular shells like bash.
+
+  - Recipient check support, handling non-existing or revoked keys.
+
+  - Encrypted and signed configuration files such as "recipients" and "options".
+
+  - Configuration version tracking to help keyring upgrades.
 
 Development
 -----------

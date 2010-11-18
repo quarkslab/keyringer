@@ -262,9 +262,9 @@ function keyringer_action_usage {
 # Check recipients
 function keyringer_check_recipients {
   # Check recipients header for updates.
-  if grep -qe ' XXXXXXXX$' $RECIPIENTS; then
+  if grep -qe ' XXXXXXXX$' "$RECIPIENTS"; then
     echo "Updating recipients file..."
-    sed -i -e 's/ XXXXXXXX$/ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/' $RECIPIENTS
+    sed -i -e 's/ XXXXXXXX$/ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/' "$RECIPIENTS"
   fi
 
   if [ "$1" == "edit" ]; then

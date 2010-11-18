@@ -5,10 +5,10 @@
 
 # Load functions
 LIB="`dirname $0`/../../lib/keyringer/functions"
-source $LIB || exit 1
+source "$LIB" || exit 1
 
 # Get file
-keyringer_get_file $2
+keyringer_get_file "$2"
 
 # Recrypt
-gpg --use-agent -d $KEYDIR/$FILE | gpg --use-agent --armor -e -s $(keyringer_recipients $RECIPIENTS) > $KEYDIR/$FILE
+gpg --use-agent -d "$KEYDIR/$FILE" | gpg --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS") > "$KEYDIR/$FILE"

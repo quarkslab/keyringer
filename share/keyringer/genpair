@@ -12,20 +12,20 @@ function genpair_ssh {
   read -p "Hit ENTER to continue." prompt
 
   # TODO: programatically enter blank passphrase twice
-  ssh-keygen -t dsa -f $TMPWORK/id_dsa -C "root@$NODE"
+  ssh-keygen -t dsa -f "$TMPWORK/id_dsa" -C "root@$NODE"
 
   # Encrypt the result
   echo "Encrypting secret key into keyringer..."
-  cat $TMPWORK/id_dsa     | keyringer_exec encrypt $BASEDIR $FILE
+  cat "$TMPWORK/id_dsa"     | keyringer_exec encrypt "$BASEDIR" "$FILE"
   echo "Encrypting public key into keyringer..."
-  cat $TMPWORK/id_dsa.pub | keyringer_exec encrypt $BASEDIR $FILE.pub
+  cat "$TMPWORK/id_dsa.pub" | keyringer_exec encrypt "$BASEDIR" "$FILE.pub"
 
   # TODO: add outfiles into version control
   if [ ! -z "$OUTFILE" ]; then
     mkdir -p `dirname $OUTFILE`
-    echo Saving copies at $OUTFILE and $OUTFILE.pub
-    cat $TMPWORK/id_dsa     > $OUTFILE
-    cat $TMPWORK/id_dsa.pub > $OUTFILE.pub
+    printf "Saving copies at %s and %s.pub\n" "$OUTFILE" "$OUTFILE"
+    cat "$TMPWORK/id_dsa"     > "$OUTFILE"
+    cat "$TMPWORK/id_dsa.pub" > "$OUTFILE.pub"
   fi
 
   echo "Done"  
@@ -39,7 +39,7 @@ function genpair_gpg {
   # TODO: insert 279 random bytes
   # TODO: custom Name-Comment and Name-Email
   # TODO: allow for empty passphrases
-  gpg --homedir $TMPWORK --gen-key --batch <<EOF
+  gpg --homedir "$TMPWORK" --gen-key --batch <<EOF
     Key-Type: RSA
     Key-Length: 4096
     Subkey-Type: ELG-E
@@ -54,18 +54,18 @@ EOF
 
   # Encrypt the result
   echo "Encrypting secret key into keyringer..."
-  gpg --armor --homedir $TMPWORK --export-secret-keys | keyringer_exec encrypt $BASEDIR $FILE
+  gpg --armor --homedir "$TMPWORK" --export-secret-keys | keyringer_exec encrypt "$BASEDIR" "$FILE"
   echo "Encrypting public key into keyringer..."
-  gpg --armor --homedir $TMPWORK --export             | keyringer_exec encrypt $BASEDIR $FILE.pub
+  gpg --armor --homedir "$TMPWORK" --export             | keyringer_exec encrypt "$BASEDIR" "$FILE.pub"
   echo "Encrypting passphrase into keyringer..."
-  echo "Passphrase for $FILE: $passphrase"         | keyringer_exec encrypt $BASEDIR $FILE.passwd
+  echo "Passphrase for $FILE: $passphrase"         | keyringer_exec encrypt "$BASEDIR" "$FILE.passwd"
 
   # TODO: add outfiles into version control
   if [ ! -z "$OUTFILE" ]; then
     mkdir -p `dirname $OUTFILE`
-    echo Saving copies at $OUTFILE and $OUTFILE.pub
-    gpg --armor --homedir $TMPWORK --export-secret-keys > $OUTFILE
-    gpg --armor --homedir $TMPWORK --export             > $OUTFILE.pub
+    printf "Saving copies at %s and %s.pub\n" "$OUTFILE" "$OUTFILE"
+    gpg --armor --homedir "$TMPWORK" --export-secret-keys > "$OUTFILE"
+    gpg --armor --homedir "$TMPWORK" --export             > "$OUTFILE.pub"
   fi
 
   echo "Done"  
@@ -77,42 +77,42 @@ function genpair_ssl {
   read -p "Hit ENTER to continue." prompt
 
   # Setup
-  cd $TMPWORK
+  cd "$TMPWORK"
 
   # Generate certificate
-  $LIB/csr.sh $NODE
+  "$LIB/csr.sh" "$NODE"
 
   # Self-sign
-  openssl x509 -in $NODE"_csr.pem" -out $NODE.crt -req -signkey $NODE"_privatekey.pem" -days 365
-  chmod 600 $NODE"_privatekey.pem"
+  openssl x509 -in "${NODE}_csr.pem" -out "$NODE.crt" -req -signkey "${NODE}_privatekey.pem" -days 365
+  chmod 600 "${NODE}_privatekey.pem"
 
   # Encrypt the result
   echo "Encrypting private key into keyringer..."
-  cat $NODE"_privatekey.pem" | keyringer_exec encrypt $BASEDIR $FILE.pem
+  cat "${NODE}_privatekey.pem" | keyringer_exec encrypt "$BASEDIR" "$FILE.pem"
   echo "Encrypting certificate request into keyringer..."
-  cat $NODE"_csr.pem"        | keyringer_exec encrypt $BASEDIR $FILE.csr
+  cat "${NODE}_csr.pem"        | keyringer_exec encrypt "$BASEDIR" "$FILE.csr"
   echo "Encrypting certificate into keyringer..."
-  cat $NODE.crt              | keyringer_exec encrypt $BASEDIR $FILE.crt
+  cat "$NODE.crt"              | keyringer_exec encrypt "$BASEDIR" "$FILE.crt"
 
-  cd $CWD
+  cd "$CWD"
 
   if [ ! -z "$OUTFILE" ]; then
     mkdir -p `dirname $OUTFILE`
-    echo Saving copies at $OUTFILE.pem, $OUTFILE.csr and $OUTFILE.crt
-    cat $TMPWORK/$NODE"_privatekey.pem" > $OUTFILE.pem
-    cat $TMPWORK/$NODE"_csr.pem"        > $OUTFILE.csr
-    cat $TMPWORK/$NODE.crt              > $OUTFILE.crt
+    printf "Saving copies at %s.pem, %s.csr and %s.crt\n" "$OUTFILE" "$OUTFILE" "$OUTFILE"
+    cat "$TMPWORK/${NODE}_privatekey.pem" > "$OUTFILE.pem"
+    cat "$TMPWORK/${NODE}_csr.pem"        > "$OUTFILE.csr"
+    cat "$TMPWORK/$NODE.crt"              > "$OUTFILE.crt"
   fi
 
   # Show cert fingerprint
-  openssl x509 -noout -in $TMPWORK/$NODE.crt -fingerprint
+  openssl x509 -noout -in "$TMPWORK/$NODE.crt" -fingerprint
 
   echo "Done"
 }
 
 # Load functions
 LIB="`dirname $0`/../../lib/keyringer"
-source $LIB/functions || exit 1
+source "$LIB/functions" || exit 1
 
 # Aditional parameters
 KEYTYPE="$2"
@@ -140,9 +140,9 @@ keyringer_set_tmpfile genpair -d
 
 # Dispatch
 echo "Generating $KEYTYPE for $NODE..."
-genpair_$KEYTYPE
+"genpair_$KEYTYPE"
 
 # Cleanup
-cd $CWD
-rm -rf $TMPWORK
+cd "$CWD"
+rm -rf "$TMPWORK"
 trap - EXIT

@@ -38,7 +38,7 @@ LASTUMASK=`umask`
 umask 077
 
 # OpenSSL for HPUX needs a random file
-RANDOMFILE=$HOME/.rnd
+RANDOMFILE="$HOME/.rnd"
 
 # create a config file for openssl
 CONFIG=`mktemp -q /tmp/openssl-conf.XXXXXXXX`
@@ -86,16 +86,16 @@ fi
 
 # Config File Generation
 
-cat <<EOF > $CONFIG
+cat <<EOF > "$CONFIG"
 # -------------- BEGIN custom openssl.cnf -----
  HOME                    = $HOME
 EOF
 
 if [ "`uname -s`" = "HP-UX" ]; then
-    echo " RANDFILE                = $RANDOMFILE" >> $CONFIG
+    echo " RANDFILE                = $RANDOMFILE" >> "$CONFIG"
 fi
 
-cat <<EOF >> $CONFIG
+cat <<EOF >> "$CONFIG"
  oid_section             = new_oids
  [ new_oids ]
  [ req ]
@@ -107,10 +107,10 @@ cat <<EOF >> $CONFIG
 EOF
 
 if [ ! "$SANAMES" = "" ]; then
-    echo "req_extensions = v3_req # Extensions to add to certificate request" >> $CONFIG
+    echo "req_extensions = v3_req # Extensions to add to certificate request" >> "$CONFIG"
 fi
 
-cat <<EOF >> $CONFIG
+cat <<EOF >> "$CONFIG"
  [ req_distinguished_name ]
  commonName              = Common Name (eg, YOUR name)
  commonName_default      = $COMMONNAME
@@ -119,27 +119,27 @@ cat <<EOF >> $CONFIG
 EOF
 
 if [ ! "$SANAMES" = "" ]; then
-    echo "subjectAltName=$SANAMES" >> $CONFIG
+    echo "subjectAltName=$SANAMES" >> "$CONFIG"
 fi
 
-echo "# -------------- END custom openssl.cnf -----" >> $CONFIG
+echo "# -------------- END custom openssl.cnf -----" >> "$CONFIG"
 
 echo "Running OpenSSL..."
 # The first one doesn't work, the second one does:
-#openssl req -batch -config $CONFIG -newkey rsa -out ${HOST}_csr.pem
-openssl req -batch -config $CONFIG -newkey rsa:2048 -out ${HOST}_csr.pem
+#openssl req -batch -config "$CONFIG" -newkey rsa -out ${HOST}_csr.pem
+openssl req -batch -config "$CONFIG" -newkey rsa:2048 -out "${HOST}_csr.pem"
 
 echo "Copy the following Certificate Request and paste into CAcert website to obtain a Certificate."
 echo "When you receive your certificate, you 'should' name it something like ${HOST}_server.pem"
 echo
 cat ${HOST}_csr.pem
 echo
-echo The Certificate request is also available in ${HOST}_csr.pem
-echo The Private Key is stored in ${HOST}_privatekey.pem
+printf "The Certificate request is also available in '%s_csr.pem'\n" "$HOST"
+printf "The Private Key is stored in '%s_privatekey.pem'\n" "$HOST"
 echo
 
-rm $CONFIG
+rm "$CONFIG"
 
 #restore umask
-umask $LASTUMASK
+umask "$LASTUMASK"
 

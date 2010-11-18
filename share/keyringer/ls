@@ -5,12 +5,12 @@
 
 # Load functions
 LIB="`dirname $0`/../../lib/keyringer/functions"
-source $LIB || exit 1
+source "$LIB" || exit 1
 
 # Aditional parameters
 CWD="`pwd`"
 
 # Run list command
 shift
-cd $KEYDIR && ls $*
-cd $CWD
+cd "$KEYDIR" && ls $*
+cd "$CWD"

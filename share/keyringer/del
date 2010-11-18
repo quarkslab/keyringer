@@ -5,12 +5,12 @@
 
 # Load functions
 LIB="`dirname $0`/../../lib/keyringer/functions"
-source $LIB || exit 1
+source "$LIB" || exit 1
 
 # Get file
-keyringer_get_file $2
+keyringer_get_file "$2"
 
 # Remove
 if [ -d "$KEYDIR/.git" ]; then
-  ./git $KEYDIR rm $FILE --force
+  ./git "$KEYDIR" rm "$FILE" --force
 fi

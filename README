@@ -230,8 +230,6 @@ There are lots of things that can be enhanced, like:
 
   - Encrypted and signed configuration files such as "recipients" and "options".
 
-  - Configuration version tracking to help keyring upgrades.
-
 Development
 -----------
 

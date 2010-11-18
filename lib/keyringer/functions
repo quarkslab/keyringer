@@ -176,6 +176,7 @@ function keyringer_set_env {
   KEYDIR="$BASEDIR/keys"
   RECIPIENTS="$BASEDIR/config/recipients"
   OPTIONS="$BASEDIR/config/options"
+  VERSION_INFO="$BASEDIR/config/version"
 
   if [ -z "$BASEDIR" ]; then
     keyringer_action_usage
@@ -208,6 +209,20 @@ function keyringer_set_env {
 
   # Ensure that keydir exists
   mkdir -p "$KEYDIR" && chmod 700 "$KEYDIR"
+
+  # Check keyring config version
+  keyringer_check_version
+}
+
+# Configuration version tracking to help keyring upgrades
+function keyringer_check_version {
+  if [ ! -f "$VERSION_INFO" ]; then
+    echo "Creating configuration version file..."
+    echo 0 > $VERSION_INFO
+    keyringer_exec git "$BASEDIR" add config/version
+  fi
+
+  VERSION="`cat $VERSION_INFO`"
 }
 
 # Get a file argument

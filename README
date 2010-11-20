@@ -230,6 +230,10 @@ There are lots of things that can be enhanced, like:
 
   - Encrypted and signed configuration files such as "recipients" and "options".
 
+  - Leave key labels out of recipients file.
+
+  - List available subommands.
+
 Development
 -----------
 

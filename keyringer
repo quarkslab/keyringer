@@ -142,6 +142,8 @@ keyringer_config_load
 
 if [ -z "$ACTION" ]; then
   printf "Usage: %s <keyring> <action> [arguments]\n" "$BASENAME"
+  printf "Available commands: \n"
+  ls $ACTIONS | sed -e 's/^/\t/'
   exit 1
 fi
 

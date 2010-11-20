@@ -218,7 +218,7 @@ function keyringer_set_env {
 function keyringer_check_version {
   if [ ! -f "$VERSION_INFO" ]; then
     echo "Creating configuration version file..."
-    echo 0 > $VERSION_INFO
+    echo 0 > "$VERSION_INFO"
     keyringer_exec git "$BASEDIR" add config/version
   fi
 
@@ -305,7 +305,7 @@ store to the spoofed key in addition to your own.
 EOF
       exit 1
     else
-      gpg --list-key $recipient &> /dev/null
+      gpg --list-key "$recipient" &> /dev/null
       if [ "$?" != "0" ]; then
         echo "Fatal: no such key $recipient on your GPG keyring."
         echo "Please check for this key or fix the recipient file."

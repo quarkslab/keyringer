@@ -189,14 +189,14 @@ function keyringer_set_env {
   fi
 
   if [ -z "$EDITOR" ]; then
-      if type sensible-editor > /dev/null 2>&1 ; then
-          EDITOR=sensible-editor
-      elif type editor > /dev/null 2>&1 ; then
-          EDITOR=editor
-      else
-          echo "You have to set EDITOR env variable"
-          exit 1
-      fi
+    if type sensible-editor > /dev/null 2>&1 ; then
+      EDITOR=sensible-editor
+    elif type editor > /dev/null 2>&1 ; then
+      EDITOR=editor
+    else
+      echo "You have to set EDITOR env variable"
+      exit 1
+    fi
   fi
 
   if [ ! -f "$OPTIONS" ]; then

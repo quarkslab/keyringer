@@ -58,7 +58,7 @@ EOF
   echo "Encrypting public key into keyringer..."
   gpg --armor --homedir "$TMPWORK" --export             | keyringer_exec encrypt "$BASEDIR" "$FILE.pub"
   echo "Encrypting passphrase into keyringer..."
-  echo "Passphrase for $FILE: $passphrase"         | keyringer_exec encrypt "$BASEDIR" "$FILE.passwd"
+  echo "Passphrase for $FILE: $passphrase"              | keyringer_exec encrypt "$BASEDIR" "$FILE.passwd"
 
   # TODO: add outfiles into version control
   if [ ! -z "$OUTFILE" ]; then

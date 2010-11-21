@@ -125,11 +125,6 @@ main and key folders into your keyring configuration:
     keyringer <keyring> preferences add PUPPET=/path/to/puppet/config
     keyringer <keyring> preferences add PUPPET_KEYS=/path/to/puppet/keys
 
-Then you just need to issue the following command every time you have to create
-keys for new nodes:
-
-    keyringer <keyring> newkeys puppet
-
 Configuration files, preferences and options
 --------------------------------------------
 

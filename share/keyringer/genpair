@@ -35,6 +35,7 @@ function genpair_ssh {
 function genpair_gpg {
   echo "Make sure that $KEYDIR is atop of an encrypted volume."
   read -s -p "Enter password for the private key: " passphrase
+  printf "\n"
   
   # TODO: insert 279 random bytes
   # TODO: custom Name-Comment and Name-Email

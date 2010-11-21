@@ -12,20 +12,20 @@ function genpair_ssh {
   read -p "Hit ENTER to continue." prompt
 
   # TODO: programatically enter blank passphrase twice
-  ssh-keygen -t dsa -f "$TMPWORK/id_dsa" -C "root@$NODE"
+  ssh-keygen -t rsa -f "$TMPWORK/id_rsa" -C "root@$NODE"
 
   # Encrypt the result
   echo "Encrypting secret key into keyringer..."
-  cat "$TMPWORK/id_dsa"     | keyringer_exec encrypt "$BASEDIR" "$FILE"
+  cat "$TMPWORK/id_rsa"     | keyringer_exec encrypt "$BASEDIR" "$FILE"
   echo "Encrypting public key into keyringer..."
-  cat "$TMPWORK/id_dsa.pub" | keyringer_exec encrypt "$BASEDIR" "$FILE.pub"
+  cat "$TMPWORK/id_rsa.pub" | keyringer_exec encrypt "$BASEDIR" "$FILE.pub"
 
   # TODO: add outfiles into version control
   if [ ! -z "$OUTFILE" ]; then
     mkdir -p `dirname $OUTFILE`
     printf "Saving copies at %s and %s.pub\n" "$OUTFILE" "$OUTFILE"
-    cat "$TMPWORK/id_dsa"     > "$OUTFILE"
-    cat "$TMPWORK/id_dsa.pub" > "$OUTFILE.pub"
+    cat "$TMPWORK/id_rsa"     > "$OUTFILE"
+    cat "$TMPWORK/id_rsa.pub" > "$OUTFILE.pub"
   fi
 
   echo "Done"  

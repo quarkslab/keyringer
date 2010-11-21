@@ -140,7 +140,7 @@ keyringer_set_tmpfile genpair -d
 
 # Dispatch
 echo "Generating $KEYTYPE key for $NODE..."
-"genpair_$KEYTYPE"
+genpair_"$KEYTYPE"
 
 # Cleanup
 cd "$CWD"

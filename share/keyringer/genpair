@@ -139,7 +139,7 @@ fi
 keyringer_set_tmpfile genpair -d
 
 # Dispatch
-echo "Generating $KEYTYPE for $NODE..."
+echo "Generating $KEYTYPE key for $NODE..."
 "genpair_$KEYTYPE"
 
 # Cleanup

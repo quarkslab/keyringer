@@ -37,7 +37,7 @@ function genpair_gpg {
   read -s -p "Enter password for the private key: " passphrase
   printf "\n"
   
-  # TODO: insert 279 random bytes
+  # TODO: insert random bytes
   # TODO: custom Name-Comment and Name-Email
   # TODO: allow for empty passphrases
   gpg --homedir "$TMPWORK" --gen-key --batch <<EOF
@@ -46,7 +46,6 @@ function genpair_gpg {
     Subkey-Type: ELG-E
     Subkey-Length: 4096
     Name-Real: $NODE
-    Name-Comment: backupninja
     Name-Email: root@$NODE
     Expire-Date: 0
     Passphrase: $passphrase

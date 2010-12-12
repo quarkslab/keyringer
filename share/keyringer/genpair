@@ -34,8 +34,20 @@ function genpair_ssh {
 # Generate a keypair, gpg version
 function genpair_gpg {
   echo "Make sure that $KEYDIR is atop of an encrypted volume."
-  read -s -p "Enter password for the private key: " passphrase
-  printf "\n"
+
+  passphrase="no"
+  passphrase_confirm="confirm"
+
+  while [ "$passphrase" != "$passphrase_confirm" ]; do
+    read -s -p "Enter password for the private key: " passphrase
+    printf "\n"
+    read -s -p "Enter password again: " passphrase_confirm
+    printf "\n"
+
+    if [ "$passphrase" != "$passphrase_confirm" ]; then
+      echo "Password don't match."
+    fi
+  done
   
   # TODO: insert random bytes
   # TODO: custom Name-Comment and Name-Email

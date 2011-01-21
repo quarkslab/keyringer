@@ -92,19 +92,31 @@ function genpair_ssl {
   cd "$TMPWORK"
 
   # Generate certificate
-  "$LIB/csr.sh" "$NODE"
+  if [ "$KEYTYPE" == "ssl-cacert" ]; then
+    "$LIB/csr.sh" "$NODE"
+  else
+    openssl req -nodes -newkey rsa:2048 -keyout ${NODE}_privatekey.pem -out ${NODE}_csr.pem
+  fi
 
   # Self-sign
-  openssl x509 -in "${NODE}_csr.pem" -out "$NODE.crt" -req -signkey "${NODE}_privatekey.pem" -days 365
-  chmod 600 "${NODE}_privatekey.pem"
+  if [ "$KEYTYPE" == "ssl-self" ]; then
+    openssl x509 -in "${NODE}_csr.pem" -out "$NODE.crt" -req -signkey "${NODE}_privatekey.pem" -days 365
+    chmod 600 "${NODE}_privatekey.pem"
+  fi
 
   # Encrypt the result
   echo "Encrypting private key into keyringer..."
   cat "${NODE}_privatekey.pem" | keyringer_exec encrypt "$BASEDIR" "$FILE.pem"
   echo "Encrypting certificate request into keyringer..."
   cat "${NODE}_csr.pem"        | keyringer_exec encrypt "$BASEDIR" "$FILE.csr"
-  echo "Encrypting certificate into keyringer..."
-  cat "$NODE.crt"              | keyringer_exec encrypt "$BASEDIR" "$FILE.crt"
+  
+  if [ "$KEYTYPE" == "ssl-self" ]; then
+    echo "Encrypting certificate into keyringer..."
+    cat "$NODE.crt"              | keyringer_exec encrypt "$BASEDIR" "$FILE.crt"
+  elif [ -f "$BASEDIR/keys/$FILE.crt.asc" ]; then
+    # Remove any existing crt
+    keyringer_exec del "$BASEDIR" "$FILE.crt"
+  fi
 
   cd "$CWD"
 
@@ -113,11 +125,16 @@ function genpair_ssl {
     printf "Saving copies at %s.pem, %s.csr and %s.crt\n" "$OUTFILE" "$OUTFILE" "$OUTFILE"
     cat "$TMPWORK/${NODE}_privatekey.pem" > "$OUTFILE.pem"
     cat "$TMPWORK/${NODE}_csr.pem"        > "$OUTFILE.csr"
-    cat "$TMPWORK/$NODE.crt"              > "$OUTFILE.crt"
+
+    if [ -f "$TMPWORK/$NODE.crt" ]; then
+      cat "$TMPWORK/$NODE.crt"              > "$OUTFILE.crt"
+    fi
   fi
 
   # Show cert fingerprint
-  openssl x509 -noout -in "$TMPWORK/$NODE.crt" -fingerprint
+  if [ "$KEYTYPE" == "ssl-self" ]; then
+    openssl x509 -noout -in "$TMPWORK/$NODE.crt" -fingerprint
+  fi
 
   echo "Done"
 }
@@ -135,7 +152,7 @@ CWD="`pwd`"
 
 # Verify
 if [ -z "$NODE" ]; then
-  echo -e "Usage: keyringer <keyring> $BASENAME <gpg|ssh|ssl> <file> <hostname> [outfile]"
+  echo -e "Usage: keyringer <keyring> $BASENAME <gpg|ssh|ssl|ssl-cacert|ssl-self> <file> <hostname> [outfile]"
   echo -e "Options:"
   echo -e "\t gpg|ssh|ssl: key type."
   echo -e "\t file       : base file name for encrypted output (relative to keys folder)"
@@ -152,7 +169,11 @@ keyringer_set_tmpfile genpair -d
 
 # Dispatch
 echo "Generating $KEYTYPE key for $NODE..."
-genpair_"$KEYTYPE"
+if [ "$KEYTYPE" == "ssl-self" ] || [ "$KEYTYPE" == "ssl-cacert" ]; then
+  genpair_ssl
+else
+  genpair_"$KEYTYPE"
+fi
 
 # Cleanup
 cd "$CWD"

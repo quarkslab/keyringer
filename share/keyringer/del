@@ -11,6 +11,6 @@ source "$LIB" || exit 1
 keyringer_get_file "$2"
 
 # Remove
-if [ -d "$KEYDIR/.git" ]; then
-  ./git "$KEYDIR" rm "$FILE" --force
+if [ -d "$BASEDIR/.git" ]; then
+  keyringer_exec git "$BASEDIR" rm "keys/$FILE"
 fi

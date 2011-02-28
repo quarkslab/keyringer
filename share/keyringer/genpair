@@ -84,6 +84,8 @@ EOF
 }
 
 # Generate a keypair, ssl version
+# TODO: add the possibility of SubjectAltNames also for ssl-self and ssl modes
+#       so wildcard certs can work correctly.
 function genpair_ssl {
   echo "Make sure that $KEYDIR is atop of an encrypted volume."
   read -p "Hit ENTER to continue." prompt

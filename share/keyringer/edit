@@ -20,7 +20,7 @@ keyringer_set_tmpfile edit
 gpg --yes -o "$TMPWORK" --use-agent -d "$KEYDIR/$FILE"
 
 # Prompt
-echo "Press any key to open the decrypted data into $EDITOR, Ctrl-C to abort"
+echo "Press any key to open the decrypted data in $EDITOR, Ctrl-C to abort"
 read key
 "$EDITOR" "$TMPWORK"
 

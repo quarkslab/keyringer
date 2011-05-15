@@ -5,6 +5,8 @@ Keyringer lets you manage and share secrets using GPG and git in a distributed
 fashion. It has custom commands to encrypt, decrypt, recrypt, create key pairs,
 etc.
 
+Homepage: https://git.codecoop.org/projects/keyringer
+
 Requirements
 ------------
 
@@ -204,33 +206,4 @@ Exporting public keys:
 Exporting private keys (take care):
 
     gpg --armor --export-secret-keys
-
-TODO
-----
-
-There are lots of things that can be enhanced, like:
-
-  - Enhanced documentation.
-
-  - Interface with ssss where the scripts automatically splits passphrases
-    into ssss tokens and encrypt those to different groups of users.
-
-  - Hidden recipient support (including recipients file).
-
-  - Rewrite using an object-oriented programming language?
-
-  - Tab completion subcommand support for popular shells like bash.
-
-  - Recipient check support, handling non-existing or revoked keys.
-
-  - Encrypted and signed configuration files such as "recipients" and "options".
-
-  - Leave key labels out of recipients file.
-
-  - List available subommands.
-
-Development
------------
-
-Developers needed! :)
 

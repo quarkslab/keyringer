@@ -18,7 +18,7 @@ function keyringer_recrypt {
 if [ ! -z "$2" ]; then
   keyringer_recrypt $2
 else
-  cd $KEYDIR && find | grep -v '^.$' | while read file; do
+  cd $KEYDIR && find | while read file; do
     if [ ! -d "$KEYDIR/$file" ]; then
       keyringer_recrypt "$file"
     fi

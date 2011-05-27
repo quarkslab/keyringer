@@ -88,9 +88,9 @@ Decrypting a key (only to stdout)
 
     keyringer <keyring> decrypt <file>
 
-Re-encrypting a key
+Re-encrypting a key or the whole repository
 
-    keyringer <keyring> recrypt <file>
+    keyringer <keyring> recrypt [file]
 
 Appending information to a key
 

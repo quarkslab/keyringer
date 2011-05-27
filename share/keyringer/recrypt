@@ -7,8 +7,20 @@
 LIB="`dirname $0`/../../lib/keyringer/functions"
 source "$LIB" || exit 1
 
-# Get file
-keyringer_get_file "$2"
+function keyringer_recrypt {
+  # Get file
+  keyringer_get_file "$1"
 
-# Recrypt
-gpg --use-agent -d "$KEYDIR/$FILE" | gpg --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS") > "$KEYDIR/$FILE"
+  # Recrypt
+  gpg --use-agent -d "$KEYDIR/$FILE" | gpg --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS") > "$KEYDIR/$FILE"
+}
+
+if [ ! -z "$2" ]; then
+  keyringer_recrypt $2
+else
+  cd $KEYDIR && find | grep -v '^.$' | while read file; do
+    if [ ! -d "$KEYDIR/$file" ]; then
+      keyringer_recrypt "$file"
+    fi
+  done
+fi

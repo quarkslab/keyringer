@@ -17,7 +17,7 @@ echo "Make sure that $BASEDIR is atop of an encrypted volume."
 keyringer_set_tmpfile edit
 
 # Decrypt the information to the file
-gpg --yes -o "$TMPWORK" --use-agent -d "$KEYDIR/$FILE"
+$GPG --yes -o "$TMPWORK" --use-agent -d "$KEYDIR/$FILE"
 
 # Prompt
 echo "Press any key to open the decrypted data in $EDITOR, Ctrl-C to abort"
@@ -25,7 +25,7 @@ read key
 "$EDITOR" "$TMPWORK"
 
 # Encrypt again
-gpg --yes -o "$KEYDIR/$FILE" --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS") "$TMPWORK"
+$GPG --yes -o "$KEYDIR/$FILE" --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS") "$TMPWORK"
 
 # Remove temp file
 keyringer_unset_tmpfile "$TMPWORK"

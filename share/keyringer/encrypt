@@ -18,7 +18,7 @@ if [ "$BASENAME" == "encrypt" ]; then
   echo "Type your message and finish your input with EOF (Ctrl-D)."
 fi
 
-gpg --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS") - > "$KEYDIR/$FILE"
+$GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS") - > "$KEYDIR/$FILE"
 
 # Stage
 if [ -d "$BASEDIR/.git" ]; then

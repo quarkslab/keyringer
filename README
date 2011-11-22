@@ -130,6 +130,14 @@ Configuration files, preferences and options
   3. Custom keyring options: $KEYRING_FOLDER/config/options: managed by
      "keyringer <keyring> options".
 
+Using a non-default OpenPGP key
+-------------------------------
+
+If you want to use a different key other than your default for a given
+keyringer, use
+
+    keyringer <keyring> preferences add KEYID=FINGERPRINT
+
 Notes
 -----
 

@@ -52,7 +52,7 @@ function genpair_gpg {
   # TODO: insert random bytes
   # TODO: custom Name-Comment and Name-Email
   # TODO: allow for empty passphrases
-  gpg --homedir "$TMPWORK" --gen-key --batch <<EOF
+  $GPG --homedir "$TMPWORK" --gen-key --batch <<EOF
     Key-Type: RSA
     Key-Length: 4096
     Subkey-Type: ELG-E
@@ -66,9 +66,9 @@ EOF
 
   # Encrypt the result
   echo "Encrypting secret key into keyringer..."
-  gpg --armor --homedir "$TMPWORK" --export-secret-keys | keyringer_exec encrypt "$BASEDIR" "$FILE"
+  $GPG --armor --homedir "$TMPWORK" --export-secret-keys | keyringer_exec encrypt "$BASEDIR" "$FILE"
   echo "Encrypting public key into keyringer..."
-  gpg --armor --homedir "$TMPWORK" --export             | keyringer_exec encrypt "$BASEDIR" "$FILE.pub"
+  $GPG --armor --homedir "$TMPWORK" --export             | keyringer_exec encrypt "$BASEDIR" "$FILE.pub"
   echo "Encrypting passphrase into keyringer..."
   echo "Passphrase for $FILE: $passphrase"              | keyringer_exec encrypt "$BASEDIR" "$FILE.passwd"
 
@@ -76,8 +76,8 @@ EOF
   if [ ! -z "$OUTFILE" ]; then
     mkdir -p `dirname $OUTFILE`
     printf "Saving copies at %s and %s.pub\n" "$OUTFILE" "$OUTFILE"
-    gpg --armor --homedir "$TMPWORK" --export-secret-keys > "$OUTFILE"
-    gpg --armor --homedir "$TMPWORK" --export             > "$OUTFILE.pub"
+    $GPG --armor --homedir "$TMPWORK" --export-secret-keys > "$OUTFILE"
+    $GPG --armor --homedir "$TMPWORK" --export             > "$OUTFILE.pub"
   fi
 
   echo "Done"  

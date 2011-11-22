@@ -12,7 +12,7 @@ function keyringer_recrypt {
   keyringer_get_file "$1"
 
   # Recrypt
-  gpg --use-agent -d "$KEYDIR/$FILE" | gpg --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS") > "$KEYDIR/$FILE"
+  $GPG --use-agent -d "$KEYDIR/$FILE" | $GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS") > "$KEYDIR/$FILE"
 }
 
 if [ ! -z "$2" ]; then

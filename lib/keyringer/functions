@@ -204,6 +204,12 @@ function keyringer_set_env {
     exit 1
   fi
 
+  if [ ! -z "$KEYID" ]; then
+    GPG="gpg -u $KEYID"
+  else
+    GPG="gpg"
+  fi
+
   # Check recipients file
   keyringer_check_recipients $SUBCOMMAND
 

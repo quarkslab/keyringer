@@ -11,4 +11,4 @@ source "$LIB" || exit 1
 keyringer_get_file "$2"
 
 # Decrypt
-gpg --quiet --use-agent -d "$KEYDIR/$FILE"
+$GPG --quiet --use-agent -d "$KEYDIR/$FILE"

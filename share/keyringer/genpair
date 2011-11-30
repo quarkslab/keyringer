@@ -167,6 +167,7 @@ EOF
   cd "$CWD"
 
   if [ ! -z "$OUTFILE" ]; then
+    # TODO: add outfiles into version control
     mkdir -p `dirname $OUTFILE`
     printf "Saving copies at %s.pem, %s.csr and %s.crt\n" "$OUTFILE" "$OUTFILE" "$OUTFILE"
     cat "$TMPWORK/${NODE}_privatekey.pem" > "$OUTFILE.pem"

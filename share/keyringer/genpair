@@ -84,20 +84,64 @@ EOF
 }
 
 # Generate a keypair, ssl version
-# TODO: add the possibility of SubjectAltNames also for ssl-self and ssl modes
-#       so wildcard certs can work correctly.
 function genpair_ssl {
   echo "Make sure that $KEYDIR is atop of an encrypted volume."
   read -p "Hit ENTER to continue." prompt
+
+  # Check for wildcard certs
+  if [ "`echo $NODE | cut -d . -f 1`" == "*" ]; then
+    WILDCARD="yes"
+    CNAME="$NODE"
+    NODE="`echo $NODE | sed -e 's/^\*\.//'`"
+  else
+    CNAME="${NODE}"
+  fi
 
   # Setup
   cd "$TMPWORK"
 
   # Generate certificate
   if [ "$KEYTYPE" == "ssl-cacert" ]; then
+    # We use a custom script for CaCert
     "$LIB/csr.sh" "$NODE"
   else
-    openssl req -nodes -newkey rsa:2048 -keyout ${NODE}_privatekey.pem -out ${NODE}_csr.pem
+cat <<EOF >> openssl.conf
+[ req ]
+default_keyfile         = ${NODE}_privatekey.pem
+distinguished_name      = req_distinguished_name
+encrypt_key             = no
+req_extensions          = v3_req # Extensions to add to certificate request
+string_mask             = nombstr
+
+[ req_distinguished_name ]
+commonName_default              = ${CNAME}
+organizationName                = Organization Name
+organizationalUnitName          = Organizational Unit Name
+emailAddress                    = Email Address
+localityName                    = Locality
+stateOrProvinceName             = State
+countryName                     = Country Name
+commonName                      = Common Name
+
+[ v3_req ]
+extendedKeyUsage=serverAuth,clientAuth
+EOF
+
+    # Add SubjectAltNames so wildcard certs can work correctly.
+    if [ "$WILDCARD" == "yes" ]; then
+cat <<EOF >> openssl.conf
+subjectAltName=DNS:${NODE}, DNS:${CNAME}
+EOF
+    fi
+
+    echo "Please review your OpenSSL configuration:"
+    cat openssl.conf
+    read -p "Hit ENTER to continue." prompt
+
+    openssl req -batch -nodes -config openssl.conf -newkey rsa:2048 -sha256 \
+            -keyout ${NODE}_privatekey.pem -out ${NODE}_csr.pem
+
+    openssl req -noout -text -in ${NODE}_csr.pem
   fi
 
   # Self-sign

@@ -13,6 +13,10 @@ function keyringer_recrypt {
 
   # Recrypt
   $GPG --use-agent -d "$KEYDIR/$FILE" | $GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS") > "$KEYDIR/$FILE"
+
+  if [ "$?" != "0" ]; then
+    exit 1
+  fi
 }
 
 if [ ! -z "$2" ]; then

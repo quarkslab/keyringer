@@ -95,10 +95,9 @@ function keyringer_is_git {
   elif [ -d "$1/.git" ]; then
     true
   else
-    cwd="`pwd`"
-    cd "$1" && git="`git status &> /dev/null`" && cd "$cwd"
+    ( cd "$1" && git status &> /dev/null )
 
-    if [ "$git" != "128" ]; then
+    if [ "$?" != "128" ]; then
       true
     else
       false
@@ -225,7 +224,9 @@ function keyringer_check_version {
   if [ ! -f "$VERSION_INFO" ]; then
     echo "Creating configuration version file..."
     echo 0 > "$VERSION_INFO"
-    keyringer_exec git "$BASEDIR" add config/version
+    if keyringer_is_git "$BASEDIR"; then
+      keyringer_exec git "$BASEDIR" add config/version
+    fi
   fi
 
   VERSION="`cat $VERSION_INFO`"
@@ -282,6 +283,13 @@ function keyringer_action_usage {
 
 # Check recipients
 function keyringer_check_recipients {
+  # Check if recipients file is empty.
+  if [ "`grep -vE "^#|^$" "$RECIPIENTS" | wc -l`" == 0 ] && [ "$SUBCOMMAND" != "edit" ]; then
+    echo "Fatal: no recipients configured for this keyring."
+    echo "Please edit your recipients file first."
+    exit 1
+  fi
+
   # Check recipients header for updates.
   if grep -qe ' XXXXXXXX$' "$RECIPIENTS"; then
     echo "Updating recipients file..."

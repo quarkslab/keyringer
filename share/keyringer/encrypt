@@ -10,6 +10,9 @@ source "$LIB" || exit 1
 # Aditional parameters
 keyringer_get_new_file "$2"
 
+# Set recipients file
+keyringer_set_recipients "$FILE"
+
 # Encrypt
 mkdir -p "$KEYDIR/`dirname $FILE`"
 
@@ -18,7 +21,7 @@ if [ "$BASENAME" == "encrypt" ]; then
   echo "Type your message and finish your input with EOF (Ctrl-D)."
 fi
 
-$GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS") - > "$KEYDIR/$FILE"
+$GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") - > "$KEYDIR/$FILE"
 
 # Stage
 if [ -d "$BASEDIR/.git" ]; then

@@ -10,11 +10,36 @@ source "$LIB/functions" || exit 1
 # Command parser
 keyringer_get_command "$2"
 
+# Set recipients file
+keyringer_set_new_recipients "$3"
+
 if [ "$COMMAND" == "ls" ]; then
-  cat "$RECIPIENTS"
+  if [ ! -z "$3" ]; then
+    if [ -e "$RECIPIENTS_FILE" ]; then
+      cat "$RECIPIENTS_FILE"
+    else
+      echo "Recipients file not found: $RECIPIENTS_FILE_BASE"
+      exit 1
+    fi
+  else
+    for recipients in `ls $RECIPIENTS`; do
+      echo "In recipients file $recipients:"
+      echo "-----------------------------------------------------------------------------------"
+      cat $RECIPIENTS/$recipients
+      echo ""
+    done
+  fi
 elif [ "$COMMAND" == "edit" ]; then
-  "$EDITOR" "$RECIPIENTS"
-  keyringer_check_recipients
+  if [ ! -z "$3" ]; then
+    keyringer_create_new_recipients $RECIPIENTS_FILE
+    "$EDITOR" "$RECIPIENTS_FILE"
+    keyringer_check_recipients
+    keyringer_exec git "$BASEDIR" add "$RECIPIENTS_FILE_BASE"
+  else
+    echo "Please specify one recipient to edit among the available:"
+    ls $RECIPIENTS | sed -e 's/^/\t/'
+    exit 1
+  fi
 else
   printf "%s: No such command %s\n" "$BASENAME" "$COMMAND"
   exit 1

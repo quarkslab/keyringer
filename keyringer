@@ -57,8 +57,7 @@ function keyringer_init {
       mkdir -p "$BASEDIR/"{config,keys}
 
       # Setup recipients
-      echo "# Use entries in the form of 'john@doe.com XXXXXXXX" > "$RECIPIENTS"
-      echo "" >> "$RECIPIENTS"
+      keyringer_create_new_recipients "$RECIPIENTS/default"
 
       # Setup options
       touch "$OPTIONS"

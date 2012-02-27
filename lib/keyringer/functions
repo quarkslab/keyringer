@@ -173,7 +173,8 @@ function keyringer_set_env {
   BASEDIR="$1"
   SUBCOMMAND="$2"
   KEYDIR="$BASEDIR/keys"
-  RECIPIENTS="$BASEDIR/config/recipients"
+  RECIPIENTS_BASE="config/recipients"
+  RECIPIENTS="$BASEDIR/$RECIPIENTS_BASE"
   OPTIONS="$BASEDIR/config/options"
   VERSION_INFO="$BASEDIR/config/version"
 
@@ -182,7 +183,7 @@ function keyringer_set_env {
     exit 1
   fi
 
-  if [ ! -f "$RECIPIENTS" ]; then
+  if [ ! -e "$RECIPIENTS" ]; then
     echo "No recipient config was found"
     exit 1
   fi
@@ -209,14 +210,17 @@ function keyringer_set_env {
     GPG="gpg"
   fi
 
+  # Check keyring config version
+  keyringer_check_version
+
+  # Upgrade configuration
+  keyringer_upgrade
+
   # Check recipients file
   keyringer_check_recipients $SUBCOMMAND
 
   # Ensure that keydir exists
   mkdir -p "$KEYDIR" && chmod 700 "$KEYDIR"
-
-  # Check keyring config version
-  keyringer_check_version
 }
 
 # Configuration version tracking to help keyring upgrades
@@ -230,6 +234,26 @@ function keyringer_check_version {
   fi
 
   VERSION="`cat $VERSION_INFO`"
+}
+
+# Configuration upgrades
+function keyringer_upgrade {
+  # Upgrade 0.1
+  if [ "$VERSION" == "0" ]; then
+    if [ ! -d "$RECIPIENTS" ]; then
+      echo "Converting recipients to the new scheme..."
+      mv $RECIPIENTS $RECIPIENTS.tmp
+      mkdir $RECIPIENTS
+      mv $RECIPIENTS.tmp $RECIPIENTS/default
+      keyringer_exec git "$BASEDIR" add $RECIPIENTS_BASE/default
+      keyringer_exec git "$BASEDIR" add config/version
+      keyringer_exec git "$BASEDIR" commit -m "Config-upgrade-0.1"
+      echo "Upgrade to version 0.1 completed"
+    fi
+
+    # Update version information
+    echo 0.1 > $VERSION_INFO
+  fi
 }
 
 # Get a file argument
@@ -284,16 +308,16 @@ function keyringer_action_usage {
 # Check recipients
 function keyringer_check_recipients {
   # Check if recipients file is empty.
-  if [ "`grep -vE "^#|^$" "$RECIPIENTS" | wc -l`" == 0 ] && [ "$SUBCOMMAND" != "edit" ]; then
+  if [ "`grep -vE "^#|^$" "$RECIPIENTS"/* | wc -l`" == 0 ] && [ "$SUBCOMMAND" != "edit" ]; then
     echo "Fatal: no recipients configured for this keyring."
     echo "Please edit your recipients file first."
     exit 1
   fi
 
   # Check recipients header for updates.
-  if grep -qe ' XXXXXXXX$' "$RECIPIENTS"; then
+  if grep -qe ' XXXXXXXX$' "$RECIPIENTS"/*; then
     echo "Updating recipients file..."
-    sed -i -e 's/ XXXXXXXX$/ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/' "$RECIPIENTS"
+    sed -i -e 's/ XXXXXXXX$/ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/' "$RECIPIENTS"/*
   fi
 
   if [ "$1" == "edit" ]; then
@@ -301,7 +325,7 @@ function keyringer_check_recipients {
     return
   fi
 
-  for recipient in $(cat "$RECIPIENTS" | grep -v '^#' | awk '{ print $2 }'); do
+  for recipient in $(cat "$RECIPIENTS"/* | grep -v '^#' | awk '{ print $2 }'); do
     size=$(echo "$recipient" | wc -c)
     if (( $size < 41 )); then
       echo "Fatal: please set the full GPG signature hash for key ID $recipient:"
@@ -327,6 +351,59 @@ EOF
       fi
     fi
   done
+}
+
+# Set recipients
+function keyringer_set_recipients {
+  if [ -z "$1" ]; then
+    keyringer_set_default_recipients
+  else
+    candidate="$1"
+
+    # Find the first matching recipient
+    while [ ! -z "$candidate" ] && [ "$candidate" != "." ] && [ "$candidate" != "/" ]; do
+      if [ -e "$RECIPIENTS/$candidate" ]; then
+        RECIPIENTS_FILE="$RECIPIENTS/$candidate"
+        RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$candidate"
+        return
+      fi
+
+      candidate="`dirname $candidate`"
+    done
+
+    keyringer_set_default_recipients "$1"
+
+  fi
+}
+
+# Set default recipients
+function keyringer_set_default_recipients {
+  if [ -e "$RECIPIENTS/default" ]; then
+    RECIPIENTS_FILE="$RECIPIENTS/default"
+    RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/default"
+  else
+    echo "Fatal: no suitable recipient file found for path $1"
+    exit 1
+  fi
+}
+
+# Set a new recipient, avoid file checks
+function keyringer_set_new_recipients {
+  if [ -z "$1" ]; then
+    keyringer_set_default_recipients
+  else
+    RECIPIENTS_FILE="$RECIPIENTS/$1"
+    RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$1"
+  fi
+}
+
+# Create a new recipients file
+function keyringer_create_new_recipients {
+  if [ ! -e "$1" ]; then
+    mkdir -p "`dirname $1`"
+    echo "# Use entries in the form of 'john@doe.com XXXXXXXX" > "$1"
+    echo "" >> "$1"
+  fi
 }
 
 # Setup environment

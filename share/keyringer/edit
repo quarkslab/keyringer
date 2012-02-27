@@ -10,6 +10,9 @@ source "$LIB" || exit 1
 # Get file
 keyringer_get_file "$2"
 
+# Set recipients file
+keyringer_set_recipients "$FILE"
+
 # Warn user
 echo "Make sure that $BASEDIR is atop of an encrypted volume."
 
@@ -25,7 +28,7 @@ read key
 "$EDITOR" "$TMPWORK"
 
 # Encrypt again
-$GPG --yes -o "$KEYDIR/$FILE" --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS") "$TMPWORK"
+$GPG --yes -o "$KEYDIR/$FILE" --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") "$TMPWORK"
 
 # Remove temp file
 keyringer_unset_tmpfile "$TMPWORK"

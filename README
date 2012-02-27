@@ -61,8 +61,20 @@ Managing recipients
 
 Your next step is tell keyringer the GPG key ids to encrypt files to:
 
-    keyringer <keyring> recipients edit
+    keyringer <keyring> recipients edit [recipient-name]
     keyringer <keyring> recipients ls
+
+Keyringer support multiple recipients in a per-folder style. Try it by
+creating a sample keyringer
+
+    keyringer <keyring> recipients edit closest-friends
+
+Fill it with your friends key IDs. Now encrypt a secret just for then:
+
+    keyringer <keyring> encrypt closest-friends/secret
+
+In other words, if keyringer finds a recipient file matching a given path,
+it will use it instead of the global recipients file.
 
 Managing keys
 ----------------

@@ -234,6 +234,16 @@ function keyringer_check_version {
   fi
 
   VERSION="`cat $VERSION_INFO`"
+
+  # Check if config version is supported by keyringer
+  if [ "$VERSION" != "$KEYRINGER_VERSION" ]; then
+    NEWEST="`echo -e "$VERSION\n$KEYRINGER_VERSION" | sort -V | tail -n 1`"
+    if [ "$NEWEST" == "$VERSION" ]; then
+      echo "Fatal: keyringer version: $KEYRINGER_VERSION / config version: $VERSION"
+      echo "Please upgrade your keyringer application"
+      exit 1
+    fi
+  fi
 }
 
 # Configuration upgrades

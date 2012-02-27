@@ -129,14 +129,16 @@ function keyringer_preferences {
 
 # Config
 NAME="keyringer"
+KEYRINGER_VERSION="0.1"
 CONFIG="$HOME/.$NAME/config"
 BASENAME="`basename $0`"
 KEYRING="$1"
 ACTION="$2"
 ACTIONS="`dirname $(readlink -f $0)`/share/$NAME"
 
-# Export preferences for other scripts
+# Export preferences and version for other scripts
 export PREFERENCES="`dirname $CONFIG`/$KEYRING"
+export KEYRINGER_VERSION
 
 # Load functions
 LIB="`dirname $(readlink -f $0)`/lib/$NAME/functions"

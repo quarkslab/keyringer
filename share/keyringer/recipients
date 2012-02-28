@@ -32,7 +32,7 @@ if [ "$COMMAND" == "ls" ]; then
 elif [ "$COMMAND" == "edit" ]; then
   if [ ! -z "$3" ]; then
     keyringer_create_new_recipients $RECIPIENTS_FILE
-    "$EDITOR" "$RECIPIENTS_FILE"
+    $EDITOR "$RECIPIENTS_FILE"
     keyringer_check_recipients
     keyringer_exec git "$BASEDIR" add "$RECIPIENTS_FILE_BASE"
   else

@@ -225,6 +225,10 @@ function keyringer_set_env {
 
 # Configuration version tracking to help keyring upgrades
 function keyringer_check_version {
+  if [ "$KEYRINGER_CHECK_VERSION" == "false" ]; then
+    return
+  fi
+
   if [ ! -f "$VERSION_INFO" ]; then
     echo "Configuration version file not found, trying to pull from remotes..."
     for remote in "$BASEDIR/.git/refs/remotes/*"; do

@@ -226,10 +226,21 @@ function keyringer_set_env {
 # Configuration version tracking to help keyring upgrades
 function keyringer_check_version {
   if [ ! -f "$VERSION_INFO" ]; then
-    echo "Creating configuration version file..."
-    echo 0 > "$VERSION_INFO"
-    if keyringer_is_git "$BASEDIR"; then
-      keyringer_exec git "$BASEDIR" add config/version
+    echo "Configuration version file not found, trying to pull from remotes..."
+    for remote in "$BASEDIR/.git/refs/remotes/*"; do
+      keyringer_exec git "$BASEDIR" pull `basename $remote` master
+    done
+
+    if [ ! -f "$VERSION_INFO" ]; then
+      echo "Creating configuration version file..."
+      echo 0 > "$VERSION_INFO"
+      if keyringer_is_git "$BASEDIR"; then
+        keyringer_exec git "$BASEDIR" add config/version
+        echo "Pushing configuration version file to remotes..."
+        for remote in "$BASEDIR/.git/refs/remotes/*"; do
+          keyringer_exec git "$BASEDIR" push $remote master
+        done
+      fi
     fi
   fi
 
@@ -237,11 +248,18 @@ function keyringer_check_version {
 
   # Check if config version is supported by keyringer
   if [ "$VERSION" != "$KEYRINGER_VERSION" ]; then
-    NEWEST="`echo -e "$VERSION\n$KEYRINGER_VERSION" | sort -V | tail -n 1`"
-    if [ "$NEWEST" == "$VERSION" ]; then
-      echo "Fatal: keyringer version: $KEYRINGER_VERSION / config version: $VERSION"
-      echo "Please upgrade your keyringer application"
-      exit 1
+    echo "Configuration version differs from keyringer version, trying to pull from remotes"
+    for remote in "$BASEDIR/.git/refs/remotes/*"; do
+      keyringer_exec git "$BASEDIR" pull `basename $remote` master
+    done
+
+    if [ "$VERSION" != "$KEYRINGER_VERSION" ]; then
+      NEWEST="`echo -e "$VERSION\n$KEYRINGER_VERSION" | sort -V | tail -n 1`"
+      if [ "$NEWEST" == "$VERSION" ]; then
+        echo "Fatal: keyringer version: $KEYRINGER_VERSION / config version: $VERSION"
+        echo "Please upgrade your keyringer application"
+        exit 1
+      fi
     fi
   fi
 }
@@ -258,7 +276,10 @@ function keyringer_upgrade {
       keyringer_exec git "$BASEDIR" add $RECIPIENTS_BASE/default
       keyringer_exec git "$BASEDIR" add config/version
       keyringer_exec git "$BASEDIR" commit -m "Config-upgrade-0.1"
-      echo "Upgrade to version 0.1 completed"
+      echo "Upgrade to version 0.1 completed, pushing to remotes..."
+      for remote in "$BASEDIR/.git/refs/remotes/*"; do
+        keyringer_exec git "$BASEDIR" push $remote master
+      done
     fi
 
     # Update version information

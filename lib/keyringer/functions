@@ -232,7 +232,8 @@ function keyringer_check_version {
   if [ ! -f "$VERSION_INFO" ]; then
     echo "Configuration version file not found, trying to pull from remotes..."
     for remote in "$BASEDIR/.git/refs/remotes/*"; do
-      keyringer_exec git "$BASEDIR" pull `basename $remote` master
+      # Do not use keyringer_exec as it would trigger keyringer_check_version again
+      ( cd "$BASEDIR" && git pull `basename $remote` master )
     done
 
     if [ ! -f "$VERSION_INFO" ]; then
@@ -254,7 +255,8 @@ function keyringer_check_version {
   if [ "$VERSION" != "$KEYRINGER_VERSION" ]; then
     echo "Configuration version differs from keyringer version, trying to pull from remotes"
     for remote in "$BASEDIR/.git/refs/remotes/*"; do
-      keyringer_exec git "$BASEDIR" pull `basename $remote` master
+      # Do not use keyringer_exec as it would trigger keyringer_check_version again
+      ( cd "$BASEDIR" && git pull `basename $remote` master )
     done
 
     if [ "$VERSION" != "$KEYRINGER_VERSION" ]; then

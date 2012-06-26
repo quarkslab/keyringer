@@ -27,6 +27,7 @@ install_lib:
 	$(INSTALL) -D --mode=0644 lib/keyringer/functions $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/functions
 
 install_share:
+	$(INSTALL) -D --mode=0755 -d share/keyringer $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)
 	$(INSTALL) -D --mode=0755 share/keyringer/* $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)
 
 install_bin:

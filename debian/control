@@ -10,7 +10,8 @@ Homepage: https://git.sarava.org/?p=keyringer.git;a=summary
 
 Package: keyringer
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, bash, git-core, gnupg, grep, gawk, coreutils, sed
+Recommends: openssl
 Description: Distributed secret management using GPG and git
  Keyringer lets you manage and share secrets using GPG and git in a distributed
  fashion. It has custom commands to encrypt, decrypt, recrypt, create key pairs,

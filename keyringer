@@ -134,14 +134,30 @@ CONFIG="$HOME/.$NAME/config"
 BASENAME="`basename $0`"
 KEYRING="$1"
 ACTION="$2"
-ACTIONS="`dirname $(readlink -f $0)`/share/$NAME"
 
 # Export preferences and version for other scripts
 export PREFERENCES="`dirname $CONFIG`/$KEYRING"
 export KEYRINGER_VERSION
 
+# Set functions location
+if [ -e "`dirname $(readlink -f $0)`/lib/$NAME/functions" ]; then
+  # Development or local installation layout
+  LIB="`dirname $(readlink -f $0)`/lib/$NAME/functions"
+else
+  # System installation layout
+  LIB="`dirname $(readlink -f $0)`/../lib/$NAME/functions"
+fi
+
+# Set actions location
+if [ -e "`dirname $(readlink -f $0)`/share/$NAME" ]; then
+  # Development or local installation layout
+  ACTIONS="`dirname $(readlink -f $0)`/share/$NAME"
+else
+  # System installation layout
+  ACTIONS="`dirname $(readlink -f $0)`/../share/$NAME"
+fi
+
 # Load functions
-LIB="`dirname $(readlink -f $0)`/lib/$NAME/functions"
 source "$LIB" || exit 1
 
 # Setup main configuration and load preferences

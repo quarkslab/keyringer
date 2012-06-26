@@ -1,0 +1,101 @@
+Description: Upstream changes introduced in version 0.1-1
+ This patch has been created by dpkg-source during the package build.
+ Here's the last changelog entry, hopefully it gives details on why
+ those changes were made:
+ .
+ keyringer (0.1-1) unstable; urgency=low
+ .
+   * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+ .
+ The person named in the Author field signed this changelog entry.
+Author: Silvio Rhatto <rhatto@riseup.net>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: http://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- keyringer-0.1.orig/Makefile
++++ keyringer-0.1/Makefile
+@@ -23,7 +23,6 @@ clean:
+ 	find . -name *~ | xargs rm -f # clean local backups
+ 
+ install_lib:
+-	$(INSTALL) -D --mode=0644 lib/keyringer/csr.sh $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/csr.sh
+ 	$(INSTALL) -D --mode=0644 lib/keyringer/functions $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/functions
+ 
+ install_share:
+--- keyringer-0.1.orig/share/keyringer/genpair
++++ keyringer-0.1/share/keyringer/genpair
+@@ -101,10 +101,6 @@ function genpair_ssl {
+   cd "$TMPWORK"
+ 
+   # Generate certificate
+-  if [ "$KEYTYPE" == "ssl-cacert" ]; then
+-    # We use a custom script for CaCert
+-    "$LIB/csr.sh" "$NODE"
+-  else
+ cat <<EOF >> openssl.conf
+ [ req ]
+ default_keyfile         = ${NODE}_privatekey.pem
+@@ -127,22 +123,21 @@ commonName                      = Common
+ extendedKeyUsage=serverAuth,clientAuth
+ EOF
+ 
+-    # Add SubjectAltNames so wildcard certs can work correctly.
+-    if [ "$WILDCARD" == "yes" ]; then
++  # Add SubjectAltNames so wildcard certs can work correctly.
++  if [ "$WILDCARD" == "yes" ]; then
+ cat <<EOF >> openssl.conf
+ subjectAltName=DNS:${NODE}, DNS:${CNAME}
+ EOF
+-    fi
++  fi
+ 
+-    echo "Please review your OpenSSL configuration:"
+-    cat openssl.conf
+-    read -p "Hit ENTER to continue." prompt
++  echo "Please review your OpenSSL configuration:"
++  cat openssl.conf
++  read -p "Hit ENTER to continue." prompt
+ 
+-    openssl req -batch -nodes -config openssl.conf -newkey rsa:2048 -sha256 \
+-            -keyout ${NODE}_privatekey.pem -out ${NODE}_csr.pem
++  openssl req -batch -nodes -config openssl.conf -newkey rsa:2048 -sha256 \
++          -keyout ${NODE}_privatekey.pem -out ${NODE}_csr.pem
+ 
+-    openssl req -noout -text -in ${NODE}_csr.pem
+-  fi
++  openssl req -noout -text -in ${NODE}_csr.pem
+ 
+   # Self-sign
+   if [ "$KEYTYPE" == "ssl-self" ]; then
+@@ -199,9 +194,9 @@ CWD="`pwd`"
+ 
+ # Verify
+ if [ -z "$NODE" ]; then
+-  echo -e "Usage: keyringer <keyring> $BASENAME <gpg|ssh|ssl|ssl-cacert|ssl-self> <file> <hostname> [outfile]"
++  echo -e "Usage: keyringer <keyring> $BASENAME <gpg|ssh|ssl|ssl-self> <file> <hostname> [outfile]"
+   echo -e "Options:"
+-  echo -e "\t gpg|ssh|ssl[-cacert,-self]: key type."
++  echo -e "\t gpg|ssh|ssl[-self]: key type."
+   echo -e "\t file                      : base file name for encrypted output (relative to keys folder)"
+   echo -e "\t hostname                  : host for the key pair"
+   echo -e "\t outfile                   : optional unencrypted output file, useful for deployment"
+@@ -216,7 +211,7 @@ keyringer_set_tmpfile genpair -d
+ 
+ # Dispatch
+ echo "Generating $KEYTYPE key for $NODE..."
+-if [ "$KEYTYPE" == "ssl-self" ] || [ "$KEYTYPE" == "ssl-cacert" ]; then
++if [ "$KEYTYPE" == "ssl-self" ]; then
+   genpair_ssl
+ else
+   genpair_"$KEYTYPE"

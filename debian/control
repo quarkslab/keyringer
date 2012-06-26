@@ -9,7 +9,7 @@ Homepage: https://git.sarava.org/?p=keyringer.git;a=summary
 #Vcs-Browser: http://git.debian.org/?p=collab-maint/keyringer.git;a=summary
 
 Package: keyringer
-Architecture: any
+Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Distributed secret management using GPG and git
  Keyringer lets you manage and share secrets using GPG and git in a distributed

@@ -4,21 +4,23 @@ This work was packaged for Debian by:
 
 It was downloaded from:
 
-    <url://example.com>
+    https://git.sarava.org/?p=keyringer.git;a=summary
 
 Upstream Author(s):
 
-    <put author's name and email here>
-    <likewise for another author>
+    Silvio Rhatto <rhatto@riseup.net>
+    Daniel Kahn Gillmor <dkg@fifthhorseman.net>
+    Jamie McClelland <jm@mayfirst.org>
 
 Copyright:
 
-    <Copyright (C) YYYY Firstname Lastname>
-    <likewise for another author>
+    <Copyright (C) 2009-2012 Silvio Rhatto>
+    <Copyright (C) 2010 Daniel Kahn Gillmor>
+    <Copyright (C) 2012 Jamie McClelland>
 
 License:
 
-    <Put the license of the package here indented by 4 spaces>
+    GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007
 
 The Debian packaging is:
 

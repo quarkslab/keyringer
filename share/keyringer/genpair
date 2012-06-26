@@ -101,10 +101,6 @@ function genpair_ssl {
   cd "$TMPWORK"
 
   # Generate certificate
-  if [ "$KEYTYPE" == "ssl-cacert" ]; then
-    # We use a custom script for CaCert
-    "$LIB/csr.sh" "$NODE"
-  else
 cat <<EOF >> openssl.conf
 [ req ]
 default_keyfile         = ${NODE}_privatekey.pem
@@ -127,22 +123,21 @@ commonName                      = Common Name
 extendedKeyUsage=serverAuth,clientAuth
 EOF
 
-    # Add SubjectAltNames so wildcard certs can work correctly.
-    if [ "$WILDCARD" == "yes" ]; then
+  # Add SubjectAltNames so wildcard certs can work correctly.
+  if [ "$WILDCARD" == "yes" ]; then
 cat <<EOF >> openssl.conf
 subjectAltName=DNS:${NODE}, DNS:${CNAME}
 EOF
-    fi
-
-    echo "Please review your OpenSSL configuration:"
-    cat openssl.conf
-    read -p "Hit ENTER to continue." prompt
-
-    openssl req -batch -nodes -config openssl.conf -newkey rsa:2048 -sha256 \
-            -keyout ${NODE}_privatekey.pem -out ${NODE}_csr.pem
-
-    openssl req -noout -text -in ${NODE}_csr.pem
   fi
+
+  echo "Please review your OpenSSL configuration:"
+  cat openssl.conf
+  read -p "Hit ENTER to continue." prompt
+
+  openssl req -batch -nodes -config openssl.conf -newkey rsa:2048 -sha256 \
+          -keyout ${NODE}_privatekey.pem -out ${NODE}_csr.pem
+
+  openssl req -noout -text -in ${NODE}_csr.pem
 
   # Self-sign
   if [ "$KEYTYPE" == "ssl-self" ]; then
@@ -199,9 +194,9 @@ CWD="`pwd`"
 
 # Verify
 if [ -z "$NODE" ]; then
-  echo -e "Usage: keyringer <keyring> $BASENAME <gpg|ssh|ssl|ssl-cacert|ssl-self> <file> <hostname> [outfile]"
+  echo -e "Usage: keyringer <keyring> $BASENAME <gpg|ssh|ssl|ssl-self> <file> <hostname> [outfile]"
   echo -e "Options:"
-  echo -e "\t gpg|ssh|ssl[-cacert,-self]: key type."
+  echo -e "\t gpg|ssh|ssl[-self]: key type."
   echo -e "\t file                      : base file name for encrypted output (relative to keys folder)"
   echo -e "\t hostname                  : host for the key pair"
   echo -e "\t outfile                   : optional unencrypted output file, useful for deployment"
@@ -216,7 +211,7 @@ keyringer_set_tmpfile genpair -d
 
 # Dispatch
 echo "Generating $KEYTYPE key for $NODE..."
-if [ "$KEYTYPE" == "ssl-self" ] || [ "$KEYTYPE" == "ssl-cacert" ]; then
+if [ "$KEYTYPE" == "ssl-self" ]; then
   genpair_ssl
 else
   genpair_"$KEYTYPE"

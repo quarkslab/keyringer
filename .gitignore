@@ -1,3 +1,6 @@
+debian/keyringer.debhelper.log
+debian/keyringer
+debian/files
 *.swp
 .pc
 debian/files

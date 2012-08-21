@@ -24,6 +24,10 @@ function keyringer_init {
   RECIPIENTS="$BASEDIR/config/recipients"
   OPTIONS="$BASEDIR/config/options"
 
+  # We are initializing, so avoid some checks
+  export KEYRINGER_CHECK_VERSION="false"
+  export KEYRINGER_CHECK_RECIPIENTS="false"
+
   # Parse
   if [ -z "$BASEDIR" ]; then
     echo "Usage: $BASENAME <keyring> init <path> [url]"
@@ -68,7 +72,7 @@ function keyringer_init {
     fi
 
     # Secure
-    chmod 600 "$RECIPIENTS"
+    chmod 700 "$RECIPIENTS"
   fi
 
   # Reparse basedir to force absolute folder

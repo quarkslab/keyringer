@@ -340,6 +340,10 @@ function keyringer_action_usage {
 
 # Check recipients
 function keyringer_check_recipients {
+  if [ "$KEYRINGER_CHECK_RECIPIENTS" == "false" ]; then
+    return
+  fi
+
   # Check if recipients file is empty.
   if [ "`grep -vE "^#|^$" "$RECIPIENTS"/* | wc -l`" == 0 ] && [ "$SUBCOMMAND" != "edit" ]; then
     echo "Fatal: no recipients configured for this keyring."

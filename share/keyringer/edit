@@ -25,7 +25,7 @@ $GPG --yes -o "$TMPWORK" --use-agent -d "$KEYDIR/$FILE"
 # Prompt
 echo "Press any key to open the decrypted data in $EDITOR, Ctrl-C to abort"
 read key
-"$EDITOR" "$TMPWORK"
+$EDITOR "$TMPWORK"
 
 # Encrypt again
 $GPG --yes -o "$KEYDIR/$FILE" --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") "$TMPWORK"

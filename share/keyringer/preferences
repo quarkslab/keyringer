@@ -30,6 +30,7 @@ elif [ "$COMMAND" == "edit" ]; then
   "$EDITOR" "$PREFERENCES"
 elif [ "$COMMAND" == "add" ]; then
   shift 2
+  [[ -n $* ]] && echo $* >> "$PREFERENCES"
 else
   printf "%s: No such command %s\n" "$BASENAME" "$COMMAND"
   exit 1

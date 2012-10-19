@@ -454,5 +454,6 @@ function keyringer_create_new_recipients {
 
 # Setup environment
 if [ "$(basename "$0")" != "keyringer" ]; then
+  keyringer_config_load_preferences
   keyringer_set_env $*
 fi

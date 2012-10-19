@@ -11,6 +11,10 @@ COMMAND="$2"
 
 if [ -z "$COMMAND" ]; then
   echo "Usage: keyringer <keyring> $ACTION <command> [arguments]"
+  echo "Available commands:"
+  echo "	ls"
+  echo "	edit"
+  echo "	add"
   exit 1
 fi
 

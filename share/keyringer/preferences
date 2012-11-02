@@ -10,7 +10,7 @@ source "$LIB" || exit 1
 COMMAND="$2"
 
 if [ -z "$COMMAND" ]; then
-  echo "Usage: keyringer <keyring> $ACTION <command> [arguments]"
+  echo "Usage: keyringer <keyring> preferences <command> [arguments]"
   echo "Available commands:"
   echo "	ls"
   echo "	edit"

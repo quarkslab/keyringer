@@ -70,7 +70,7 @@ EOF
   echo "Encrypting public key into keyringer..."
   $GPG --armor --homedir "$TMPWORK" --export             | keyringer_exec encrypt "$BASEDIR" "$FILE.pub"
   echo "Encrypting passphrase into keyringer..."
-  echo "Passphrase for $FILE: $passphrase"              | keyringer_exec encrypt "$BASEDIR" "$FILE.passwd"
+  echo "Passphrase for $FILE: $passphrase"               | keyringer_exec encrypt "$BASEDIR" "$FILE.passwd"
 
   # TODO: add outfiles into version control
   if [ ! -z "$OUTFILE" ]; then
@@ -153,7 +153,7 @@ EOF
   
   if [ "$KEYTYPE" == "ssl-self" ]; then
     echo "Encrypting certificate into keyringer..."
-    cat "$NODE.crt"              | keyringer_exec encrypt "$BASEDIR" "$FILE.crt"
+    cat "${NODE}.crt" | keyringer_exec encrypt "$BASEDIR" "$FILE.crt"
   elif [ -f "$BASEDIR/keys/$FILE.crt.asc" ]; then
     # Remove any existing crt
     keyringer_exec del "$BASEDIR" "$FILE.crt"
@@ -164,18 +164,18 @@ EOF
   if [ ! -z "$OUTFILE" ]; then
     # TODO: add outfiles into version control
     mkdir -p `dirname $OUTFILE`
-    printf "Saving copies at %s.pem, %s.csr and %s.crt\n" "$OUTFILE" "$OUTFILE" "$OUTFILE"
+    printf "Saving copies at %s\n" "`dirname $OUTFILE`"
     cat "$TMPWORK/${NODE}_privatekey.pem" > "$OUTFILE.pem"
     cat "$TMPWORK/${NODE}_csr.pem"        > "$OUTFILE.csr"
 
-    if [ -f "$TMPWORK/$NODE.crt" ]; then
-      cat "$TMPWORK/$NODE.crt"              > "$OUTFILE.crt"
+    if [ -f "$TMPWORK/${NODE}.crt" ]; then
+      cat "$TMPWORK/${NODE}.crt" > "$OUTFILE.crt"
     fi
   fi
 
   # Show cert fingerprint
   if [ "$KEYTYPE" == "ssl-self" ]; then
-    openssl x509 -noout -in "$TMPWORK/$NODE.crt" -fingerprint
+    openssl x509 -noout -in "$TMPWORK/${NODE}.crt" -fingerprint
   fi
 
   echo "Done"

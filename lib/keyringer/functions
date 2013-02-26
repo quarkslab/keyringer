@@ -74,6 +74,10 @@ function keyringer_exec {
   # Dispatch
   if keyringer_has_action "$action"; then
     "$ACTIONS/$action" "$basedir" $*
+    err="$?"
+    if [ "$err" != "0" ]; then
+      exit "$err"
+    fi
   fi
 }
 

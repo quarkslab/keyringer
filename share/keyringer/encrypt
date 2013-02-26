@@ -23,7 +23,15 @@ fi
 
 $GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") - > "$KEYDIR/$FILE"
 
+err="$?"
+
+if [ "$err" != "0" ]; then
+  exit "$err"
+fi
+
 # Stage
 if [ -d "$BASEDIR/.git" ]; then
   keyringer_exec git "$BASEDIR" add "keys/$FILE"
 fi
+
+exit "$?"

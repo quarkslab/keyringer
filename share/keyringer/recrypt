@@ -14,18 +14,12 @@ function keyringer_recrypt {
   # Set recipients file
   keyringer_set_recipients "$FILE"
 
-  # Test decryption
-  $GPG --use-agent -d "$KEYDIR/$FILE" > /dev/null
-
-  err="$?"
-
-  if [ "$err" != "0" ]; then
-    echo "$BASENAME: decryption failed. Can't recrypt."
-    exit "$err"
-  fi
+  # Set pipefail so we can detect decryption failures
+  set -o pipefail
 
   # Recrypt
-  $GPG --use-agent -d "$KEYDIR/$FILE" | $GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") > "$KEYDIR/$FILE"
+  $GPG --use-agent -d "$KEYDIR/$FILE" | \
+  $GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") > "$KEYDIR/$FILE"
 
   if [ "$?" != "0" ]; then
     exit 1

@@ -23,7 +23,7 @@ function keyringer_recrypt {
   fi
 
   # Recrypt
-  echo "$decrypted" | $GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") > "$KEYDIR/$FILE"
+  recrypted="`echo "$decrypted" | $GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE")`"
 
   if [ "$?" != "0" ]; then
     echo "Recryption error."
@@ -31,6 +31,7 @@ function keyringer_recrypt {
   fi
 
   unset decrypted
+  echo "$recrypted" > "$KEYDIR/$FILE"
 }
 
 if [ ! -z "$2" ]; then

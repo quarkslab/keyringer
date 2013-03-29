@@ -5,7 +5,8 @@ Keyringer lets you manage and share secrets using GPG and git in a distributed
 fashion. It has custom commands to encrypt, decrypt, recrypt, create key pairs,
 etc.
 
-Homepage: https://keyringer.sarava.org
+- Project page: [https://keyringer.sarava.org](https://keyringer.sarava.org).
+- Issue tracker: [https://keyringer.sarava.org/trac](https://keyringer.sarava.org/trac).
 
 Requirements
 ------------

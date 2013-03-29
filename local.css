@@ -1,0 +1,13 @@
+/* Embedded Moose local.css for use with ikiwiki
+ * Written by Josh Triplett <josh@freedesktop.org>
+ * Some ideas from the Debian lighttpd index.html page. */
+
+body { background: #e7e7e7; }
+
+#content { background: #ffffff; margin: 10px 0px; border: 2px solid #c0c0c0; padding: 10px; font-family: sans-serif;}
+
+.header { background: #4b6983; border: 2px solid #7590ae; padding: 10px; color: #ffffff; font-family: sans-serif;}
+.header a { margin-right: 1ex; color: #ffffff; font-family: sans-serif;}
+
+.actions ul { border: none; padding-bottom: 0px; font-family: sans-serif;}
+#footer { border: none; font-family: sans-serif;}

@@ -152,7 +152,11 @@ Using a non-default OpenPGP key
 If you want to use a different key other than your default for a given
 keyringer, use
 
-    keyringer <keyring> preferences add KEYID=FINGERPRINT
+    keyringer <keyring> preferences add KEYID=<fingerprint>
+
+Example:
+
+    keyringer <keyring> preferences add KEYID=0123456789ABCDEF0123456789ABCDE012345678
 
 Notes
 -----

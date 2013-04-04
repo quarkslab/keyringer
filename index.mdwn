@@ -5,22 +5,22 @@ Keyringer lets you manage and share secrets using GPG and git in a distributed
 fashion. It has custom commands to encrypt, decrypt, recrypt, create key pairs,
 etc.
 
-- Project page: [https://keyringer.sarava.org](https://keyringer.sarava.org).
-- Issue tracker: [https://keyringer.sarava.org/trac](https://keyringer.sarava.org/trac).
+- Project page: [https://keyringer.sarava.org](https://keyringer.sarava.org)
+- Issue tracker: [https://keyringer.sarava.org/trac](https://keyringer.sarava.org/trac)
 
 Requirements
 ------------
 
 Keyringer needs:
 
-  - Bash - http://tiswww.case.edu/php/chet/bash/bashtop.html
-  - Git - http://git-scm.com
-  - GNU Privacy Guard - http://gnupg.org
+  - [Bash](http://tiswww.case.edu/php/chet/bash/bashtop.html)
+  - [Git](http://git-scm.com)
+  - [GNU](Privacy Guard - http://gnupg.org)
   - Grep, awk, tail, cut, sed and other GNU tools
 
 Optional dependencies if you want to manage ssl keys:
 
-  - OpenSSL - http://www.openssl.org
+  - [OpenSSL](http://www.openssl.org)
 
 Installation
 ------------
@@ -214,15 +214,4 @@ given key), but it's possible to:
   - Keep the repo just atop of an encrypted and non-public place.        
 
   - Or to consider an integration with gpg's --hidden-recipient option.
-
-Notes: Using with GNU Privacy Guard
------------------------------------
-
-Exporting public keys:
-
-    gpg --armor --export <keyid>
-
-Exporting private keys (take care):
-
-    gpg --armor --export-secret-keys
 

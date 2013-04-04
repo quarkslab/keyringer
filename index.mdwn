@@ -45,14 +45,14 @@ run:
 
 This will 
 
-  1. Add an entry at $HOME/.keyringer/config aliasing 'keyring' to 'path'.
+  1. Add an entry at `$HOME/.keyringer/config` aliasing 'keyring' to 'path'.
   2. Initialize a git repository if needed.
 
 For example,
 
     keyringer friends init $HOME/keyrings/friends
 
-will create an alias "friends" pointing to $HOME/keyrings/friends. Call all
+will create an alias "friends" pointing to `$HOME/keyrings/friends`. Call all
 other keyring actions using this alias.
 
 If there is an existing remote keyring git repository and you just
@@ -137,13 +137,13 @@ Keyringer comes with a simple git wrapper to ease common management tasks:
 Configuration files, preferences and options
 --------------------------------------------
 
-  1. Main config file: $HOME/.keyringer/config: store the location of
+  1. Main config file: `$HOME/.keyringer/config`: store the location of
      each keyring.
 
-  2. User preferences per keyring: $HOME/.keyringer/<keyring>: managed by
+  2. User preferences per keyring: `$HOME/.keyringer/<keyring>`: managed by
      "keyringer <keyring> preferences".
 
-  3. Custom keyring options: $KEYRING_FOLDER/config/options: managed by
+  3. Custom keyring options: `$KEYRING_FOLDER/config/options`: managed by
      "keyringer <keyring> options".
 
 Using a non-default OpenPGP key
@@ -161,7 +161,7 @@ Example:
 Notes
 -----
 
-  1. The <file> is any file inside the keys/ folder of your
+  1. The `<file>` is any file inside the `keys/` folder of your
      keyring directory.
 
   2. Never decrypt a key and write it to the disk, except

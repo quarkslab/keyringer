@@ -11,8 +11,8 @@ function genpair_ssh {
   echo "Make sure that $KEYDIR is atop of an encrypted volume."
   read -p "Hit ENTER to continue." prompt
 
-  # TODO: programatically enter blank passphrase twice
-  ssh-keygen -t rsa -f "$TMPWORK/id_rsa" -C "root@$NODE"
+  # We're using empty passphrases
+  ssh-keygen -t rsa -P '' -f "$TMPWORK/id_rsa" -C "root@$NODE"
 
   # Encrypt the result
   echo "Encrypting secret key into keyringer..."

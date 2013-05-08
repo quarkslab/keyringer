@@ -1,8 +1,7 @@
 [[!meta title="Keyringer: encrypted and distributed secret sharing software"]]
 
-Keyringer lets you manage and share secrets using GPG and git in a distributed
-fashion. It has custom commands to encrypt, decrypt, recrypt, create key pairs,
-etc.
+Keyringer lets you manage and share secrets using GPG and git with custom
+commands to encrypt, decrypt, recrypt, create key pairs, etc.
 
 - Project page: [https://keyringer.sarava.org](https://keyringer.sarava.org)
 - Issue tracker: [https://keyringer.sarava.org/trac](https://keyringer.sarava.org/trac)
@@ -28,8 +27,8 @@ Just clone
 
     git clone git://git.sarava.org/keyringer.git
 
-And then leave it somewhere, optionally adding it to your $PATH environment variable.
-You can also package it to your preferred distro.
+And then leave it somewhere, optionally adding it to your `$PATH` environment variable
+or package it to your preferred distro.
 
 Creating a keyringer repository
 -------------------------------
@@ -37,8 +36,7 @@ Creating a keyringer repository
 The first step is to setup a keyring.
 
 Keyringer supports management of multiple isolated keyrings.  To start
-a new keyring (or register an existing one with your config file),
-run:
+a new keyring (or register an existing one with your config file), run:
 
     keyringer <keyring> init <path> [remote]
 
@@ -51,8 +49,8 @@ For example,
 
     keyringer friends init $HOME/keyrings/friends
 
-will create an alias "friends" pointing to `$HOME/keyrings/friends`. Call all
-other keyring actions using this alias.
+will create an alias "friends" pointing to `$HOME/keyrings/friends`. All
+other keyring actions should be called using this alias.
 
 If there is an existing remote keyring git repository and you just
 want to checkout it, use

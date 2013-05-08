@@ -166,8 +166,8 @@ Notes
   2. Never decrypt a key and write it to the disk, except
      if you're adding it to your personall keyring.
 
-  3. Recipients are defined at file config/recipients.
-     Please add just trustable recipients.
+  3. Recipients are defined at file `config/recipients`.
+     Take care to add just trustable recipients.
 
 Concepts
 --------

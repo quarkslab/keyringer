@@ -1,5 +1,4 @@
-Keyringer
-=========
+[[!meta title="Keyringer: encrypted and distributed secret sharing software"]]
 
 Keyringer lets you manage and share secrets using GPG and git in a distributed
 fashion. It has custom commands to encrypt, decrypt, recrypt, create key pairs,

@@ -5,6 +5,7 @@ commands to encrypt, decrypt, recrypt, create key pairs, etc.
 
 - Project page: [https://keyringer.sarava.org](https://keyringer.sarava.org)
 - Issue tracker: [https://keyringer.sarava.org/trac](https://keyringer.sarava.org/trac)
+- Contact: rhatto at riseup.net
 
 Requirements
 ------------

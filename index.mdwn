@@ -3,9 +3,9 @@
 Keyringer lets you manage and share secrets using GPG and git with custom
 commands to encrypt, decrypt, recrypt, create key pairs, etc.
 
-- Project page: [https://keyringer.sarava.org](https://keyringer.sarava.org)
-- Issue tracker: [https://keyringer.sarava.org/trac](https://keyringer.sarava.org/trac)
-- Contact: rhatto at riseup.net
+- Project page: [https://keyringer.pw](https://keyringer.pw)
+- Issue tracker: [https://keyringer.pw/trac](https://keyringer.pw/trac)
+- Contact: rhatto at keyringer.pw
 
 Installation
 ------------

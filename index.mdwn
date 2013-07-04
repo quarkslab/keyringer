@@ -5,6 +5,7 @@ commands to encrypt, decrypt, recrypt, create key pairs, etc.
 
 - Project page: [https://keyringer.pw](https://keyringer.pw)
 - Issue tracker: [https://keyringer.pw/trac](https://keyringer.pw/trac)
+- Tor hidden service: [http://y6ntvl5bzs3c7ffa.onion](http://y6ntvl5bzs3c7ffa.onion)
 - Contact: rhatto at keyringer.pw
 
 Installation

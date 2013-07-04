@@ -7,20 +7,6 @@ commands to encrypt, decrypt, recrypt, create key pairs, etc.
 - Issue tracker: [https://keyringer.sarava.org/trac](https://keyringer.sarava.org/trac)
 - Contact: rhatto at riseup.net
 
-Requirements
-------------
-
-Keyringer needs:
-
-  - [Bash](http://tiswww.case.edu/php/chet/bash/bashtop.html)
-  - [Git](http://git-scm.com)
-  - [GNU](Privacy Guard - http://gnupg.org)
-  - Grep, awk, tail, cut, sed and other GNU tools
-
-Optional dependencies if you want to manage ssl keys:
-
-  - [OpenSSL](http://www.openssl.org)
-
 Installation
 ------------
 
@@ -210,4 +196,18 @@ given key), but it's possible to:
   - Keep the repo just atop of an encrypted and non-public place.        
 
   - Or to consider an integration with gpg's --hidden-recipient option.
+
+Requirements
+------------
+
+Keyringer needs:
+
+  - [Bash](http://tiswww.case.edu/php/chet/bash/bashtop.html)
+  - [Git](http://git-scm.com)
+  - [GNU](Privacy Guard - http://gnupg.org)
+  - Grep, awk, tail, cut, sed and other GNU tools
+
+Optional dependencies if you want to manage ssl keys:
+
+  - [OpenSSL](http://www.openssl.org)
 

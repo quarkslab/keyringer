@@ -1,0 +1,12 @@
+#!/bin/bash
+#
+# Show available commands
+#
+
+# Load functions
+LIB="`dirname $0`/../../lib/keyringer/functions"
+source "$LIB" || exit 1
+
+printf "Usage: %s <keyring> <action> [arguments]\n" "$BASENAME"
+printf "Available commands: \n"
+ls $ACTIONS | sed -e 's/^/\t/'

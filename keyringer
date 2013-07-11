@@ -141,9 +141,7 @@ source "$LIB" || exit 1
 keyringer_config_load
 
 if [ -z "$ACTION" ]; then
-  printf "Usage: %s <keyring> <action> [arguments]\n" "$BASENAME"
-  printf "Available commands: \n"
-  ls $ACTIONS | sed -e 's/^/\t/'
+  keyringer_usage
   exit 1
 fi
 

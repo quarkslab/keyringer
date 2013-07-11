@@ -342,6 +342,18 @@ function keyringer_action_usage {
   fi
 }
 
+# Return available actions
+function keyringer_show_actions {
+  ls $ACTIONS
+}
+
+# Usage
+function keyringer_usage {
+  printf "Usage: %s <keyring> <action> [arguments]\n" "$BASENAME"
+  printf "Available commands: \n"
+  keyringer_show_actions | sed -e 's/^/\t/'
+}
+
 # Check recipients
 function keyringer_check_recipients {
   if [ "$KEYRINGER_CHECK_RECIPIENTS" == "false" ]; then

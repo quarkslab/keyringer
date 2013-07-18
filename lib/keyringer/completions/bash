@@ -36,10 +36,13 @@ _keyringer() {
         ;;
       ls)
         # TODO
-        if [ -z "${curl}" ]; then
-          opts="`keyringer $instance ls`"
+        if [ -z "${cur}" ]; then
+          # List folders with leading slash and remove @ symlink indicator
+          #opts="`ls --file-type -1 $path/keys | sed -e 's/@$//'`"
+          opts="`keyringer $instance ls --file-type -1 | sed -e 's/@$//'`"
         else
-          opts="`keyringer $instance ls ${cur}*`"
+          #opts="`ls --file-type -1 -d $path/keys/${cur}* | sed -e 's/@$//'`"
+          opts="`keyringer $instance ls --file-type -1 -d ${cur}* | sed -e 's/@$//'`"
         fi
         ;;
       *)

@@ -37,6 +37,9 @@ _keyringer() {
       ls|encrypt|encrypt-batch|decrypt|edit|append|append-batch|del|recrypt)
         opts="$(bash -c "set -f && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
         ;;
+      genpair)
+        opts="gpg ssh ssl ssl-self"
+        ;;
       *)
         ;;
     esac

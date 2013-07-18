@@ -39,7 +39,17 @@ _keyringer() {
         if [ -z "${cur}" ]; then
           opts="`keyringer $instance ls -p`"
         else
-          opts="`keyringer $instance ls -p -d ${cur}*`"
+          local append
+          opts="`keyringer $instance ls -p -d ${cur}* 2> /dev/null`"
+
+          # Append the contents of each folder, one level down
+          for opt in $opts; do
+            if echo $opt | grep -qe '/$'; then
+              append="$append `keyringer $instance ls -d $opt* 2> /dev/null`"
+            fi
+          done
+
+          #opts="$opts $append"
         fi
         ;;
       *)

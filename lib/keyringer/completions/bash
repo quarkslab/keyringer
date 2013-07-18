@@ -35,11 +35,7 @@ _keyringer() {
         opts="ls edit"
         ;;
       ls)
-        if [ -z "${cur}" ]; then
-          opts="`keyringer $instance ls -p`"
-        else
-          opts="$(bash -c "set -f && keyringer $instance ls -p -d ${cur}*")"
-        fi
+        opts="$(bash -c "set -f && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
         ;;
       *)
         ;;

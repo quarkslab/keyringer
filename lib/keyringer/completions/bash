@@ -25,6 +25,7 @@ _keyringer() {
   elif [ "${#COMP_WORDS[@]}" == "4" ]; then
     # Process config
     source $config/config
+    path="`eval echo '$'$instance`"
 
     case "${prev}" in
       options|preferences)
@@ -35,7 +36,11 @@ _keyringer() {
         ;;
       ls)
         # TODO
-        opts="`keyringer $instance ls ${cur}`"
+        if [ -z "${curl}" ]; then
+          opts="`keyringer $instance ls`"
+        else
+          opts="`keyringer $instance ls ${cur}*`"
+        fi
         ;;
       *)
         ;;

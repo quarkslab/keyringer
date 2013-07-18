@@ -42,6 +42,9 @@ _keyringer() {
     esac
   fi
 
+  # Avoid annoying bell and extra tab
+  bind 'set show-all-if-ambiguous on'
+
   # Return the available options
   COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
   [[ $COMPREPLY == */ ]] && compopt -o nospace

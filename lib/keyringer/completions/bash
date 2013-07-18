@@ -37,12 +37,9 @@ _keyringer() {
       ls)
         # TODO
         if [ -z "${cur}" ]; then
-          # List folders with leading slash and remove @ symlink indicator
-          #opts="`ls --file-type -1 $path/keys | sed -e 's/@$//'`"
-          opts="`keyringer $instance ls --file-type -1 | sed -e 's/@$//'`"
+          opts="`keyringer $instance ls -p`"
         else
-          #opts="`ls --file-type -1 -d $path/keys/${cur}* | sed -e 's/@$//'`"
-          opts="`keyringer $instance ls --file-type -1 -d ${cur}* | sed -e 's/@$//'`"
+          opts="`keyringer $instance ls -p -d ${cur}*`"
         fi
         ;;
       *)

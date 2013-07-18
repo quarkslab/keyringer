@@ -35,12 +35,10 @@ _keyringer() {
         opts="ls edit"
         ;;
       ls)
-        # TODO
         if [ -z "${cur}" ]; then
           opts="`keyringer $instance ls -p`"
         else
-          local append
-          opts="`keyringer $instance ls -p -d ${cur}* 2> /dev/null`"
+          opts="$(bash -c "set -f && keyringer $instance ls -p -d ${cur}*")"
         fi
         ;;
       *)

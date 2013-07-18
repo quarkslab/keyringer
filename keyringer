@@ -112,6 +112,9 @@ BASENAME="`basename $0`"
 KEYRING="$1"
 ACTION="$2"
 
+# Turn off pathname expansion so expansion can work properly
+set -f
+
 # Export preferences and version for other scripts
 export PREFERENCES="`dirname $CONFIG`/$KEYRING"
 export KEYRINGER_VERSION

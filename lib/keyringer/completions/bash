@@ -34,7 +34,7 @@ _keyringer() {
       recipients)
         opts="ls edit"
         ;;
-      ls|encrypt|encrypt-batch|decrypt|edit|append|append-batch)
+      ls|encrypt|encrypt-batch|decrypt|edit|append|append-batch|del)
         opts="$(bash -c "set -f && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
         ;;
       *)

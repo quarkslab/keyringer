@@ -16,6 +16,14 @@ _keyringer_git_complete() {
       fi
 
       _git
+
+      LAST=${COMP_WORDS[COMP_CWORD]}
+      REPLY=${COMPREPLY[@]}
+
+      if [ "$REPLY" == "$LAST" ]; then
+        return
+      fi
+
       echo ${COMPREPLY[@]}
     )
   fi

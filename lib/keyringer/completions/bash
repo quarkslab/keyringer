@@ -2,6 +2,25 @@
 # Keyringer bash completion
 #
 
+# Completion for git subcommand
+_keyringer_git_complete() {
+  if [ -e "/etc/bash_completion.d/git" ]; then
+    (
+      source /etc/bash_completion.d/git
+      cd $path
+      COMP_WORDS=(git $*)
+      COMP_CWORD=$((${#COMP_WORDS[*]} - 1))
+
+      if [ "$COMP_CWORD" == "0" ]; then
+        COMP_CWORD=1
+      fi
+
+      _git
+      echo ${COMPREPLY[@]}
+    )
+  fi
+}
+
 _keyringer() {
   # Standard stuff
   local cur prev opts config
@@ -42,7 +61,7 @@ _keyringer() {
         opts="gpg ssh ssl ssl-self"
         ;;
       git)
-        # TODO: This depends on git's bash completion
+        opts="$(_keyringer_git_complete ${cur})"
         ;;
       *)
         ;;
@@ -56,13 +75,14 @@ _keyringer() {
         opts="$(bash -c "set -f && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
         ;;
       git)
-        # TODO: This depends on git's bash completion
+        # TODO
+        opts="$(_keyringer_git_complete ${prev} ${cur})"
         ;;
       *)
         ;;
     esac
   elif [ "${command}" == "git" ]; then
-    # TODO: This depends on git's bash completion
+    # TODO
     true
   fi
 

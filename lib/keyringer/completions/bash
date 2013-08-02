@@ -85,7 +85,7 @@ _keyringer() {
     esac
   elif [ "${command}" == "git" ]; then
     # TODO
-    true
+    opts="$(_keyringer_git_complete ${COMP_WORDS[@]:3})"
   fi
 
   # Avoid annoying bell and extra tab

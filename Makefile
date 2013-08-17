@@ -38,3 +38,6 @@ install_doc:
 
 install: clean
 	@make install_lib install_share install_bin install_doc
+
+build_man:
+	pandoc -s -w man share/man/keyringer.1.mdwn -o share/man/keyringer.1

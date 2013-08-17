@@ -44,11 +44,16 @@ _keyringer() {
 
   # Initial options
   config="$HOME/.keyringer"
-  keyrings="`ls $config | sed -e 's/config//'`"
+
+  # Check if we have initial configuration
+  if [ ! -d "$config" ]; then
+    return
+  fi
 
   # Process config
   source $config/config
   path="`eval echo '$'$instance`"
+  keyrings="`ls $config | sed -e 's/config//'`"
 
   # Available instances
   instances="`echo $keyrings | sed -e 's/ /|/'`"

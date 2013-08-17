@@ -33,6 +33,13 @@ _keyringer() {
 
     # Initial options
     local config="$HOME/.keyringer"
+
+    # Check if we have initial configuration
+    if [ ! -d "$config" ]; then
+      return
+    fi
+
+    # Process config
     local keyrings="`ls $config | sed -e 's/config//'`"
 
     _arguments        \

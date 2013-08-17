@@ -1,5 +1,6 @@
 #compdef keyringer
 
+# TODO: this is common completion code
 # Completion for git subcommand
 _keyringer_git_complete() {
   if [ -e "/etc/bash_completion.d/git" ]; then

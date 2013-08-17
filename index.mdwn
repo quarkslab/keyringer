@@ -65,52 +65,52 @@ Fill it with your friends key IDs. Now encrypt a secret just for then:
 In other words, if keyringer finds a recipient file matching a given path,
 it will use it instead of the global recipients file.
 
-Managing keys
+Managing secrets
 ----------------
 
-Each key has a corresponding file in your keys subdirectory.
+Each secret has a corresponding file in your `keys` subdirectory.
 
-keyringer is agnostic about how you store your secrets. You may choose to have
-one key file that contains one line for each secret, e.g. a single file called
+Keyringer is agnostic about how you store your secrets. You may choose to have
+one encrypted file that contains one line for each secret, e.g. a single file called
 secrets with lines such as:
 
     emma : root : secret1
     emma - /dev/hda : : secret2
 
-Or you may also have a different key file for each secret, e.g. a file called
+Or you may also have a different encrypted file for each secret, e.g. a file called
 emma.root that contains the root passphrase for the server named emma and
 another called emma.hda with the passphrase to decrypt /dev/hda on emma.
 
-Encrypting a key
+Encrypting a secret
 
     keyringer <keyring> encrypt <file>
 
-Encrypting a key from a file
+Encrypting a secret from a file
 
     keyringer <keyring> encrypt <plaintext-file> <file>
 
-Decrypting a key (only to stdout)
+Decrypting a secret (only to stdout)
 
     keyringer <keyring> decrypt <file>
 
-Re-encrypting a key or the whole repository
+Re-encrypting a secret or the whole repository
 
     keyringer <keyring> recrypt [file]
 
-Appending information to a key
+Appending information to a secret
 
     keyringer <keyring> append <file>
 
-Editing a key
+Editing a secret
 
-To edit a key, use
+To edit a secret, use
 
     keyringer <keyring> edit <file>
 
 Use this option with caution as it keeps temporary unencrypted data
 into keyringer temp folder and at your editor's temp files.
 
-Listing keys
+Listing secrets
 
     keyringer <keyring> ls [arguments]
 

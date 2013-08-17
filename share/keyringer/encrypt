@@ -42,6 +42,10 @@ if [ "$err" != "0" ]; then
   exit "$err"
 fi
 
+if [ "$UNENCRYPTED_FILE" != "-" ]; then
+  echo "Now make to wipe the non-encrypted $UNENCRYPTED_FILE."
+fi
+
 # Stage
 if [ -d "$BASEDIR/.git" ]; then
   keyringer_exec git "$BASEDIR" add "keys/$FILE"

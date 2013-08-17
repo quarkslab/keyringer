@@ -1,0 +1,92 @@
+.TH KEYRINGER 1 "August 17, 2013" "Keyringer User Manual"
+.SH NAME
+.PP
+keyringer - encrypted and distributed secret sharing software
+.SH SYNOPSIS
+.PP
+keyringer <\f[I]keyring\f[]> <\f[I]action\f[]> [\f[I]options\f[]]...
+.SH DESCRIPTION
+.PP
+Keyringer lets you manage and share secrets using GPG and git with
+custom commands to encrypt, decrypt, recrypt, create key pairs, etc.
+.SH ACTIONS
+.PP
+Keyringer has three types of actions:
+.IP "1." 3
+Configuration actions.
+.IP "2." 3
+Secret manipulation actions.
+.IP "3." 3
+Repository lookup and manipulation actions.
+.SS CONFIGURATION ACTIONS
+.PP
+commands : List available actions, useful for shell completion and
+syntax check.
+.PP
+options <\f[I]ls\f[]|\f[I]edit\f[]|\f[I]add\f[]> : List, edit or add
+miscelaneous \f[I]repository options\f[].
+.PP
+preferences <\f[I]ls\f[]|\f[I]edit\f[]|\f[I]add\f[]> : List, edit or add
+\f[I]user options\f[] for a given repository.
+.PP
+recipients <\f[I]ls\f[]|\f[I]edit\f[]> <\f[I]recipient-file\f[]> : List
+or edit recipient configuration.
+.PP
+usage : Show usage information.
+.SS SECRET MANIPULATION ACTIONS
+.PP
+All secret manipulation actions operates upon a \f[I]SECRET\f[], which
+is the pathname of an encrypted file relative to keyring with optional
+\f[C]\&.asc\f[] extension.
+.PP
+Secret manipulation actions do not commit changes into the secret
+repository.
+After any manipulation, the user has to manually commit the changes.
+.PP
+append <\f[I]SECRET\f[]> : Append contents into a secret.
+.PP
+append-batch <\f[I]SECRET\f[]> : Append contents into a secret, batch
+mode.
+.PP
+decrypt <\f[I]SECRET\f[]> : Decrypts a secret into standard output.
+.PP
+del <\f[I]SECRET\f[]> : Removes a secret using git.
+After deleting a secret a git commit and push is still needed to update
+remote repositories.
+To completely remove a file from a keyring, you should also rewrite the
+git history by yourself.
+.PP
+edit <\f[I]SECRET\f[]> : Edits a secret by temporarily decrypting it,
+opening the decrypted copy into \f[I]$EDITOR\f[] and then recrypting it
+again.
+.PP
+encrypt <\f[I]SECRET\f[]> : Encrypts content from standard input into
+\f[I]SECRET\f[].
+.PP
+encrypt-batch <\f[I]SECRET\f[]> : Encrypt content, batch mode.
+.PP
+genpair <\f[I]ssh\f[]|\f[I]gpg\f[]|\f[I]ssl\f[]|\f[I]ssl-self\f[]>
+[\f[I]options\f[]] : Wrapper to generete encryption keypairs, useful for
+automated key deployment.
+.PP
+recrypt <\f[I]SECRET\f[]> : Recrypts a secret by decrypting it and
+recrypting again.
+Useful when users are added into recipient configuration.
+If no \f[I]SECRET\f[] is given, all secrets in the repository are
+re-encrypted.
+.SH REPOSITORY LOOKUP AND MANIPULATION ACTIONS
+.PP
+git <\f[I]action\f[]> <\f[I]options\f[]> : Git wrapper that operates
+from the toplevel keyring repository.
+.PP
+ls <\f[I]PATH\f[]> : List contents from the toplevel repository
+\f[I]keys\f[] folder or from relative \f[I]PATH\f[].
+.SH SEE ALSO
+.PP
+The \f[I]README\f[] file distributed with Keyringer contains full
+documentation.
+.PP
+The Keyringer source code and all documentation may be downloaded from
+<https://keyringer.pw>.
+.SH AUTHORS
+Silvio Rhatto.

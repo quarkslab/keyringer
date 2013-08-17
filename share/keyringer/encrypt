@@ -8,7 +8,18 @@ LIB="`dirname $0`/../../lib/keyringer/functions"
 source "$LIB" || exit 1
 
 # Aditional parameters
-keyringer_get_new_file "$2"
+if [ ! -z "$3" ]; then
+  UNENCRYPTED_FILE="$2"
+  keyringer_get_new_file "$3"
+
+  if [ ! -f "$UNENCRYPTED_FILE" ]; then
+    echo "Error: cannot encrypted $UNENCRYPTED_FILE: file not found."
+    exit 1
+  fi
+else
+  UNENCRYPTED_FILE="-"
+  keyringer_get_new_file "$2"
+fi
 
 # Set recipients file
 keyringer_set_recipients "$FILE"
@@ -18,10 +29,12 @@ mkdir -p "$KEYDIR/`dirname $FILE`"
 
 if [ "$BASENAME" == "encrypt" ]; then
   # Only display directions if we're running encrypt, not encrypt-batch
-  echo "Type your message and finish your input with EOF (Ctrl-D)."
+  if [ "$UNENCRYPTED_FILE" == "-" ]; then
+    echo "Type your message and finish your input with EOF (Ctrl-D)."
+  fi
 fi
 
-$GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") - > "$KEYDIR/$FILE"
+$GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") --yes --output "$KEYDIR/$FILE" $UNENCRYPTED_FILE
 
 err="$?"
 

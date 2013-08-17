@@ -66,8 +66,8 @@ edit <*SECRET*>
 :  Edits a secret by temporarily decrypting it, opening the decrypted copy into *$EDITOR*
    and then recrypting it again.
 
-encrypt <*SECRET*>
-:  Encrypts content from standard input into *SECRET*.
+encrypt [*file*] <*SECRET*>
+:  Encrypts content from standard input or *file* into *SECRET*.
 
 encrypt-batch <*SECRET*>
 :  Encrypt content, batch mode.

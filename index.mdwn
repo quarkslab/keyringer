@@ -85,6 +85,10 @@ Encrypting a key
 
     keyringer <keyring> encrypt <file>
 
+Encrypting a key from a file
+
+    keyringer <keyring> encrypt <plaintext-file> <file>
+
 Decrypting a key (only to stdout)
 
     keyringer <keyring> decrypt <file>

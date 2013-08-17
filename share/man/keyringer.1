@@ -60,14 +60,16 @@ edit <\f[I]SECRET\f[]> : Edits a secret by temporarily decrypting it,
 opening the decrypted copy into \f[I]$EDITOR\f[] and then recrypting it
 again.
 .PP
-encrypt <\f[I]SECRET\f[]> : Encrypts content from standard input into
-\f[I]SECRET\f[].
+encrypt [\f[I]file\f[]] <\f[I]SECRET\f[]> : Encrypts content from
+standard input or \f[I]file\f[] into \f[I]SECRET\f[].
 .PP
 encrypt-batch <\f[I]SECRET\f[]> : Encrypt content, batch mode.
 .PP
 genpair <\f[I]ssh\f[]|\f[I]gpg\f[]|\f[I]ssl\f[]|\f[I]ssl-self\f[]>
 [\f[I]options\f[]] : Wrapper to generete encryption keypairs, useful for
 automated key deployment.
+.PP
+open <\f[I]SECRET\f[]> : Open a secret using xdg-open.
 .PP
 recrypt <\f[I]SECRET\f[]> : Recrypts a secret by decrypting it and
 recrypting again.

@@ -1,0 +1,30 @@
+#compdef keyringer
+
+_keyringer() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    # Initial options
+    local config="$HOME/.keyringer"
+    local keyrings="`ls $config | sed -e 's/config//'`"
+
+    _arguments \
+      '1: :->keyring'\
+      '2: :->action'\
+      '*: :->options'
+
+    case $state in
+      keyring)
+        _arguments "1:Keyrings:($keyrings)"
+        ;;
+      action)
+        compadd "$@" `keyringer $words[2] commands`
+        ;;
+      *)
+        # TODO
+        true
+        ;;
+    esac 
+}
+
+_keyringer "$@"

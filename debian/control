@@ -11,7 +11,7 @@ Homepage: https://keyringer.pw
 Package: keyringer
 Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, bash, git-core, gnupg, grep, gawk, coreutils, sed
-Recommends: openssl
+Recommends: openssl, xdg-utils
 Description: Distributed secret management using GPG and git
  Keyringer lets you manage and share secrets using GPG and git in a distributed
  fashion. It has custom commands to encrypt, decrypt, recrypt, create key pairs,

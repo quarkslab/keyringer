@@ -75,6 +75,9 @@ encrypt-batch <*SECRET*>
 genpair <*ssh*|*gpg*|*ssl*|*ssl-self*> [*options*]
 :  Wrapper to generete encryption keypairs, useful for automated key deployment.
 
+open <*SECRET*>
+:  Open a secret using xdg-open.
+
 recrypt <*SECRET*>
 :  Recrypts a secret by decrypting it and recrypting again. Useful when users are added
    into recipient configuration. If no *SECRET* is given, all secrets in the repository

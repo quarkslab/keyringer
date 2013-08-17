@@ -22,10 +22,21 @@ keyringer_set_tmpfile edit
 # Decrypt the information to the file
 $GPG --yes -o "$TMPWORK" --use-agent -d "$KEYDIR/$FILE"
 
+if [ "$BASENAME" == "edit" ]; then
+  APP="$EDITOR"
+elif [ "$BASENAME" == "open" ]; then
+  if which xdg-open &> /dev/null; then
+    APP="xdg-open"
+  else
+    echo "You should have xdg-open application to perform this action, aborting."
+    exit 1
+  fi
+fi
+
 # Prompt
-echo "Press any key to open the decrypted data in $EDITOR, Ctrl-C to abort"
+echo "Press any key to open the decrypted data with $APP, Ctrl-C to abort"
 read key
-$EDITOR "$TMPWORK"
+$APP "$TMPWORK"
 
 # Encrypt again
 $GPG --yes -o "$KEYDIR/$FILE" --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") "$TMPWORK"

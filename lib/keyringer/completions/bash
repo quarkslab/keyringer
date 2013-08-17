@@ -1,6 +1,11 @@
+#!bash
 #
 # Keyringer bash completion
 #
+
+if [[ -n ${ZSH_VERSION-} ]]; then
+	autoload -U +X bashcompinit && bashcompinit
+fi
 
 # Completion for git subcommand
 _keyringer_git_complete() {
@@ -97,11 +102,17 @@ _keyringer() {
   fi
 
   # Avoid annoying bell and extra tab
-  bind 'set show-all-if-ambiguous on'
+  if [ -z "$ZSH_VERSION" ]; then
+    bind 'set show-all-if-ambiguous on'
+  fi
 
   # Return the available options
   COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
-  [[ $COMPREPLY == */ ]] && compopt -o nospace
+
+  if [ -z "$ZSH_VERSION" ]; then
+    [[ $COMPREPLY == */ ]] && compopt -o nospace
+  fi
+
   return 0
 }
 

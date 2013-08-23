@@ -1,31 +1,13 @@
 #compdef keyringer
 
-# TODO: this is common completion code
+# TODO: how to call _git() properly?
 # Completion for git subcommand
 _keyringer_git_complete() {
-  if [ -e "/etc/bash_completion.d/git" ]; then
-    (
-      source /etc/bash_completion.d/git
-      cd $path
-      COMP_WORDS=(git $*)
-      COMP_CWORD=$((${#COMP_WORDS[*]} - 1))
-
-      if [ "$COMP_CWORD" == "0" ]; then
-        COMP_CWORD=1
-      fi
-
-      _git
-
-      LAST=${COMP_WORDS[COMP_CWORD]}
-      REPLY=${COMPREPLY[@]}
-
-      if [ "$REPLY" == "$LAST" ]; then
-        return
-      fi
-
-      echo ${COMPREPLY[@]}
-    )
-  fi
+  (
+    local CURRENT=1
+    local words=($*)
+    echo `_git`
+  )
 }
 
 _keyringer() {
@@ -42,6 +24,8 @@ _keyringer() {
 
     # Process config
     local keyrings="`ls $config | sed -e 's/config//'`"
+    source $config/config
+    keyring_path="`eval echo '$'$words[2]`"
 
     _arguments        \
       '1: :->keyring' \
@@ -82,11 +66,11 @@ _keyringer() {
       misc)
         case "$words[3]" in
           recipients)
-            compadd "$@" $(cd $path/config/recipients && ls -p $words[5]* 2> /dev/null)
+            compadd "$@" $(cd $keyring_path/config/recipients && ls -p $words[5]* 2> /dev/null)
             ;;
           genpair)
             # TODO: do not rely on bash
-            compadd "$@" $(bash -c "set -f && keyringer $instance ls -p -d $words[5]*" 2> /dev/null)
+            compadd "$@" $(bash -c "set -f && keyringer $words[2] ls -p -d $words[5]*" 2> /dev/null)
             ;;
           git)
             # TODO

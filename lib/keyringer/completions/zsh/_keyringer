@@ -1,13 +1,9 @@
 #compdef keyringer
 
-# TODO: how to call _git() properly?
 # Completion for git subcommand
 _keyringer_git_complete() {
-  (
-    local CURRENT=1
-    local words=($*)
-    echo `_git`
-  )
+  # TODO: how to call _git() properly?
+  return
 }
 
 _keyringer() {
@@ -81,7 +77,7 @@ _keyringer() {
         esac
         ;;
       *)
-        if [ $words[3] == "$git" ]; then
+        if [ $words[3] == "git" ]; then
           # TODO
           true
         fi

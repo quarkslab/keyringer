@@ -1,0 +1,532 @@
+2013-09-03  Silvio Rhatto  <rhatto@riseup.net>
+
+	Changing LICENSE (#10)
+
+2013-08-25  Silvio Rhatto  <rhatto@riseup.net>
+
+	Preparing 0.2.2 release
+
+	Changing default prefix and doc install folder (#11)
+
+	Minor cleanup at zsh completion
+
+2013-08-22  Silvio Rhatto  <rhatto@riseup.net>
+
+	Use a different _keyringer_git_complete() for zsh
+
+	Website: Do not fetch CSS stuff from google
+
+2013-08-17  Silvio Rhatto  <rhatto@riseup.net>
+
+	Updated manpage
+
+	Disambiguate keys/secrets
+
+	Added wipe notice
+
+	Added support to encrypt from files
+
+	Adding 'open' action
+
+	Updating project homepage at debian/control
+
+	Adds build_man make target
+
+	Initial manpage code
+
+2013-08-16  Silvio Rhatto  <rhatto@riseup.net>
+
+	TODO update
+
+	Check config before completion
+
+	Matching zsh with bash completion
+
+	Initial zsh completion
+
+	Initial code to make zsh-compatible completion
+
+2013-08-02  Silvio Rhatto  <rhatto@riseup.net>
+
+	Avoiding duplication on git completion
+
+	More git completion code
+
+	Fixing initial options on bash completion
+
+	Initial git completion code
+
+2013-07-18  Silvio Rhatto  <rhatto@riseup.net>
+
+	More on bash completion
+
+	Completion cleanup
+
+	Adding initial completion for genpair
+
+	Adding recrypt completion
+
+	Adding del completion
+
+	Adding completion other encrypt/decrypt/append/edit commands
+
+	Completion: avoid annoying bell and extra tab
+
+	More ls completion cleanup
+
+	Turn off pathname expansion so expansion can work properly
+
+	Cleaning up ls completion
+
+	Appending sub folders on completion
+
+	Cleaning up ls completion
+
+	Minor enhancement on ls completion (2)
+
+	Minor enhancement on ls completion
+
+2013-07-12  Silvio Rhatto  <rhatto@riseup.net>
+
+	More on completion
+
+2013-07-11  Silvio Rhatto  <rhatto@riseup.net>
+
+	Initial bash completion code (#2)
+
+	Cleanup
+
+	Better usage handling
+
+2013-07-04  Silvio Rhatto  <rhatto@riseup.net>
+
+	Tor hidden service
+
+	New contacts
+
+	Moving requirements to the end
+
+2013-05-28  Silvio Rhatto  <rhatto@riseup.net>
+
+	Do not limit screen width
+
+2013-05-09  Silvio Rhatto  <rhatto@riseup.net>
+
+	Adding contact info
+
+2013-05-07  Silvio Rhatto  <rhatto@riseup.net>
+
+	Misc doc updates
+
+	Minor doc update
+
+	Page title
+
+	Adding bootstrap with cyborg theme (2)
+
+	Formatting
+
+	Adding bootstrap with cyborg theme
+
+2013-04-10  Silvio Rhatto  <rhatto@riseup.net>
+
+	Using empty passphrases for genpair_ssh
+
+2013-04-04  Silvio Rhatto  <rhatto@riseup.net>
+
+	More tidying
+
+	Doc tidying
+
+2013-04-02  Silvio Rhatto  <rhatto@riseup.net>
+
+	Markdown fix
+
+	Trying new stylesheet
+
+2013-04-01  Silvio Rhatto  <rhatto@riseup.net>
+
+	Be more explicit about preferences syntax by providing an example
+
+2013-03-29  Silvio Rhatto  <rhatto@riseup.net>
+
+	Project page and issue tracker
+
+	Setting CSS
+
+	Moving README to index and vice-versa
+
+	Adding index page
+
+2013-03-19  Silvio Rhatto  <rhatto@riseup.net>
+
+	Recrypt: just write to file if successful (#6)
+
+2013-03-18  Silvio Rhatto  <rhatto@riseup.net>
+
+	Decrypt/encrypt approach (#6)
+
+	Pipefail approach (#6)
+
+2013-02-26  Silvio Rhatto  <rhatto@riseup.net>
+
+	Recrypt only when decrypt is successful (#6)
+
+	Check return status (closes #7)
+
+2012-11-19  Silvio Rhatto  <rhatto@riseup.net>
+
+	Minor changes at genpair action
+
+2012-11-01  Silvio Rhatto  <rhatto@riseup.net>
+
+	Explicitly using "preferences" instead of $ACTION
+
+2012-10-19  ricola  <ricola@poivron.org>
+
+	Load preferences for actions as well
+
+	Improve the 'preferences add' action
+
+	Add usage to the 'preferences' action
+
+	Move the 'preferences' action to a separate file
+
+2012-09-05  Silvio Rhatto  <rhatto@riseup.net>
+
+	Do not enclose $EDITOR with quotes as it might break constructions such as "vim -X"
+
+2012-09-04  Silvio Rhatto  <rhatto@riseup.net>
+
+	Using a more user-friendly message on recipient fingerprint error
+
+2012-08-21  Silvio Rhatto  <rhatto@riseup.net>
+
+	Updating .gitignore
+
+	Initialization fixes
+
+2012-06-28  Silvio Rhatto  <rhatto@riseup.net>
+
+	Adding keyringer logo
+
+	New homepage
+
+2012-06-26  Silvio Rhatto  <rhatto@riseup.net>
+
+	Misc debian changes
+
+	Changing debian/compat
+
+	Updating .gitignore
+
+	Keyringer dependencies
+
+	Adding debian/patches/
+
+	Changing debian arch to 'all'
+
+	Fixing debian/copyright ; removing ssl-cacert from genpair so keyringer do not have any third-party code
+
+	Setting basic info at debian/control
+
+	Trying to fix the debian build
+
+	More debian specifics from dh_make
+
+	Initial packaging support
+
+2012-03-30  Silvio Rhatto  <rhatto@riseup.net>
+
+	Using just git pull at keyringer_check_version
+
+	Do not use keyringer_exec as it would trigger keyringer_check_version again
+
+2012-03-26  Silvio Rhatto  <rhatto@riseup.net>
+
+	Adding KEYRINGER_CHECK_VERSION env variable
+
+	Pull and push config changes
+
+2012-02-27  Silvio Rhatto  <rhatto@riseup.net>
+
+	Taking into account .asc extension in recipient files
+
+	EDITOR variable cannot be escaped as the editor might have arguments
+
+	Check if config version is supported by keyringer
+
+	Multiple recipients file support
+
+2012-02-05  Silvio Rhatto  <rhatto@riseup.net>
+
+	Fixing init command and checking for empty recipients file
+
+2011-12-22  Silvio Rhatto  <rhatto@riseup.net>
+
+	Abort recryption on error
+
+2011-11-30  Silvio Rhatto  <rhatto@riseup.net>
+
+	TODO
+
+	SSL Wildcard with SubjectAltNames support for genpair
+
+2011-11-22  Silvio Rhatto  <rhatto@riseup.net>
+
+	Custom keyid support
+
+	Guessing a common mistake on init
+
+	Removing old puppet docs
+
+2011-05-27  Silvio Rhatto  <rhatto@riseup.net>
+
+	Minor cleanup
+
+	Action recrypt now can re-encrypt the whole repository
+
+2011-05-15  Silvio Rhatto  <rhatto@riseup.net>
+
+	README update
+
+2011-05-13  Silvio Rhatto  <rhatto@riseup.net>
+
+	Text fixes
+
+2011-02-27  Silvio Rhatto  <rhatto@riseup.net>
+
+	TODO for genpair ssl
+
+2011-01-21  Silvio Rhatto  <rhatto@riseup.net>
+
+	Changing genpair ssl action, adding ssl-self and ssl-cacert
+
+2010-12-12  Silvio Rhatto  <rhatto@riseup.net>
+
+	Passphrase confirmation at genpair_gpg
+
+2010-11-21  Silvio Rhatto  <rhatto@riseup.net>
+
+	Removing hardcoded Name-Comment at genpair_gpg
+
+	Minor output change
+
+	Quoting fix
+
+	Minor text change
+
+	Switching from DSA to RSA SSH keys
+
+	Removing reference to newkeys on README
+
+	Moving newkeys subcommand to hydra suite
+
+2010-11-20  Silvio Rhatto  <rhatto@riseup.net>
+
+	Quotes
+
+	Coding style
+
+	Listing subcommands and TODO update
+
+2010-11-18  Silvio Rhatto  <rhatto@riseup.net>
+
+	Configuration version tracking to help keyring upgrades
+
+	Variable quoting
+
+	Fixing recipients comment
+
+	TODO update
+
+	Initial recipients check support
+
+	Oops
+
+2010-11-18  Silvio Rhatto  <rhatto@riseup.net>
+
+	Merge branch 'master' of git://lair.fifthhorseman.net/~dkg/keyringer
+	Conflicts:
+
+		keyringer
+
+2010-11-18  Silvio Rhatto  <rhatto@riseup.net>
+
+	Source or die
+
+2010-11-17  Daniel Kahn Gillmor  <dkg@fifthhorseman.net>
+
+	first pass at escaping variables in bash -- i probably missed some
+
+	a bit of cleanup of the README
+
+	fall back on reasonable editors if environment variable is not set
+
+	support symlinking keyringer into your ~/bin
+
+	do not complain if the config directory already exists when creating it.
+
+2010-09-19  Silvio Rhatto  <rhatto@riseup.net>
+
+	Using $BASENAME to check batch mode
+
+2010-09-19  Jamie McClelland  <jm@mayfirst.org>
+
+	adding contrib directory and sample bash wrapper for simplifying keyringer usage.
+
+	adding new commands append-batch and encrypt-batch, which reduce the verbosity of the messages being displayed.
+
+	when staging git changes, use consistent BASEDIR - or else future function calls will fail with incorrect BASEDIR setting.
+
+	modify keyringer_get_new_file call - the function sets FILE variable, it does not return it
+
+2010-09-18  Silvio Rhatto  <rhatto@riseup.net>
+
+	Automatically run keyringer_set_env just for actions
+
+	Sorting functions
+
+	New function keyringer_get_new_file
+
+	Running keyringer_set_env when sourcing $LIB
+
+	Source $LIB or abort
+
+	Fixing tmpfile handling
+
+	Comments
+
+	Making code that checks for command argument as a common function
+
+	Checking for $BASEDIR and $OPTIONS at keyringer_set_env
+
+	Checking for $EDITOR at keyringer_set_env
+
+	Making code that checks for file argument as a common function
+
+	Testing $RECIPIENT existence at keyringer_set_env
+
+2010-09-17  Jamie McClelland  <jm@mayfirst.org>
+
+	adding fuller explanation of the relationship between keys and files
+
+	pass --quiet to decrypt command to reduce noise when trying to locate the passphrase you need.
+
+	output number of lines in file rather than contents of file when appending.
+
+	use \n (like break) for array separator instead of space to support files with spaces between lines.
+
+2010-09-16  Silvio Rhatto  <rhatto@riseup.net>
+
+	Code cleanup
+
+	Adding 'append' action
+
+2010-09-08  Silvio Rhatto  <rhatto@riseup.net>
+
+	README's Development section
+
+	Adding README entry on 'edit' command
+
+2010-09-03  Silvio Rhatto  <rhatto@riseup.net>
+
+	Adding keyringer_git_ignore
+
+	Adding edit command (2)
+
+	Adding edit command
+
+2010-08-23  Silvio Rhatto  <rhatto@riseup.net>
+
+	Using RSA 4096 bit for gpg key generation
+
+2010-07-14  Silvio Rhatto  <rhatto@riseup.net>
+
+	Show cert fingerprint after SSL generation
+
+2010-07-12  Silvio Rhatto  <rhatto@riseup.net>
+
+	Minor fix
+
+2010-06-20  Silvio Rhatto  <rhatto@riseup.net>
+
+	Error handling for newkeys
+
+	Adding system of preferences
+
+	Minor fix
+
+2010-05-08  Silvio Rhatto  <rhatto@riseup.net>
+
+	TODO
+
+	Adding 'options' an 'newkeys' commands
+
+2010-04-10  Silvio Rhatto  <rhatto@riseup.net>
+
+	TODO
+
+2010-01-16  Silvio Rhatto  <rhatto@riseup.net>
+
+	README fix
+
+2010-01-09  Silvio Rhatto  <rhatto@riseup.net>
+
+	Using --armor on genpair
+
+2010-01-08  Silvio Rhatto  <rhatto@riseup.net>
+
+	Adding trap into genpair to make sure work folder is removed
+
+	Minor fix
+
+	Adding --use-agent
+
+	Adding outfile support and usage options for genpair
+
+	Usage fix (2)
+
+2010-01-07  Silvio Rhatto  <rhatto@riseup.net>
+
+	Usage fix
+
+	Misc fixes
+
+2010-01-05  Silvio Rhatto  <rhatto@riseup.net>
+
+	Creating README on keyring repository
+
+	Minor doc change
+
+	Increasing verbosity
+
+	Using .asc instead of .gpg
+
+	Checking if a folder is inside a git repository
+
+2010-01-04  Silvio Rhatto  <rhatto@riseup.net>
+
+	Using 'init' instead of 'create'
+
+	Major design changes
+
+2009-12-29  Silvio Rhatto  <rhatto@riseup.net>
+
+	Minor changes
+
+	Adding genpair script
+
+2009-11-29  Silvio Rhatto  <rhatto@riseup.net>
+
+	Adding EOF helper message
+
+2009-11-01  Silvio Rhatto  <rhatto@riseup.net>
+
+	Adding 'Concepts' section on README
+
+2009-10-08  Silvio Rhatto  <rhatto@riseup.net>
+
+	Adding TODO
+
+	Initial import

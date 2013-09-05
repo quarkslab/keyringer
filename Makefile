@@ -36,8 +36,11 @@ install_doc:
 	$(INSTALL) -D --mode=0644 README $(DESTDIR)/$(PREFIX)/share/doc/$(PACKAGE)/README
 	$(INSTALL) -D --mode=0644 LICENSE $(DESTDIR)/$(PREFIX)/share/doc/$(PACKAGE)/LICENSE
 
+install_man:
+	$(INSTALL) -D --mode=0644 share/man/keyringer.1 $(DESTDIR)/$(PREFIX)/share/man/man1
+
 install: clean
-	@make install_lib install_share install_bin install_doc
+	@make install_lib install_share install_bin install_doc install_man
 
 build_man:
 	pandoc -s -w man share/man/keyringer.1.mdwn -o share/man/keyringer.1

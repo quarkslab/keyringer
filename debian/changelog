@@ -1,5 +1,11 @@
+keyringer (0.2.3-1) unstable; urgency=low
+
+  * Packaging upstream 0.2.3
+
+ -- Silvio Rhatto <rhatto@riseup.net>  Thu, 05 Sep 2013 18:32:37 -0300
+
 keyringer (0.1-1) unstable; urgency=low
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Initial release
 
  -- Silvio Rhatto <rhatto@riseup.net>  Tue, 26 Jun 2012 16:33:57 -0300

@@ -1,0 +1,99 @@
+% KEYRINGER(1) Keyringer User Manual
+% Silvio Rhatto
+% August 17, 2013
+
+# NAME
+
+keyringer - encrypted and distributed secret sharing software
+
+# SYNOPSIS
+
+keyringer <*keyring*> <*action*> [*options*]...
+
+# DESCRIPTION
+
+Keyringer lets you manage and share secrets using GPG and git with custom
+commands to encrypt, decrypt, recrypt, create key pairs, etc.
+
+# ACTIONS
+
+Keyringer has three types of actions:
+
+1. Configuration actions.
+2. Secret manipulation actions.
+3. Repository lookup and manipulation actions.
+
+## CONFIGURATION ACTIONS
+
+commands
+:  List available actions, useful for shell completion and syntax check.
+
+options <*ls*|*edit*|*add*>
+:  List, edit or add miscelaneous *repository options*.
+
+preferences <*ls*|*edit*|*add*>
+:  List, edit or add *user options* for a given repository.
+
+recipients <*ls*|*edit*> <*recipient-file*>
+:  List or edit recipient configuration.
+
+usage
+:  Show usage information.
+
+## SECRET MANIPULATION ACTIONS
+
+All secret manipulation actions operates upon a *SECRET*, which is the pathname
+of an encrypted file relative to keyring with optional `.asc` extension.
+
+Secret manipulation actions do not commit changes into the secret repository.
+After any manipulation, the user has to manually commit the changes.
+
+append <*SECRET*>
+:  Append contents into a secret.
+
+append-batch <*SECRET*>
+:  Append contents into a secret, batch mode.
+
+decrypt <*SECRET*>
+:  Decrypts a secret into standard output.
+
+del <*SECRET*>
+:  Removes a secret using git. After deleting a secret a git commit and push is still
+   needed to update remote repositories. To completely remove a file from a keyring,
+   you should also rewrite the git history by yourself.
+
+edit <*SECRET*>
+:  Edits a secret by temporarily decrypting it, opening the decrypted copy into *$EDITOR*
+   and then recrypting it again.
+
+encrypt [*file*] <*SECRET*>
+:  Encrypts content from standard input or *file* into *SECRET*.
+
+encrypt-batch <*SECRET*>
+:  Encrypt content, batch mode.
+
+genpair <*ssh*|*gpg*|*ssl*|*ssl-self*> [*options*]
+:  Wrapper to generete encryption keypairs, useful for automated key deployment.
+
+open <*SECRET*>
+:  Open a secret using xdg-open.
+
+recrypt <*SECRET*>
+:  Recrypts a secret by decrypting it and recrypting again. Useful when users are added
+   into recipient configuration. If no *SECRET* is given, all secrets in the repository
+   are re-encrypted.
+
+# REPOSITORY LOOKUP AND MANIPULATION ACTIONS
+
+git <*action*> <*options*>
+:  Git wrapper that operates from the toplevel keyring repository. 
+
+ls <*PATH*>
+:  List contents from the toplevel repository *keys* folder or from relative *PATH*.
+
+# SEE ALSO
+
+The *README* file distributed with Keyringer contains full documentation.
+
+The Keyringer source code and all documentation may be downloaded from
+<https://keyringer.pw>.

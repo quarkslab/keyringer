@@ -4,13 +4,14 @@ Priority: extra
 Maintainer: Silvio Rhatto <rhatto@riseup.net>
 Build-Depends: debhelper (>= 7.0.50~)
 Standards-Version: 3.8.4
-Homepage: https://git.sarava.org/?p=keyringer.git;a=summary
+Homepage: https://keyringer.pw
 #Vcs-Git: git://git.debian.org/collab-maint/keyringer.git
 #Vcs-Browser: http://git.debian.org/?p=collab-maint/keyringer.git;a=summary
 
 Package: keyringer
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${shlibs:Depends}, ${misc:Depends}, bash, git-core, gnupg, grep, gawk, coreutils, sed
+Recommends: openssl, xdg-utils
 Description: Distributed secret management using GPG and git
  Keyringer lets you manage and share secrets using GPG and git in a distributed
  fashion. It has custom commands to encrypt, decrypt, recrypt, create key pairs,

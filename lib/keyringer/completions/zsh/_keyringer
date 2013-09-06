@@ -1,0 +1,88 @@
+#compdef keyringer
+
+# Completion for git subcommand
+_keyringer_git_complete() {
+  # TODO: how to call _git() properly?
+  return
+}
+
+_keyringer() {
+    local curcontext="$curcontext" state line
+    typeset -A opt_args
+
+    # Initial options
+    local config="$HOME/.keyringer"
+
+    # Check if we have initial configuration
+    if [ ! -d "$config" ]; then
+      return
+    fi
+
+    # Process config
+    local keyrings="`ls $config | sed -e 's/config//'`"
+    source $config/config
+    keyring_path="`eval echo '$'$words[2]`"
+
+    _arguments        \
+      '1: :->keyring' \
+      '2: :->action'  \
+      '3: :->options' \
+      '4: :->misc'    \
+      '*: :->final'
+
+    case $state in
+      keyring)
+        _arguments "1:Keyrings:($keyrings)"
+        ;;
+      action)
+        compadd "$@" `keyringer $words[2] commands`
+        ;;
+      options)
+        case $words[3] in
+          options|preferences)
+            compadd "$@" ls edit add
+            ;;
+          recipients)
+            compadd "$@" ls edit
+            ;;
+          ls|encrypt|encrypt-batch|decrypt|edit|append|append-batch|del|recrypt)
+            # TODO: do not rely on bash
+            compadd "$@" $(bash -c "set -f && keyringer $words[2] ls -p -d $words[4]*" 2> /dev/null)
+            ;;
+          genpair)
+            compadd "$@" gpg ssh ssl ssl-self
+            ;;
+          git)
+            compadd "$@" $(_keyringer_git_complete $words[4])
+            ;;
+          *)
+            ;;
+        esac
+        ;;
+      misc)
+        case "$words[3]" in
+          recipients)
+            compadd "$@" $(cd $keyring_path/config/recipients && ls -p $words[5]* 2> /dev/null)
+            ;;
+          genpair)
+            # TODO: do not rely on bash
+            compadd "$@" $(bash -c "set -f && keyringer $words[2] ls -p -d $words[5]*" 2> /dev/null)
+            ;;
+          git)
+            # TODO
+            compadd "$@" $(_keyringer_git_complete $words[4] $words[5])
+            ;;
+          *)
+            ;;
+        esac
+        ;;
+      *)
+        if [ $words[3] == "git" ]; then
+          # TODO
+          true
+        fi
+        ;;
+    esac 
+}
+
+_keyringer "$@"

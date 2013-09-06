@@ -5,16 +5,16 @@
 # Copyright (C) 2010 Silvio Rhatto - rhatto at riseup.net
 # 
 # This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or any later version.
+# it under the terms of the GNU General Public License as published
+# by the Free Software Foundation, either version 3 of the License,
+# or any later version.
 # 
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU Affero General Public License for more details.
+# GNU General Public License for more details.
 # 
-# You should have received a copy of the GNU Affero General Public License
+# You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
@@ -23,6 +23,10 @@ function keyringer_init {
   URL="$4"
   RECIPIENTS="$BASEDIR/config/recipients"
   OPTIONS="$BASEDIR/config/options"
+
+  # We are initializing, so avoid some checks
+  export KEYRINGER_CHECK_VERSION="false"
+  export KEYRINGER_CHECK_RECIPIENTS="false"
 
   # Parse
   if [ -z "$BASEDIR" ]; then
@@ -68,7 +72,7 @@ function keyringer_init {
     fi
 
     # Secure
-    chmod 600 "$RECIPIENTS"
+    chmod 700 "$RECIPIENTS"
   fi
 
   # Reparse basedir to force absolute folder
@@ -100,33 +104,6 @@ function keyringer_dispatch {
   fi
 }
 
-function keyringer_preferences {
-  COMMAND="$3"
-
-  if [ -z "$COMMAND" ]; then
-    echo "Usage: keyringer <keyring> `basename $0` <command> [arguments]"
-    exit 1
-  fi
-  
-  # Create options file if old repository
-  if [ ! -e "$PREFERENCES" ]; then
-    echo "Creating preferences file..."
-    touch "$PREFERENCES"
-  fi
-  
-  if [ "$COMMAND" == "ls" ]; then
-    cat "$PREFERENCES"
-  elif [ "$COMMAND" == "edit" ]; then
-    "$EDITOR" "$PREFERENCES"
-  elif [ "$COMMAND" == "add" ]; then
-    shift 3
-    echo $* >> "$PREFERENCES"
-  else
-    printf "%s: No such command %s\n" "$BASENAME" "$COMMAND"
-    exit 1
-  fi
-}
-
 # Config
 NAME="keyringer"
 KEYRINGER_VERSION="0.1"
@@ -134,6 +111,9 @@ CONFIG="$HOME/.$NAME/config"
 BASENAME="`basename $0`"
 KEYRING="$1"
 ACTION="$2"
+
+# Turn off pathname expansion so expansion can work properly
+set -f
 
 # Export preferences and version for other scripts
 export PREFERENCES="`dirname $CONFIG`/$KEYRING"
@@ -164,16 +144,12 @@ source "$LIB" || exit 1
 keyringer_config_load
 
 if [ -z "$ACTION" ]; then
-  printf "Usage: %s <keyring> <action> [arguments]\n" "$BASENAME"
-  printf "Available commands: \n"
-  ls $ACTIONS | sed -e 's/^/\t/'
+  keyringer_usage
   exit 1
 fi
 
 if [ "$ACTION" == "init" ]; then
   keyringer_init $*
-elif [ "$ACTION" == "preferences" ]; then
-  keyringer_preferences $*
 elif keyringer_has_action "$ACTION"; then
   keyringer_dispatch $*
 else

@@ -74,6 +74,10 @@ function keyringer_exec {
   # Dispatch
   if keyringer_has_action "$action"; then
     "$ACTIONS/$action" "$basedir" $*
+    err="$?"
+    if [ "$err" != "0" ]; then
+      exit "$err"
+    fi
   fi
 }
 
@@ -338,8 +342,24 @@ function keyringer_action_usage {
   fi
 }
 
+# Return available actions
+function keyringer_show_actions {
+  ls $ACTIONS
+}
+
+# Usage
+function keyringer_usage {
+  printf "Usage: %s <keyring> <action> [arguments]\n" "$BASENAME"
+  printf "Available commands: \n"
+  keyringer_show_actions | sed -e 's/^/\t/'
+}
+
 # Check recipients
 function keyringer_check_recipients {
+  if [ "$KEYRINGER_CHECK_RECIPIENTS" == "false" ]; then
+    return
+  fi
+
   # Check if recipients file is empty.
   if [ "`grep -vE "^#|^$" "$RECIPIENTS"/* | wc -l`" == 0 ] && [ "$SUBCOMMAND" != "edit" ]; then
     echo "Fatal: no recipients configured for this keyring."
@@ -364,15 +384,19 @@ function keyringer_check_recipients {
       echo "Fatal: please set the full GPG signature hash for key ID $recipient:"
       cat <<-EOF
 
-Recipients file can't have 32-bit keyids (e.g.  DEADBEEF or DECAF123).  These
-are trivial to spoof.  With a few gigs of disk space and a day of time on
-cheap, readily-available hardware, it's possible to build keys to match every
-possible 32-bit keyid.  The search space just isn't big enough.
+Please provide a full OpenPGP fingerprint, for example:
 
-If you're going to specify keys by keyid, they should be specified by full
-160-bit OpenPGP fingerprint.  It would be very bad if someone spoofed a keyID
-and caused another participant in a keyringer instance to reencrypt a secret
-store to the spoofed key in addition to your own.
+  john@doe.com ABCD1234ABCD12345678ABCD1234ABCD12345678
+
+Short key ids (for example, DEADBEEF or DECAF123) are not allowed in
+recipient files because they are easy to spoof. Researchers have proven
+that it is possible to build fake keys to match any possible short key
+id by using a few gigabytes of disk space, and a day of computation on
+common hardware.
+
+Otherwise, the encryption can be broken, if someone spoofs a short key
+id, and causes a participant in a keyringer repository to encrypt
+secrets to a fake key.
 EOF
       exit 1
     else
@@ -446,5 +470,6 @@ function keyringer_create_new_recipients {
 
 # Setup environment
 if [ "$(basename "$0")" != "keyringer" ]; then
+  keyringer_config_load_preferences
   keyringer_set_env $*
 fi

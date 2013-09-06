@@ -14,12 +14,24 @@ function keyringer_recrypt {
   # Set recipients file
   keyringer_set_recipients "$FILE"
 
-  # Recrypt
-  $GPG --use-agent -d "$KEYDIR/$FILE" | $GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") > "$KEYDIR/$FILE"
+  # Decrypt
+  decrypted="$($GPG --use-agent -d "$KEYDIR/$FILE" 2> /dev/null)"
 
   if [ "$?" != "0" ]; then
+    echo "Decryption error."
     exit 1
   fi
+
+  # Recrypt
+  recrypted="`echo "$decrypted" | $GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE")`"
+
+  if [ "$?" != "0" ]; then
+    echo "Recryption error."
+    exit 1
+  fi
+
+  unset decrypted
+  echo "$recrypted" > "$KEYDIR/$FILE"
 }
 
 if [ ! -z "$2" ]; then

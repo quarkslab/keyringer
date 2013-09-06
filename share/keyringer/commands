@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Show available commands
+#
+
+# Load functions
+LIB="`dirname $0`/../../lib/keyringer/functions"
+source "$LIB" || exit 1
+
+keyringer_show_actions

@@ -3,3 +3,4 @@ debian/keyringer
 debian/files
 *.swp
 .pc
+debian/files

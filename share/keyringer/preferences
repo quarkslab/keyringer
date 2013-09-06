@@ -1,0 +1,37 @@
+#!/bin/bash
+#
+# Manipulate preferences.
+#
+
+# Load functions
+LIB="`dirname $0`/../../lib/keyringer/functions"
+source "$LIB" || exit 1
+
+COMMAND="$2"
+
+if [ -z "$COMMAND" ]; then
+  echo "Usage: keyringer <keyring> preferences <command> [arguments]"
+  echo "Available commands:"
+  echo "	ls"
+  echo "	edit"
+  echo "	add"
+  exit 1
+fi
+
+# Create options file if old repository
+if [ ! -e "$PREFERENCES" ]; then
+  echo "Creating preferences file..."
+  touch "$PREFERENCES"
+fi
+
+if [ "$COMMAND" == "ls" ]; then
+  cat "$PREFERENCES"
+elif [ "$COMMAND" == "edit" ]; then
+  "$EDITOR" "$PREFERENCES"
+elif [ "$COMMAND" == "add" ]; then
+  shift 2
+  [[ -n $* ]] && echo $* >> "$PREFERENCES"
+else
+  printf "%s: No such command %s\n" "$BASENAME" "$COMMAND"
+  exit 1
+fi

@@ -1,0 +1,124 @@
+#!bash
+#
+# Keyringer bash completion
+#
+
+if [[ -n ${ZSH_VERSION-} ]]; then
+	autoload -U +X bashcompinit && bashcompinit
+fi
+
+# Completion for git subcommand
+_keyringer_git_complete() {
+  if [ -e "/etc/bash_completion.d/git" ]; then
+    (
+      source /etc/bash_completion.d/git
+      cd $path
+      COMP_WORDS=(git $*)
+      COMP_CWORD=$((${#COMP_WORDS[*]} - 1))
+
+      if [ "$COMP_CWORD" == "0" ]; then
+        COMP_CWORD=1
+      fi
+
+      _git
+
+      LAST=${COMP_WORDS[COMP_CWORD]}
+      REPLY=${COMPREPLY[@]}
+
+      if [ "$REPLY" == "$LAST" ]; then
+        return
+      fi
+
+      echo ${COMPREPLY[@]}
+    )
+  fi
+}
+
+_keyringer() {
+  # Standard stuff
+  local cur prev opts config
+  COMPREPLY=()
+  cur="${COMP_WORDS[COMP_CWORD]}"
+  prev="${COMP_WORDS[COMP_CWORD-1]}"
+  command="${COMP_WORDS[2]}"
+
+  # Initial options
+  config="$HOME/.keyringer"
+
+  # Check if we have initial configuration
+  if [ ! -d "$config" ]; then
+    return
+  fi
+
+  # Process config
+  source $config/config
+  path="`eval echo '$'$instance`"
+  keyrings="`ls $config | sed -e 's/config//'`"
+
+  # Available instances
+  instances="`echo $keyrings | sed -e 's/ /|/'`"
+
+  # The current instance
+  instance="${COMP_WORDS[1]}"
+
+  # Command completions
+  if [ "${#COMP_WORDS[@]}" == "2" ]; then
+    opts="$keyrings"
+  elif [ "${#COMP_WORDS[@]}" == "3" ] && echo "${prev}" | grep -qe "[$instances]"; then
+    opts="`keyringer $instance commands`"
+  elif [ "${#COMP_WORDS[@]}" == "4" ]; then
+    case "${prev}" in
+      options|preferences)
+        opts="ls edit add"
+        ;;
+      recipients)
+        opts="ls edit"
+        ;;
+      ls|encrypt|encrypt-batch|decrypt|edit|append|append-batch|del|recrypt)
+        opts="$(bash -c "set -f && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
+        ;;
+      genpair)
+        opts="gpg ssh ssl ssl-self"
+        ;;
+      git)
+        opts="$(_keyringer_git_complete ${cur})"
+        ;;
+      *)
+        ;;
+    esac
+  elif [ "${#COMP_WORDS[@]}" == "5" ]; then
+    case "${command}" in
+      recipients)
+        opts="$(cd $path/config/recipients && ls -p ${cur}* 2> /dev/null)"
+        ;;
+      genpair)
+        opts="$(bash -c "set -f && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
+        ;;
+      git)
+        # TODO
+        opts="$(_keyringer_git_complete ${prev} ${cur})"
+        ;;
+      *)
+        ;;
+    esac
+  elif [ "${command}" == "git" ]; then
+    # TODO
+    opts="$(_keyringer_git_complete ${COMP_WORDS[@]:3})"
+  fi
+
+  # Avoid annoying bell and extra tab
+  if [ -z "$ZSH_VERSION" ]; then
+    bind 'set show-all-if-ambiguous on'
+  fi
+
+  # Return the available options
+  COMPREPLY=( $(compgen -W "${opts}" -- ${cur}) )
+
+  if [ -z "$ZSH_VERSION" ]; then
+    [[ $COMPREPLY == */ ]] && compopt -o nospace
+  fi
+
+  return 0
+}
+
+complete -F _keyringer keyringer

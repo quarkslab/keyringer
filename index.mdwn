@@ -1,0 +1,218 @@
+[[!meta title="Keyringer: encrypted and distributed secret sharing software"]]
+
+Keyringer lets you manage and share secrets using GPG and git with custom
+commands to encrypt, decrypt, recrypt, create key pairs, etc.
+
+- Project page: [https://keyringer.pw](https://keyringer.pw)
+- Issue tracker: [https://keyringer.pw/trac](https://keyringer.pw/trac)
+- Tor hidden service: [http://y6ntvl5bzs3c7ffa.onion](http://y6ntvl5bzs3c7ffa.onion)
+- Contact: rhatto at keyringer.pw
+
+Installation
+------------
+
+Just clone
+
+    git clone git://git.sarava.org/keyringer.git
+
+And then leave it somewhere, optionally adding it to your `$PATH` environment variable
+or package it to your preferred distro.
+
+Creating a keyringer repository
+-------------------------------
+
+The first step is to setup a keyring.
+
+Keyringer supports management of multiple isolated keyrings.  To start
+a new keyring (or register an existing one with your config file), run:
+
+    keyringer <keyring> init <path> [remote]
+
+This will 
+
+  1. Add an entry at `$HOME/.keyringer/config` aliasing 'keyring' to 'path'.
+  2. Initialize a git repository if needed.
+
+For example,
+
+    keyringer friends init $HOME/keyrings/friends
+
+will create an alias "friends" pointing to `$HOME/keyrings/friends`. All
+other keyring actions should be called using this alias.
+
+If there is an existing remote keyring git repository and you just
+want to checkout it, use
+
+    keyringer friends init $HOME/keyrings/friends <repository-url>
+
+Managing recipients
+-------------------
+
+Your next step is tell keyringer the GPG key ids to encrypt files to:
+
+    keyringer <keyring> recipients edit [recipient-name]
+    keyringer <keyring> recipients ls
+
+Keyringer support multiple recipients in a per-folder style. Try it by
+creating a sample keyringer
+
+    keyringer <keyring> recipients edit closest-friends
+
+Fill it with your friends key IDs. Now encrypt a secret just for then:
+
+    keyringer <keyring> encrypt closest-friends/secret
+
+In other words, if keyringer finds a recipient file matching a given path,
+it will use it instead of the global recipients file.
+
+Managing secrets
+----------------
+
+Each secret has a corresponding file in your `keys` subdirectory.
+
+Keyringer is agnostic about how you store your secrets. You may choose to have
+one encrypted file that contains one line for each secret, e.g. a single file called
+secrets with lines such as:
+
+    emma : root : secret1
+    emma - /dev/hda : : secret2
+
+Or you may also have a different encrypted file for each secret, e.g. a file called
+emma.root that contains the root passphrase for the server named emma and
+another called emma.hda with the passphrase to decrypt /dev/hda on emma.
+
+Encrypting a secret
+
+    keyringer <keyring> encrypt <file>
+
+Encrypting a secret from a file
+
+    keyringer <keyring> encrypt <plaintext-file> <file>
+
+Decrypting a secret (only to stdout)
+
+    keyringer <keyring> decrypt <file>
+
+Re-encrypting a secret or the whole repository
+
+    keyringer <keyring> recrypt [file]
+
+Appending information to a secret
+
+    keyringer <keyring> append <file>
+
+Editing a secret
+
+To edit a secret, use
+
+    keyringer <keyring> edit <file>
+
+Use this option with caution as it keeps temporary unencrypted data
+into keyringer temp folder and at your editor's temp files.
+
+Listing secrets
+
+    keyringer <keyring> ls [arguments]
+
+Git wrapper
+-----------
+
+Keyringer comes with a simple git wrapper to ease common management tasks:
+
+    keyringer <keyring> git remote add keyringer <url>
+    keyringer <keyring> git push keyringer master
+    keyringer <keyring> git pull
+
+Configuration files, preferences and options
+--------------------------------------------
+
+  1. Main config file: `$HOME/.keyringer/config`: store the location of
+     each keyring.
+
+  2. User preferences per keyring: `$HOME/.keyringer/<keyring>`: managed by
+     "keyringer <keyring> preferences".
+
+  3. Custom keyring options: `$KEYRING_FOLDER/config/options`: managed by
+     "keyringer <keyring> options".
+
+Using a non-default OpenPGP key
+-------------------------------
+
+If you want to use a different key other than your default for a given
+keyringer, use
+
+    keyringer <keyring> preferences add KEYID=<fingerprint>
+
+Example:
+
+    keyringer <keyring> preferences add KEYID=0123456789ABCDEF0123456789ABCDE012345678
+
+Notes
+-----
+
+  1. The `<file>` is any file inside the `keys/` folder of your
+     keyring directory.
+
+  2. Never decrypt a key and write it to the disk, except
+     if you're adding it to your personall keyring.
+
+  3. Recipients are defined at file `config/recipients`.
+     Take care to add just trustable recipients.
+
+Concepts
+--------
+
+Basic idea is:
+
+  - Encrypt stuff with ppl's gpg pubkeys and push the output in a git repo.
+
+  - Let ppl keep it in sync with the repo and the keys are shared :)
+
+For "key" it's meant anything as the script work with stdin and output things to
+files, so it can be passphrases, private keys or other kind of info.
+
+It's possible to share keys using an encrypted mailing list, but the main
+difficulty is to track the message where the keys are.
+
+With theses scripts, the workflow is more or less like this:
+
+  - You have a git repo for secret keys.
+
+  - You run the "encrypt" command and paste your private key to this
+    command (so no plaintext disk write).
+
+  - The encrypt command writes an encrypted file to the repo.
+
+  - You manually add it to git and push it to remote repositories.
+
+  - Optionally, other ppl pulls the changes but they dont need to
+    decrypt anything until they need to use the keys.
+
+So it's just gpg-encrypted data atop of a git repository (one can think of a
+kind of distributed encrypted filesystem).
+
+Git was chosen to host encrypted info mostly for two reasos: easy to distribute
+and its the only VCS known to make easier repository history manipulation.
+
+One possible drawback: the repo has pubkey information attached, which can be
+linked to real ppl (and then disclose the information about who has access to a
+given key), but it's possible to:
+
+  - Keep the repo just atop of an encrypted and non-public place.        
+
+  - Or to consider an integration with gpg's --hidden-recipient option.
+
+Requirements
+------------
+
+Keyringer needs:
+
+  - [Bash](http://tiswww.case.edu/php/chet/bash/bashtop.html)
+  - [Git](http://git-scm.com)
+  - [GNU](Privacy Guard - http://gnupg.org)
+  - Grep, awk, tail, cut, sed and other GNU tools
+
+Optional dependencies if you want to manage ssl keys:
+
+  - [OpenSSL](http://www.openssl.org)
+

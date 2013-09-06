@@ -32,4 +32,10 @@ for element in $(seq 0 $((${#NEW[@]} - 1))); do
   echo ${NEW[$element]}
 done | keyringer_exec encrypt-batch $BASEDIR $FILE
 
+err="$?"
+
+if [ "$err" != "0" ]; then
+  exit "$err"
+fi
+
 IFS="$OLDIFS"

@@ -1,0 +1,38 @@
+[[!meta title="Keyringer: development guidelines"]]
+
+Preparing the source code:
+
+    make build_man
+
+Commit and tag release:
+
+    git checkout master
+    git commit -m "Keyringer 0.1"
+    git tag -s
+    git checkout upstream
+    git merge master
+    git checkout debian
+    git merge master
+    git push --tags
+
+Creating the `debian/` structure:
+
+    dh_make -p keyringer_0.1 --createorig
+
+Creating a release file:
+
+    git archive --format=tar HEAD | gzip >../tarballs/keyringer-0.1.tar.gz
+
+To generate a `keyringer_0.1.orig.tar.gz`-line file:
+
+    dh_make -f ../tarballs/keyringer-0.1.tar.gz -p keyringer_0.1
+
+Building a package from the git three using the upstream branch:
+
+    git-buildpackage
+
+References:
+
+* [Using Git for Debian Packaging](http://www.eyrie.org/~eagle/notes/debian/git.html).
+* [Building packages from the Git repository](http://honk.sigxcpu.org/projects/git-buildpackage/manual-html/gbp.building.html).
+

@@ -216,3 +216,7 @@ Optional dependencies if you want to manage ssl keys:
 
   - [OpenSSL](http://www.openssl.org)
 
+Development guidelines
+----------------------
+
+See [development](development).

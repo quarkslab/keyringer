@@ -15,30 +15,34 @@ keyringer <*keyring*> <*action*> [*options*]...
 Keyringer lets you manage and share secrets using GPG and git with custom
 commands to encrypt, decrypt, recrypt, create key pairs, etc.
 
+Secrets are encrypted using GPG and added to a git tree so later then can
+be synced with remote branches.
+
 # ACTIONS
 
 Keyringer has three types of actions:
 
-1. Configuration actions.
+1. Repository lookup and manipulation actions.
 2. Secret manipulation actions.
-3. Repository lookup and manipulation actions.
+3. Configuration actions.
 
-## CONFIGURATION ACTIONS
+# REPOSITORY LOOKUP AND MANIPULATION ACTIONS
 
-commands
-:  List available actions, useful for shell completion and syntax check.
+init <*path*> [*remote*]
+:  Initialize a new keyringer repository. If a *remote* URL is specified, keyringer will
+   clone an existing repository.
 
-options <*ls*|*edit*|*add*>
-:  List, edit or add miscelaneous *repository options*.
+   After initialization, *path* will contain a folder structure for storing secrets
+   and metadata (user aka recipients, groups of recipients, etc).
 
-preferences <*ls*|*edit*|*add*>
-:  List, edit or add *user options* for a given repository.
+   Also, an entry on `$HOME/.keyringer/config` will be added allowing keyringer to
+   find the keyring by it's alias.
 
-recipients <*ls*|*edit*> <*recipient-file*>
-:  List or edit recipient configuration.
+git <*action*> <*options*>
+:  Git wrapper that operates from the toplevel keyring repository. 
 
-usage
-:  Show usage information.
+ls <*path*>
+:  List contents from the toplevel repository *keys* folder or from relative *path*.
 
 ## SECRET MANIPULATION ACTIONS
 
@@ -83,13 +87,36 @@ recrypt <*SECRET*>
    into recipient configuration. If no *SECRET* is given, all secrets in the repository
    are re-encrypted.
 
-# REPOSITORY LOOKUP AND MANIPULATION ACTIONS
+## CONFIGURATION ACTIONS
 
-git <*action*> <*options*>
-:  Git wrapper that operates from the toplevel keyring repository. 
+commands
+:  List available actions, useful for shell completion and syntax check.
 
-ls <*PATH*>
-:  List contents from the toplevel repository *keys* folder or from relative *PATH*.
+options <*ls*|*edit*|*add*>
+:  List, edit or add miscelaneous *repository options*.
+
+preferences <*ls*|*edit*|*add*>
+:  List, edit or add *user options* for a given repository.
+
+recipients <*ls*|*edit*> <*recipient-file*>
+:  List or edit recipient configuration.
+
+usage
+:  Show usage information.
+
+# FILES
+
+$HOME/.keyringer/config
+: User's main configuration file used to map alias names to keyrings.
+
+$HOME/.keyringer/*keyring*
+: User preferences for the keyringer aliased *keyring*.
+
+$KEYRING_FOLDER/config/options
+: Custom keyring options which will be applied for all users that use
+  the keyringer repository.
+
+# LIMITATIONS
 
 # SEE ALSO
 

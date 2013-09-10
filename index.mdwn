@@ -164,15 +164,12 @@ Concepts
 
 Basic idea is:
 
-  - Encrypt stuff with ppl's gpg pubkeys and push the output in a git repo.
+  - Encrypt stuff with multiple users's gpg pubkeys and push the output in a git repo.
 
-  - Let ppl keep it in sync with the repo and the keys are shared :)
+  - Let users keep it in sync with the repo and the secrets are shared :)
 
-For "key" it's meant anything as the script work with stdin and output things to
-files, so it can be passphrases, private keys or other kind of info.
-
-It's possible to share keys using an encrypted mailing list, but the main
-difficulty is to track the message where the keys are.
+For "secrets" it's meant anything as the script work with stdin and output things to
+files, so it can be passphrases, private keys or other kind of information.
 
 With theses scripts, the workflow is more or less like this:
 
@@ -185,7 +182,7 @@ With theses scripts, the workflow is more or less like this:
 
   - You manually add it to git and push it to remote repositories.
 
-  - Optionally, other ppl pulls the changes but they dont need to
+  - Optionally, other users pulls the changes but they dont need to
     decrypt anything until they need to use the keys.
 
 So it's just gpg-encrypted data atop of a git repository (one can think of a

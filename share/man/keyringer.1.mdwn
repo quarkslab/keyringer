@@ -39,18 +39,22 @@ init <*path*> [*remote*]
    find the keyring by it's alias.
 
 git <*action*> <*options*>
-:  Git wrapper that operates from the toplevel keyring repository. 
+:  Git wrapper that operates from the toplevel keyring repository. You can issue any
+   *GIT(1)* subcommand with this action that it will be applied into the keyring repository.
 
 ls <*path*>
-:  List contents from the toplevel repository *keys* folder or from relative *path*.
+:  List contents from the toplevel repository *keys* folder or from relative paths
+   if *path* is specified. Like the git wrapper, this is a wrapper around the *LS(1)*
+   command.
 
 ## SECRET MANIPULATION ACTIONS
 
-All secret manipulation actions operates upon a *SECRET*, which is the pathname
+All secret manipulation actions operates upon a *SECRET* which is the pathname
 of an encrypted file relative to keyring with optional `.asc` extension.
 
 Secret manipulation actions do not commit changes into the secret repository.
-After any manipulation, the user has to manually commit the changes.
+After any manipulation, the user has to manually commit the changes using the
+git wrapper action.
 
 append <*SECRET*>
 :  Append contents into a secret.

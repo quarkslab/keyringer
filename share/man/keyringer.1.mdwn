@@ -49,7 +49,7 @@ ls <*path*>
 
 ## SECRET MANIPULATION ACTIONS
 
-All secret manipulation actions operates upon a *SECRET* which is the pathname
+All secret manipulation actions operates upon a *secret* which is the pathname
 of an encrypted file relative to keyring with optional `.asc` extension.
 
 If the `.asc` extension is ommited, keyringer will add it in the end of the
@@ -59,39 +59,39 @@ Secret manipulation actions do not commit changes into the secret repository.
 After any manipulation, the user has to manually commit the changes using the
 git wrapper action.
 
-append <*SECRET*>
+append <*secret*>
 :  Append contents into a secret.
 
-append-batch <*SECRET*>
+append-batch <*secret*>
 :  Append contents into a secret, batch mode.
 
-decrypt <*SECRET*>
+decrypt <*secret*>
 :  Decrypts a secret into standard output.
 
-del <*SECRET*>
+del <*secret*>
 :  Removes a secret using git. After deleting a secret a git commit and push is still
    needed to update remote repositories. To completely remove a file from a keyring,
    you should also rewrite the git history by yourself.
 
-edit <*SECRET*>
+edit <*secret*>
 :  Edits a secret by temporarily decrypting it, opening the decrypted copy into *$EDITOR*
    and then recrypting it again.
 
-encrypt [*file*] <*SECRET*>
-:  Encrypts content from standard input or *file* into *SECRET*.
+encrypt [*file*] <*secret*>
+:  Encrypts content from standard input or *file* into *secret*.
 
-encrypt-batch <*SECRET*>
+encrypt-batch <*secret*>
 :  Encrypt content, batch mode.
 
 genpair <*ssh*|*gpg*|*ssl*|*ssl-self*> [*options*]
 :  Wrapper to generete encryption keypairs, useful for automated key deployment.
 
-open <*SECRET*>
+open <*secret*>
 :  Open a secret using xdg-open.
 
-recrypt <*SECRET*>
+recrypt <*secret*>
 :  Recrypts a secret by decrypting it and recrypting again. Useful when users are added
-   into recipient configuration. If no *SECRET* is given, all secrets in the repository
+   into recipient configuration. If no *secret* is given, all secrets in the repository
    are re-encrypted.
 
 ## CONFIGURATION ACTIONS

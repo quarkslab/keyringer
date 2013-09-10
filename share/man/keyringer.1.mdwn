@@ -1,6 +1,6 @@
 % KEYRINGER(1) Keyringer User Manual
 % Silvio Rhatto
-% August 17, 2013
+% Sep 10, 2013
 
 # NAME
 
@@ -26,7 +26,7 @@ Keyringer has three types of actions:
 2. Secret manipulation actions.
 3. Configuration actions.
 
-# REPOSITORY LOOKUP AND MANIPULATION ACTIONS
+## REPOSITORY LOOKUP AND MANIPULATION ACTIONS
 
 init <*path*> [*remote*]
 :  Initialize a new keyringer repository. If a *remote* URL is specified, keyringer will
@@ -51,6 +51,9 @@ ls <*path*>
 
 All secret manipulation actions operates upon a *SECRET* which is the pathname
 of an encrypted file relative to keyring with optional `.asc` extension.
+
+If the `.asc` extension is ommited, keyringer will add it in the end of the
+pathname.
 
 Secret manipulation actions do not commit changes into the secret repository.
 After any manipulation, the user has to manually commit the changes using the

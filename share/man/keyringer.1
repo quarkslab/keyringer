@@ -1,4 +1,4 @@
-.TH KEYRINGER 1 "August 17, 2013" "Keyringer User Manual"
+.TH KEYRINGER 1 "Sep 10, 2013" "Keyringer User Manual"
 .SH NAME
 .PP
 keyringer - encrypted and distributed secret sharing software
@@ -9,39 +9,55 @@ keyringer <\f[I]keyring\f[]> <\f[I]action\f[]> [\f[I]options\f[]]...
 .PP
 Keyringer lets you manage and share secrets using GPG and git with
 custom commands to encrypt, decrypt, recrypt, create key pairs, etc.
+.PP
+Secrets are encrypted using GPG and added to a git tree so later then
+can be synced with remote branches.
 .SH ACTIONS
 .PP
 Keyringer has three types of actions:
 .IP "1." 3
-Configuration actions.
+Repository lookup and manipulation actions.
 .IP "2." 3
 Secret manipulation actions.
 .IP "3." 3
-Repository lookup and manipulation actions.
-.SS CONFIGURATION ACTIONS
+Configuration actions.
+.SS REPOSITORY LOOKUP AND MANIPULATION ACTIONS
 .PP
-commands : List available actions, useful for shell completion and
-syntax check.
+init <\f[I]path\f[]> [\f[I]remote\f[]] : Initialize a new keyringer
+repository.
+If a \f[I]remote\f[] URL is specified, keyringer will clone an existing
+repository.
 .PP
-options <\f[I]ls\f[]|\f[I]edit\f[]|\f[I]add\f[]> : List, edit or add
-miscelaneous \f[I]repository options\f[].
+After initialization, \f[I]path\f[] will contain a folder structure for
+storing secrets and metadata (user aka recipients, groups of recipients,
+etc).
 .PP
-preferences <\f[I]ls\f[]|\f[I]edit\f[]|\f[I]add\f[]> : List, edit or add
-\f[I]user options\f[] for a given repository.
+Also, an entry on \f[C]$HOME/.keyringer/config\f[] will be added
+allowing keyringer to find the keyring by it\[aq]s alias.
 .PP
-recipients <\f[I]ls\f[]|\f[I]edit\f[]> <\f[I]recipient-file\f[]> : List
-or edit recipient configuration.
+git <\f[I]action\f[]> <\f[I]options\f[]> : Git wrapper that operates
+from the toplevel keyring repository.
+You can issue any \f[I]GIT(1)\f[] subcommand with this action that it
+will be applied into the keyring repository.
 .PP
-usage : Show usage information.
+ls <\f[I]path\f[]> : List contents from the toplevel repository
+\f[I]keys\f[] folder or from relative paths if \f[I]path\f[] is
+specified.
+Like the git wrapper, this is a wrapper around the \f[I]LS(1)\f[]
+command.
 .SS SECRET MANIPULATION ACTIONS
 .PP
-All secret manipulation actions operates upon a \f[I]SECRET\f[], which
-is the pathname of an encrypted file relative to keyring with optional
+All secret manipulation actions operates upon a \f[I]SECRET\f[] which is
+the pathname of an encrypted file relative to keyring with optional
 \f[C]\&.asc\f[] extension.
+.PP
+If the \f[C]\&.asc\f[] extension is ommited, keyringer will add it in
+the end of the pathname.
 .PP
 Secret manipulation actions do not commit changes into the secret
 repository.
-After any manipulation, the user has to manually commit the changes.
+After any manipulation, the user has to manually commit the changes
+using the git wrapper action.
 .PP
 append <\f[I]SECRET\f[]> : Append contents into a secret.
 .PP
@@ -76,13 +92,32 @@ recrypting again.
 Useful when users are added into recipient configuration.
 If no \f[I]SECRET\f[] is given, all secrets in the repository are
 re-encrypted.
-.SH REPOSITORY LOOKUP AND MANIPULATION ACTIONS
+.SS CONFIGURATION ACTIONS
 .PP
-git <\f[I]action\f[]> <\f[I]options\f[]> : Git wrapper that operates
-from the toplevel keyring repository.
+commands : List available actions, useful for shell completion and
+syntax check.
 .PP
-ls <\f[I]PATH\f[]> : List contents from the toplevel repository
-\f[I]keys\f[] folder or from relative \f[I]PATH\f[].
+options <\f[I]ls\f[]|\f[I]edit\f[]|\f[I]add\f[]> : List, edit or add
+miscelaneous \f[I]repository options\f[].
+.PP
+preferences <\f[I]ls\f[]|\f[I]edit\f[]|\f[I]add\f[]> : List, edit or add
+\f[I]user options\f[] for a given repository.
+.PP
+recipients <\f[I]ls\f[]|\f[I]edit\f[]> <\f[I]recipient-file\f[]> : List
+or edit recipient configuration.
+.PP
+usage : Show usage information.
+.SH FILES
+.PP
+$HOME/.keyringer/config : User\[aq]s main configuration file used to map
+alias names to keyrings.
+.PP
+$HOME/.keyringer/\f[I]keyring\f[] : User preferences for the keyringer
+aliased \f[I]keyring\f[].
+.PP
+$KEYRING_FOLDER/config/options : Custom keyring options which will be
+applied for all users that use the keyringer repository.
+.SH LIMITATIONS
 .SH SEE ALSO
 .PP
 The \f[I]README\f[] file distributed with Keyringer contains full

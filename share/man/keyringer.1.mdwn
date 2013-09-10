@@ -74,11 +74,12 @@ del <*secret*>
    you should also rewrite the git history by yourself.
 
 edit <*secret*>
-:  Edits a secret by temporarily decrypting it, opening the decrypted copy into *$EDITOR*
-   and then recrypting it again.
+:  Edits a secret by temporarily decrypting it, opening the decrypted copy into the 
+   text editor defined by the *$EDITOR* environment variable and then recrypting it
+   again.
 
 encrypt [*file*] <*secret*>
-:  Encrypts content from standard input or *file* into *secret*.
+:  Encrypts content from standard input or *file* into *secret* pathname.
 
 encrypt-batch <*secret*>
 :  Encrypt content, batch mode.
@@ -100,16 +101,52 @@ commands
 :  List available actions, useful for shell completion and syntax check.
 
 options <*ls*|*edit*|*add*>
-:  List, edit or add miscelaneous *repository options*.
+:  List, edit or add miscelaneous *repository* options.
+
+   Repository options are specific configurations for the keyring which are
+   saved into the repository, making it available for all users with access to the
+   repository and hence is a *global* configuration stanza for a given keyring.
 
 preferences <*ls*|*edit*|*add*>
-:  List, edit or add *user options* for a given repository.
+:  List, edit or add *user* preferences for a given repository.
+
+   User preferences are specific configurations for the keyring which are
+   saved into the user's keyringer folder (`$HOME/.keyringer/`) hence not
+   shared with the other users.
 
 recipients <*ls*|*edit*> <*recipient-file*>
 :  List or edit recipient configuration.
 
+   Recipient files are lists of OpenPGP public key fingerprints which are used
+   by keyringer when encrypting secrets.
+
+   Keyringer uses a default recipient file and supports custom *recipient-files* which
+   overrides the default recipient file according to it's matching pathname.
+
+   For instance, a the *recipient-file* called *accounting* will be used
+   wherever a user encrypts a secret to a file residing from the *accounting*
+   folder in the keyring repository. In that case, encrypting a secret into
+   *accounting/bank-accounts* will result in a file
+   `$KEYRING_FOLDER/keys/accounting/bank-accounts.asc` encrypted using the
+   public keys listed in `$KEYRING_FOLDER/config/recipients/accounting` config
+   file.
+
+### OPTIONS
+
+ls
+:  List all existing recipient files.
+
+edit
+:  Create or edit a recipient-file.
+
+   Edition happens using the editor specified by the `$EDITOR`
+   environment variable.
+
+   The required parameter *recipient-file* is taken relativelly
+   from the `$KEYRING_FOLDER/config/recipients/` folder.
+
 usage
-:  Show usage information.
+:  Show keyringer usage information.
 
 # FILES
 
@@ -117,7 +154,7 @@ $HOME/.keyringer/config
 : User's main configuration file used to map alias names to keyrings.
 
 $HOME/.keyringer/*keyring*
-: User preferences for the keyringer aliased *keyring*.
+: User preferences for the keyringer aliased *keyring* keyring.
 
 $KEYRING_FOLDER/config/options
 : Custom keyring options which will be applied for all users that use

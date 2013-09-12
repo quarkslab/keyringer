@@ -4,3 +4,4 @@ debian/files
 *.swp
 .pc
 debian/files
+debian/keyringer.substvars

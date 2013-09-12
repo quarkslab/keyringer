@@ -1,6 +1,6 @@
 % KEYRINGER(1) Keyringer User Manual
 % Silvio Rhatto
-% August 17, 2013
+% Sep 10, 2013
 
 # NAME
 
@@ -15,13 +15,85 @@ keyringer <*keyring*> <*action*> [*options*]...
 Keyringer lets you manage and share secrets using GPG and git with custom
 commands to encrypt, decrypt, recrypt, create key pairs, etc.
 
+Secrets are encrypted using GPG and added to a git tree so later then can
+be synced with remote branches.
+
 # ACTIONS
 
 Keyringer has three types of actions:
 
-1. Configuration actions.
+1. Repository lookup and manipulation actions.
 2. Secret manipulation actions.
-3. Repository lookup and manipulation actions.
+3. Configuration actions.
+
+## REPOSITORY LOOKUP AND MANIPULATION ACTIONS
+
+init <*path*> [*remote*]
+:  Initialize a new keyringer repository. If a *remote* URL is specified, keyringer will
+   clone an existing repository.
+
+   After initialization, *path* will contain a folder structure for storing secrets
+   and metadata (user aka recipients, groups of recipients, etc).
+
+   Also, an entry on `$HOME/.keyringer/config` will be added allowing keyringer to
+   find the keyring by it's alias.
+
+git <*action*> <*options*>
+:  Git wrapper that operates from the toplevel keyring repository. You can issue any
+   *GIT(1)* subcommand with this action that it will be applied into the keyring repository.
+
+ls <*path*>
+:  List contents from the toplevel repository *keys* folder or from relative paths
+   if *path* is specified. Like the git wrapper, this is a wrapper around the *LS(1)*
+   command.
+
+## SECRET MANIPULATION ACTIONS
+
+All secret manipulation actions operates upon a *secret* which is the pathname
+of an encrypted file relative to keyring with optional `.asc` extension.
+
+If the `.asc` extension is ommited, keyringer will add it in the end of the
+pathname.
+
+Secret manipulation actions do not commit changes into the secret repository.
+After any manipulation, the user has to manually commit the changes using the
+git wrapper action.
+
+append <*secret*>
+:  Append contents into a secret.
+
+append-batch <*secret*>
+:  Append contents into a secret, batch mode.
+
+decrypt <*secret*>
+:  Decrypts a secret into standard output.
+
+del <*secret*>
+:  Removes a secret using git. After deleting a secret a git commit and push is still
+   needed to update remote repositories. To completely remove a file from a keyring,
+   you should also rewrite the git history by yourself.
+
+edit <*secret*>
+:  Edits a secret by temporarily decrypting it, opening the decrypted copy into the 
+   text editor defined by the *$EDITOR* environment variable and then recrypting it
+   again.
+
+encrypt [*file*] <*secret*>
+:  Encrypts content from standard input or *file* into *secret* pathname.
+
+encrypt-batch <*secret*>
+:  Encrypt content, batch mode.
+
+genpair <*ssh*|*gpg*|*ssl*|*ssl-self*> [*options*]
+:  Wrapper to generete encryption keypairs, useful for automated key deployment.
+
+open <*secret*>
+:  Open a secret using xdg-open.
+
+recrypt <*secret*>
+:  Recrypts a secret by decrypting it and recrypting again. Useful when users are added
+   into recipient configuration. If no *secret* is given, all secrets in the repository
+   are re-encrypted.
 
 ## CONFIGURATION ACTIONS
 
@@ -29,67 +101,66 @@ commands
 :  List available actions, useful for shell completion and syntax check.
 
 options <*ls*|*edit*|*add*>
-:  List, edit or add miscelaneous *repository options*.
+:  List, edit or add miscelaneous *repository* options.
+
+   Repository options are specific configurations for the keyring which are
+   saved into the repository, making it available for all users with access to the
+   repository and hence is a *global* configuration stanza for a given keyring.
 
 preferences <*ls*|*edit*|*add*>
-:  List, edit or add *user options* for a given repository.
+:  List, edit or add *user* preferences for a given repository.
+
+   User preferences are specific configurations for the keyring which are
+   saved into the user's keyringer folder (`$HOME/.keyringer/`) hence not
+   shared with the other users.
 
 recipients <*ls*|*edit*> <*recipient-file*>
 :  List or edit recipient configuration.
 
+   Recipient files are lists of OpenPGP public key fingerprints which are used
+   by keyringer when encrypting secrets.
+
+   Keyringer uses a default recipient file and supports custom *recipient-files* which
+   overrides the default recipient file according to it's matching pathname.
+
+   For instance, a the *recipient-file* called *accounting* will be used
+   wherever a user encrypts a secret to a file residing from the *accounting*
+   folder in the keyring repository. In that case, encrypting a secret into
+   *accounting/bank-accounts* will result in a file
+   `$KEYRING_FOLDER/keys/accounting/bank-accounts.asc` encrypted using the
+   public keys listed in `$KEYRING_FOLDER/config/recipients/accounting` config
+   file.
+
+### OPTIONS
+
+ls
+:  List all existing recipient files.
+
+edit
+:  Create or edit a recipient-file.
+
+   Edition happens using the editor specified by the `$EDITOR`
+   environment variable.
+
+   The required parameter *recipient-file* is taken relativelly
+   from the `$KEYRING_FOLDER/config/recipients/` folder.
+
 usage
-:  Show usage information.
+:  Show keyringer usage information.
 
-## SECRET MANIPULATION ACTIONS
+# FILES
 
-All secret manipulation actions operates upon a *SECRET*, which is the pathname
-of an encrypted file relative to keyring with optional `.asc` extension.
+$HOME/.keyringer/config
+: User's main configuration file used to map alias names to keyrings.
 
-Secret manipulation actions do not commit changes into the secret repository.
-After any manipulation, the user has to manually commit the changes.
+$HOME/.keyringer/*keyring*
+: User preferences for the keyringer aliased *keyring* keyring.
 
-append <*SECRET*>
-:  Append contents into a secret.
+$KEYRING_FOLDER/config/options
+: Custom keyring options which will be applied for all users that use
+  the keyringer repository.
 
-append-batch <*SECRET*>
-:  Append contents into a secret, batch mode.
-
-decrypt <*SECRET*>
-:  Decrypts a secret into standard output.
-
-del <*SECRET*>
-:  Removes a secret using git. After deleting a secret a git commit and push is still
-   needed to update remote repositories. To completely remove a file from a keyring,
-   you should also rewrite the git history by yourself.
-
-edit <*SECRET*>
-:  Edits a secret by temporarily decrypting it, opening the decrypted copy into *$EDITOR*
-   and then recrypting it again.
-
-encrypt [*file*] <*SECRET*>
-:  Encrypts content from standard input or *file* into *SECRET*.
-
-encrypt-batch <*SECRET*>
-:  Encrypt content, batch mode.
-
-genpair <*ssh*|*gpg*|*ssl*|*ssl-self*> [*options*]
-:  Wrapper to generete encryption keypairs, useful for automated key deployment.
-
-open <*SECRET*>
-:  Open a secret using xdg-open.
-
-recrypt <*SECRET*>
-:  Recrypts a secret by decrypting it and recrypting again. Useful when users are added
-   into recipient configuration. If no *SECRET* is given, all secrets in the repository
-   are re-encrypted.
-
-# REPOSITORY LOOKUP AND MANIPULATION ACTIONS
-
-git <*action*> <*options*>
-:  Git wrapper that operates from the toplevel keyring repository. 
-
-ls <*PATH*>
-:  List contents from the toplevel repository *keys* folder or from relative *PATH*.
+# LIMITATIONS
 
 # SEE ALSO
 

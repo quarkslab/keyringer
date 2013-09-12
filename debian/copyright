@@ -11,29 +11,22 @@ Upstream Author(s):
     Silvio Rhatto <rhatto@riseup.net>
     Daniel Kahn Gillmor <dkg@fifthhorseman.net>
     Jamie McClelland <jm@mayfirst.org>
+    ricola <ricola@poivron.org>
 
 Copyright:
 
     <Copyright (C) 2009-2012 Silvio Rhatto>
     <Copyright (C) 2010 Daniel Kahn Gillmor>
     <Copyright (C) 2012 Jamie McClelland>
+    <Copyright (C) 2012 ricola>
 
 License:
 
-    GNU AFFERO GENERAL PUBLIC LICENSE Version 3, 19 November 2007
+    GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or greater
 
 The Debian packaging is:
 
     Copyright (C) 2012 Silvio Rhatto <rhatto@riseup.net>
 
-# Please chose a license for your packaging work. If the program you package
-# uses a mainstream license, using the same license is the safest choice.
-# Please avoid to pick license terms that are more restrictive than the
-# packaged work, as it may make Debian's contributions unacceptable upstream.
-# If you just want it to be GPL version 3, leave the following lines in.
-
 and is licensed under the GPL version 3,
 see "/usr/share/common-licenses/GPL-3".
-
-# Please also look if there are files or directories which have a
-# different copyright/license attached and list them here.

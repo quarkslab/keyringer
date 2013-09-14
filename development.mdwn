@@ -43,4 +43,6 @@ References:
 
 * [Using Git for Debian Packaging](http://www.eyrie.org/~eagle/notes/debian/git.html).
 * [Building packages from the Git repository](http://honk.sigxcpu.org/projects/git-buildpackage/manual-html/gbp.building.html).
-
+* [Cowbuilder](https://wiki.debian.org/cowbuilder).
+* [git-pbuilder](https://wiki.debian.org/git-pbuilder).
+* [PackagingWithGit - Debian Wiki](https://wiki.debian.org/PackagingWithGit).

@@ -44,3 +44,9 @@ install: clean
 
 build_man:
 	pandoc -s -w man share/man/keyringer.1.mdwn -o share/man/keyringer.1
+
+tarball:
+	git archive --prefix=keyringer-$(VERSION)/ --format=tar HEAD | gzip >../tarballs/keyringer-$(VERSION).tar.gz
+
+dh:
+	dh_make -f ../tarballs/keyringer-$(VERSION).tar.gz -i -p keyringer_$(VERSION)

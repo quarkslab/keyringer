@@ -27,9 +27,13 @@ To generate a `keyringer_0.1.orig.tar.gz`-line file:
 
     dh_make -f ../tarballs/keyringer-0.1.tar.gz -p keyringer_0.1
 
-Setting up a sid chroot:
+Setting up a sid pbuilder chroot:
 
-    DIST=sid pbuilder create --debootstrapopts --variant=buildd
+    DIST=sid sudo pbuilder create --debootstrapopts --variant=buildd
+
+Setting up a sid cowbuilder chroot:
+
+    DIST=sid sudo cowbuilder --create
 
 Building a package from the git three using the upstream branch:
 

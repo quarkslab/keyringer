@@ -49,4 +49,5 @@ tarball:
 	git archive --prefix=keyringer-$(VERSION)/ --format=tar HEAD | gzip >../tarballs/keyringer-$(VERSION).tar.gz
 
 dh:
-	dh_make -f ../tarballs/keyringer-$(VERSION).tar.gz -i -p keyringer_$(VERSION)
+	#dh_make -f ../tarballs/keyringer-$(VERSION).tar.gz -i -p keyringer_$(VERSION)
+	git archive --prefix=keyringer-$(VERSION)/ --format=tar HEAD | gzip >../tarballs/keyringer_$(VERSION).orig.tar.gz

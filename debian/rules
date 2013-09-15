@@ -13,4 +13,4 @@
 	dh $@ 
 
 override_dh_auto_install:
-	$(MAKE) DESTDIR=$$(pwd)/debian/keyringer prefix=/usr install
+	$(MAKE) DESTDIR=$$(pwd)/debian/keyringer PREFIX=/usr install

@@ -1,29 +1,26 @@
 [[!meta title="Keyringer: development guidelines and workflow"]]
 
 Development environment
-=======================
+-----------------------
 
 The following steps needs to be run just once.
 
-Create the `debian/` structure
-------------------------------
+### Create the `debian/` structure
 
     if [ ! -d "debian" ]; then
       dh_make -p keyringer_0.1 --createorig
     fi
 
-Setup a sid pbuilder chroot
----------------------------
+### Setup a sid pbuilder chroot
 
     DIST=sid sudo pbuilder create --debootstrapopts --variant=buildd
 
-Setup a sid cowbuilder chroot
------------------------------
+### Setup a sid cowbuilder chroot
 
     DIST=sid sudo cowbuilder --create
 
 Release workflow
-================
+----------------
 
 Go to master branch
 

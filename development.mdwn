@@ -1,45 +1,62 @@
 [[!meta title="Keyringer: development guidelines and workflow"]]
 
-Preparing the source code:
+Development environment
+=======================
 
+The following steps needs to be run just once.
+
+Create the `debian/` structure
+------------------------------
+
+    if [ ! -d "debian" ]; then
+      dh_make -p keyringer_0.1 --createorig
+    fi
+
+Setup a sid pbuilder chroot
+---------------------------
+
+    DIST=sid sudo pbuilder create --debootstrapopts --variant=buildd
+
+Setup a sid cowbuilder chroot
+-----------------------------
+
+    DIST=sid sudo cowbuilder --create
+
+Release workflow
+================
+
+Go to master branch
+
+    git checkout master
+
+Prepare the source code:
+
+    $EDITOR ChangeLog
     make build_man
 
 Commit and tag a release:
 
-    git checkout master
-    git commit -m "Keyringer 0.1"
+    git commit -a -m "Keyringer VERSION"
     git tag -s
     git checkout upstream
     git merge master
     git checkout debian
     git merge master
-    git push --tags
+    git push --all --tags
 
-Creating the `debian/` structure (needed just once):
-
-    dh_make -p keyringer_0.1 --createorig
-
-Creating a release file:
+Create a release file:
 
     make tarball
 
-To generate a `keyringer_VERSION.orig.tar.gz` file:
+Generate a `keyringer_VERSION.orig.tar.gz` file:
 
     make dh
 
-Setting up a sid pbuilder chroot:
-
-    DIST=sid sudo pbuilder create --debootstrapopts --variant=buildd
-
-Setting up a sid cowbuilder chroot:
-
-    DIST=sid sudo cowbuilder --create
-
-Building a package from the git three using the upstream branch:
+Build the package from the git three using the upstream branch:
 
     git-buildpackage
 
-Running lintian (or [add it to your pbuilder hooks](http://askubuntu.com/questions/140697/how-do-i-run-lintian-from-pbuilder-dist):
+Run lintian (or [add it to your pbuilder hooks](http://askubuntu.com/questions/140697/how-do-i-run-lintian-from-pbuilder-dist):
 
     lintian ../build-area/keyringer_*.deb
 

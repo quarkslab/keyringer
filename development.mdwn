@@ -53,7 +53,7 @@ Build the package from the git three using the upstream branch:
 
     git-buildpackage
 
-Run lintian (or [add it to your pbuilder hooks](http://askubuntu.com/questions/140697/how-do-i-run-lintian-from-pbuilder-dist):
+Run lintian (or [add it to your pbuilder hooks](http://askubuntu.com/questions/140697/how-do-i-run-lintian-from-pbuilder-dist)):
 
     lintian ../build-area/keyringer_*.deb
 

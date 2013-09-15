@@ -1,10 +1,10 @@
-[[!meta title="Keyringer: development guidelines"]]
+[[!meta title="Keyringer: development guidelines and workflow"]]
 
 Preparing the source code:
 
     make build_man
 
-Commit and tag release:
+Commit and tag a release:
 
     git checkout master
     git commit -m "Keyringer 0.1"
@@ -15,7 +15,7 @@ Commit and tag release:
     git merge master
     git push --tags
 
-Creating the `debian/` structure:
+Creating the `debian/` structure (needed just once):
 
     dh_make -p keyringer_0.1 --createorig
 
@@ -38,6 +38,10 @@ Setting up a sid cowbuilder chroot:
 Building a package from the git three using the upstream branch:
 
     git-buildpackage
+
+Running lintian (or [add it to your pbuilder hooks](http://askubuntu.com/questions/140697/how-do-i-run-lintian-from-pbuilder-dist):
+
+    lintian ../build-area/keyringer_*.deb
 
 References:
 

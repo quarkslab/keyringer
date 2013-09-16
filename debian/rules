@@ -9,4 +9,4 @@
 
 override_dh_auto_install:
 	$(MAKE) DESTDIR=$$(pwd)/debian/keyringer PREFIX=/usr install
-	rm $$(pwd)/debian/keyringer/share/doc/keyringer/LICENSE
+	rm $$(pwd)/debian/keyringer/usr/share/doc/keyringer/LICENSE

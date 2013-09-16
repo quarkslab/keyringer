@@ -1,32 +1,38 @@
-This work was packaged for Debian by:
+Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 
-    Silvio Rhatto <rhatto@riseup.net> on Tue, 26 Jun 2012 16:33:57 -0300
+Files: *
+Copyright: 2013 Silvio Rhatto <rhatto@riseup.net>
+           2010 Daniel Kahn Gillmor <dkg@fifthhorseman.net>
+           2012 Jamie McClelland <jm@mayfirst.org>
+           2012 ricola <ricola@poivron.org>
+License: GPL-3+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ On Debian systems, the full text of the GNU General Public
+ License version 3 can be found in the file
+ `/usr/share/common-licenses/GPL-3'.
 
-It was downloaded from:
-
-    https://git.sarava.org/?p=keyringer.git;a=summary
-
-Upstream Author(s):
-
-    Silvio Rhatto <rhatto@riseup.net>
-    Daniel Kahn Gillmor <dkg@fifthhorseman.net>
-    Jamie McClelland <jm@mayfirst.org>
-    ricola <ricola@poivron.org>
-
-Copyright:
-
-    <Copyright (C) 2009-2012 Silvio Rhatto>
-    <Copyright (C) 2010 Daniel Kahn Gillmor>
-    <Copyright (C) 2012 Jamie McClelland>
-    <Copyright (C) 2012 ricola>
-
-License:
-
-    GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007 or greater
-
-The Debian packaging is:
-
-    Copyright (C) 2012 Silvio Rhatto <rhatto@riseup.net>
-
-and is licensed under the GPL version 3,
-see "/usr/share/common-licenses/GPL-3".
+Files: debian/*
+Copyright: Copyright 2013 Silvio Rhatto <rhatto@riseup.net>
+License: GPL-3+
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
+ .
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
+ .
+ On Debian systems, the full text of the GNU General Public
+ License version 3 can be found in the file
+ `/usr/share/common-licenses/GPL-3'.

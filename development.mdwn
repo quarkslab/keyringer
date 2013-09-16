@@ -36,9 +36,9 @@ Commit and tag a release:
     git commit -a -m "Keyringer VERSION"
     git tag -s
     git checkout upstream
-    git merge master
+    git merge    master
     git checkout debian
-    git merge master
+    git merge    upstream
     git push --all --tags
 
 Create a release file:

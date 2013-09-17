@@ -1,5 +1,5 @@
 Source: keyringer
-Section: main
+Section: misc
 Priority: extra
 Maintainer: Silvio Rhatto <rhatto@riseup.net>
 Build-Depends: debhelper (>= 7.0.50~)

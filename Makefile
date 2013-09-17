@@ -41,7 +41,7 @@ install_man:
 
 # TODO: zsh completion
 install_completion:
-	$(INSTALL) -D --mode=0644 lib/keyringer/completions/bash/keyringer $(DESTDIR)/$(PREFIX)/etc/bash_completion.d/keyringer
+	$(INSTALL) -D --mode=0644 lib/keyringer/completions/bash/keyringer $(DESTDIR)/etc/bash_completion.d/keyringer
 
 install: clean
 	@make install_lib install_share install_bin install_doc install_man install_completion

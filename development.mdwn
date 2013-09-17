@@ -62,7 +62,8 @@ Run lintian (or [add it to your pbuilder hooks](http://askubuntu.com/questions/1
 
     lintian ../build-area/keyringer_*.deb
 
-References:
+References
+----------
 
 * [Using Git for Debian Packaging](http://www.eyrie.org/~eagle/notes/debian/git.html).
 * [Building packages from the Git repository](http://honk.sigxcpu.org/projects/git-buildpackage/manual-html/gbp.building.html).

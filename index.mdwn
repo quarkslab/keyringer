@@ -6,7 +6,8 @@ commands to encrypt, decrypt, recrypt, create key pairs, etc.
 - Project page: [https://keyringer.pw](https://keyringer.pw)
 - Issue tracker: [https://keyringer.pw/trac](https://keyringer.pw/trac)
 - Tor hidden service: [http://y6ntvl5bzs3c7ffa.onion](http://y6ntvl5bzs3c7ffa.onion)
-- Contact: rhatto at keyringer.pw
+- Releases: [https://keyringer.pw/releases](releases)
+- Contact: rhatto at riseup.net
 
 Installation
 ------------
@@ -164,9 +165,9 @@ Concepts
 
 Basic idea is:
 
-  - Encrypt stuff with multiple users's gpg pubkeys and push the output in a git repo.
+  - Encrypt screts using multiple users's gpg public keys and commit the output in a git repo.
 
-  - Let users keep it in sync with the repo and the secrets are shared :)
+  - Let users keep it in sync with the repository and the secrets are shared :)
 
 For "secrets" it's meant anything as the script work with stdin and output things to
 files, so it can be passphrases, private keys or other kind of information.

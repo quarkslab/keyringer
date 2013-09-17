@@ -2,17 +2,19 @@ Source: keyringer
 Section: misc
 Priority: extra
 Maintainer: Silvio Rhatto <rhatto@riseup.net>
-Build-Depends: debhelper (>= 9.20120909)
+Build-Depends: debhelper (>= 9.20120909~)
 Standards-Version: 3.9.4
 Homepage: https://keyringer.pw
-#Vcs-Git: git://git.debian.org/collab-maint/keyringer.git
-#Vcs-Browser: http://git.debian.org/?p=collab-maint/keyringer.git;a=summary
+Vcs-Git: git://git.sarava.org/keyringer.git
+Vcs-Browser: https://git.sarava.org/?p=keyringer.git;a=summary
 
 Package: keyringer
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, bash (>=4.2), git-core (>=1.7.10), gnupg (>=1.4.12), grep (>=2.12), gawk (>=4.0.1), coreutils (>=8.13), sed (>=4.2.2)
+Depends: ${shlibs:Depends}, ${misc:Depends}, git (>= 1.7.10.4), gnupg (>= 1.4.12), gawk (>= 4.0.1) | mawk (>= 1.3.3)
 Recommends: openssl, xdg-utils
-Description: Distributed secret management using GPG and git
- Keyringer lets you manage and share secrets using GPG and git in a distributed
- fashion. It has custom commands to encrypt, decrypt, recrypt, create key pairs,
- etc.
+Description: Distributed secret management using GnuPG and Git
+ Keyringer lets you manage and share secrets using GnuPG and Git in a distributed
+ fashion. It has custom commands to encrypt, decrypt and recrypt secrets as well
+ as create key pairs and supports encryption to multiple recipients and groups of
+ different recipients to ensure the same repository can be shared with a workgroup
+ but allowing to keep some secrets available just to subsets of that group.

@@ -49,6 +49,11 @@ Generate a `keyringer_VERSION.orig.tar.gz` file:
 
     make dh
 
+Sign the release ([see backupninja development guidelines](https://labs.riseup.net/code/projects/backupninja/wiki/Release)):
+
+    cd ../tarballs
+    gpg --armor --detach-sign keyringer-$VERSION.tar.gz
+
 Build the package from the git three using the upstream branch:
 
     git-buildpackage

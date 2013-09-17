@@ -1,6 +1,6 @@
 2013-09-03  Silvio Rhatto  <rhatto@riseup.net>
 
-  Added ChangeLog (#12)
+	Added ChangeLog (#12)
 
 	Changing LICENSE (#10)
 
@@ -24,9 +24,9 @@
 
 2013-08-02 - 0.2.1 Silvio Rhatto  <rhatto@riseup.net>
 
-  Added bash completion
+	Added bash completion
 
-  Documentation updates
+	Documentation updates
 
 	Using empty passphrases for genpair_ssh
 
@@ -44,11 +44,11 @@
 
 2012-06-26 - 0.2 Silvio Rhatto  <rhatto@riseup.net>
 
-  Initial debian packaging support
+	Initial debian packaging support
 
 2012-03-30 - 0.1 Silvio Rhatto  <rhatto@riseup.net>
-                 Daniel Kahn Gillmor  <dkg@fifthhorseman.net>
-                 Jamie McClelland  <jm@mayfirst.org>
-                 ricola <ricola@poivron.org>
+		 Daniel Kahn Gillmor  <dkg@fifthhorseman.net>
+		 Jamie McClelland  <jm@mayfirst.org>
+		 ricola <ricola@poivron.org>
 
-  Initial keyringer release
+	Initial keyringer release

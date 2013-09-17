@@ -45,14 +45,14 @@ Create a release file:
 
     make tarball
 
-Generate a `keyringer_VERSION.orig.tar.gz` file:
+Generate a `keyringer_VERSION.orig.tar.bz2` file:
 
     make dh
 
 Sign the release ([see backupninja development guidelines](https://labs.riseup.net/code/projects/backupninja/wiki/Release)):
 
     cd ../tarballs
-    gpg --armor --detach-sign keyringer-$VERSION.tar.gz
+    gpg --armor --detach-sign keyringer-$VERSION.tar.bz2
 
 Build the package from the git three using the upstream branch:
 

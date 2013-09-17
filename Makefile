@@ -15,7 +15,7 @@
 #
 
 PACKAGE = keyringer
-VERSION = 0.2.4-git
+VERSION = 0.2.4
 PREFIX ?= /usr/local
 INSTALL = /usr/bin/install
 

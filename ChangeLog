@@ -1,8 +1,14 @@
-2013-09-03  Silvio Rhatto  <rhatto@riseup.net>
+2013-09-16 - 0.2.3  Silvio Rhatto  <rhatto@riseup.net>
 
-	Added ChangeLog (#12)
+	Makefile enhancements
 
-	Changing LICENSE (#10)
+	Lintian-clean Debian package (#1)
+
+	Machine-readable debian/copyright (#1)
+
+	Added ChangeLog (closes #12)
+
+	Changing LICENSE (closes #10)
 
 2013-08-25 - 0.2.2  Silvio Rhatto  <rhatto@riseup.net>
 

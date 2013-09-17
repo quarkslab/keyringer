@@ -2,7 +2,7 @@ Source: keyringer
 Section: misc
 Priority: extra
 Maintainer: Silvio Rhatto <rhatto@riseup.net>
-Build-Depends: debhelper (>= 7.0.50~)
+Build-Depends: debhelper (>= 9.20120909)
 Standards-Version: 3.9.4
 Homepage: https://keyringer.pw
 #Vcs-Git: git://git.debian.org/collab-maint/keyringer.git

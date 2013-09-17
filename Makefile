@@ -50,8 +50,8 @@ build_man:
 	pandoc -s -w man share/man/keyringer.1.mdwn -o share/man/keyringer.1
 
 tarball:
-	git archive --prefix=keyringer-$(VERSION)/ --format=tar HEAD | gzip >../tarballs/keyringer-$(VERSION).tar.gz
+	git archive --prefix=keyringer-$(VERSION)/ --format=tar HEAD | bzip2 >../tarballs/keyringer-$(VERSION).tar.bz2
 
 dh:
-	#dh_make -f ../tarballs/keyringer-$(VERSION).tar.gz -i -p keyringer_$(VERSION)
-	git archive --prefix=keyringer-$(VERSION)/ --format=tar HEAD | gzip >../tarballs/keyringer_$(VERSION).orig.tar.gz
+	#dh_make -f ../tarballs/keyringer-$(VERSION).tar.bz2 -i -p keyringer_$(VERSION)
+	git archive --prefix=keyringer-$(VERSION)/ --format=tar HEAD | bzip2 >../tarballs/keyringer_$(VERSION).orig.tar.bz2

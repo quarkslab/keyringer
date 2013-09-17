@@ -1,8 +1,8 @@
-keyringer (0.2.4) UNRELEASED; urgency=low
+keyringer (0.2.4-1) UNRELEASED; urgency=low
 
   * Packaging upstream 0.2.4
 
- -- Silvio Rhatto <rhatto@riseup.net>  Tue, 17 Sep 2013 11:57:12 -0300
+ -- Silvio Rhatto <rhatto@riseup.net>  Tue, 17 Sep 2013 12:18:27 -0300
 
 keyringer (0.2.3-1) unstable; urgency=low
 

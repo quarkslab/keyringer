@@ -1,2 +1,4 @@
-bootstrap export-ignore
-templates export-ignore
+bootstrap      export-ignore
+templates      export-ignore
+.gitignore     export-ignore
+.gitattributes export-ignore

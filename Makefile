@@ -37,10 +37,14 @@ install_doc:
 	$(INSTALL) -D --mode=0644 LICENSE $(DESTDIR)/$(PREFIX)/share/doc/$(PACKAGE)/LICENSE
 
 install_man:
-	$(INSTALL) -D --mode=0644 share/man/keyringer.1 $(DESTDIR)/$(PREFIX)/share/man/man1
+	$(INSTALL) -D --mode=0644 share/man/keyringer.1 $(DESTDIR)/$(PREFIX)/share/man/man1/keyringer.1
+
+# TODO: zsh completion
+install_completion:
+	$(INSTALL) -D --mode=0644 lib/keyringer/completions/bash/keyringer $(DESTDIR)/$(PREFIX)/etc/bash_completion.d/keyringer
 
 install: clean
-	@make install_lib install_share install_bin install_doc install_man
+	@make install_lib install_share install_bin install_doc install_man install_completion
 
 build_man:
 	pandoc -s -w man share/man/keyringer.1.mdwn -o share/man/keyringer.1

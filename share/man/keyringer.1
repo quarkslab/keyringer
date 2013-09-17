@@ -47,7 +47,7 @@ Like the git wrapper, this is a wrapper around the \f[I]LS(1)\f[]
 command.
 .SS SECRET MANIPULATION ACTIONS
 .PP
-All secret manipulation actions operates upon a \f[I]SECRET\f[] which is
+All secret manipulation actions operates upon a \f[I]secret\f[] which is
 the pathname of an encrypted file relative to keyring with optional
 \f[C]\&.asc\f[] extension.
 .PP
@@ -59,38 +59,38 @@ repository.
 After any manipulation, the user has to manually commit the changes
 using the git wrapper action.
 .PP
-append <\f[I]SECRET\f[]> : Append contents into a secret.
+append <\f[I]secret\f[]> : Append contents into a secret.
 .PP
-append-batch <\f[I]SECRET\f[]> : Append contents into a secret, batch
+append-batch <\f[I]secret\f[]> : Append contents into a secret, batch
 mode.
 .PP
-decrypt <\f[I]SECRET\f[]> : Decrypts a secret into standard output.
+decrypt <\f[I]secret\f[]> : Decrypts a secret into standard output.
 .PP
-del <\f[I]SECRET\f[]> : Removes a secret using git.
+del <\f[I]secret\f[]> : Removes a secret using git.
 After deleting a secret a git commit and push is still needed to update
 remote repositories.
 To completely remove a file from a keyring, you should also rewrite the
 git history by yourself.
 .PP
-edit <\f[I]SECRET\f[]> : Edits a secret by temporarily decrypting it,
-opening the decrypted copy into \f[I]$EDITOR\f[] and then recrypting it
-again.
+edit <\f[I]secret\f[]> : Edits a secret by temporarily decrypting it,
+opening the decrypted copy into the text editor defined by the
+\f[I]$EDITOR\f[] environment variable and then recrypting it again.
 .PP
-encrypt [\f[I]file\f[]] <\f[I]SECRET\f[]> : Encrypts content from
-standard input or \f[I]file\f[] into \f[I]SECRET\f[].
+encrypt [\f[I]file\f[]] <\f[I]secret\f[]> : Encrypts content from
+standard input or \f[I]file\f[] into \f[I]secret\f[] pathname.
 .PP
-encrypt-batch <\f[I]SECRET\f[]> : Encrypt content, batch mode.
+encrypt-batch <\f[I]secret\f[]> : Encrypt content, batch mode.
 .PP
 genpair <\f[I]ssh\f[]|\f[I]gpg\f[]|\f[I]ssl\f[]|\f[I]ssl-self\f[]>
 [\f[I]options\f[]] : Wrapper to generete encryption keypairs, useful for
 automated key deployment.
 .PP
-open <\f[I]SECRET\f[]> : Open a secret using xdg-open.
+open <\f[I]secret\f[]> : Open a secret using xdg-open.
 .PP
-recrypt <\f[I]SECRET\f[]> : Recrypts a secret by decrypting it and
+recrypt <\f[I]secret\f[]> : Recrypts a secret by decrypting it and
 recrypting again.
 Useful when users are added into recipient configuration.
-If no \f[I]SECRET\f[] is given, all secrets in the repository are
+If no \f[I]secret\f[] is given, all secrets in the repository are
 re-encrypted.
 .SS CONFIGURATION ACTIONS
 .PP
@@ -98,22 +98,58 @@ commands : List available actions, useful for shell completion and
 syntax check.
 .PP
 options <\f[I]ls\f[]|\f[I]edit\f[]|\f[I]add\f[]> : List, edit or add
-miscelaneous \f[I]repository options\f[].
+miscelaneous \f[I]repository\f[] options.
+.PP
+Repository options are specific configurations for the keyring which are
+saved into the repository, making it available for all users with access
+to the repository and hence is a \f[I]global\f[] configuration stanza
+for a given keyring.
 .PP
 preferences <\f[I]ls\f[]|\f[I]edit\f[]|\f[I]add\f[]> : List, edit or add
-\f[I]user options\f[] for a given repository.
+\f[I]user\f[] preferences for a given repository.
+.PP
+User preferences are specific configurations for the keyring which are
+saved into the user\[aq]s keyringer folder (\f[C]$HOME/.keyringer/\f[])
+hence not shared with the other users.
 .PP
 recipients <\f[I]ls\f[]|\f[I]edit\f[]> <\f[I]recipient-file\f[]> : List
 or edit recipient configuration.
 .PP
-usage : Show usage information.
+Recipient files are lists of OpenPGP public key fingerprints which are
+used by keyringer when encrypting secrets.
+.PP
+Keyringer uses a default recipient file and supports custom
+\f[I]recipient-files\f[] which overrides the default recipient file
+according to it\[aq]s matching pathname.
+.PP
+For instance, a the \f[I]recipient-file\f[] called \f[I]accounting\f[]
+will be used wherever a user encrypts a secret to a file residing from
+the \f[I]accounting\f[] folder in the keyring repository.
+In that case, encrypting a secret into \f[I]accounting/bank-accounts\f[]
+will result in a file
+\f[C]$KEYRING_FOLDER/keys/accounting/bank-accounts.asc\f[] encrypted
+using the public keys listed in
+\f[C]$KEYRING_FOLDER/config/recipients/accounting\f[] config file.
+.SS OPTIONS
+.PP
+ls : List all existing recipient files.
+.PP
+edit : Create or edit a recipient-file.
+.PP
+Edition happens using the editor specified by the \f[C]$EDITOR\f[]
+environment variable.
+.PP
+The required parameter \f[I]recipient-file\f[] is taken relativelly from
+the \f[C]$KEYRING_FOLDER/config/recipients/\f[] folder.
+.PP
+usage : Show keyringer usage information.
 .SH FILES
 .PP
 $HOME/.keyringer/config : User\[aq]s main configuration file used to map
 alias names to keyrings.
 .PP
 $HOME/.keyringer/\f[I]keyring\f[] : User preferences for the keyringer
-aliased \f[I]keyring\f[].
+aliased \f[I]keyring\f[] keyring.
 .PP
 $KEYRING_FOLDER/config/options : Custom keyring options which will be
 applied for all users that use the keyringer repository.

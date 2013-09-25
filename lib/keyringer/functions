@@ -304,7 +304,7 @@ function keyringer_upgrade {
   if [ "$CONFIG_VERSION" != "$VERSION" ]; then
     echo $CONFIG_VERSION > $VERSION_INFO
     keyringer_exec git "$BASEDIR" add config/version
-    keyringer_exec git "$BASEDIR" commit -m "Config-upgrade-$CONFIG_VERSION"
+    keyringer_exec git "$BASEDIR" commit -m "Config-update-$CONFIG_VERSION"
     echo "Upgrade to version $CONFIG_VERSION completed, pushing to remotes..."
     for remote in "$BASEDIR/.git/refs/remotes/*"; do
       keyringer_exec git "$BASEDIR" push $remote master

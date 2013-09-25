@@ -107,6 +107,7 @@ function keyringer_dispatch {
 # Config
 NAME="keyringer"
 KEYRINGER_VERSION="0.2.4"
+CONFIG_VERSION="0.1"
 CONFIG="$HOME/.$NAME/config"
 BASENAME="`basename $0`"
 KEYRING="$1"
@@ -118,6 +119,7 @@ set -f
 # Export preferences and version for other scripts
 export PREFERENCES="`dirname $CONFIG`/$KEYRING"
 export KEYRINGER_VERSION
+export CONFIG_VERSION
 
 # Set functions location
 if [ -e "`dirname $(readlink -f $0)`/lib/$NAME/functions" ]; then

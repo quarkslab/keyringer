@@ -74,3 +74,4 @@ References
 * [Cowbuilder](https://wiki.debian.org/cowbuilder).
 * [git-pbuilder](https://wiki.debian.org/git-pbuilder).
 * [PackagingWithGit - Debian Wiki](https://wiki.debian.org/PackagingWithGit).
+* [Generating pristine tarballs from git repositories](http://joeyh.name/blog/entry/generating_pristine_tarballs_from_git_repositories/).

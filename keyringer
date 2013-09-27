@@ -106,7 +106,7 @@ function keyringer_dispatch {
 
 # Config
 NAME="keyringer"
-KEYRINGER_VERSION="0.2.4"
+KEYRINGER_VERSION="0.2.5"
 CONFIG_VERSION="0.1"
 CONFIG="$HOME/.$NAME/config"
 BASENAME="`basename $0`"

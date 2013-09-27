@@ -13,13 +13,13 @@ Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, git, gnupg, gawk | mawk
 Recommends: openssl, xdg-utils
 Description: Distributed secret management using GnuPG and Git
- Keyringer lets you manage and share secrets using GnuPG and Git in a
- distributed fashion. It has custom commands to encrypt, decrypt and
- recrypt secrets as well as create key pairs and supports encryption
- to multiple recipients and groups of different recipients to ensure
- the same repository can be shared with a workgroup but allowing to
+ Keyringer lets you manage and share secrets using GnuPG and Git in
+ a distributed fashion. It has commands to encrypt, decrypt and
+ recrypt secrets as well as create key pairs. It supports encryption
+ to multiple recipients and groups of different recipients: the same
+ repository can be shared with a workgroup, while still allowing to
  keep some secrets available just to subsets of that group.
  .
- OpenSSL is needed to generate X.509 certificates and keys and
- xdg-utils are needed to open and edit encrypted secrets according
- to their file types.
+ OpenSSL is needed to generate X.509 certificates and keys. xdg-utils
+ are needed to open and edit encrypted secrets according to their
+ file types.

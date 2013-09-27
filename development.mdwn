@@ -31,6 +31,12 @@ Prepare the source code:
     $EDITOR ChangeLog
     make build_man
 
+Update debian changelog:
+
+    cd debian
+    dch -i
+    cd -
+
 Commit and tag a release:
 
     git commit -a -m "Keyringer $VERSION"

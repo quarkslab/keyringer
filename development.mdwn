@@ -33,13 +33,13 @@ Prepare the source code:
 
 Commit and tag a release:
 
-    git commit -a -m "Keyringer VERSION"
-    git tag -s VERSION -m "Keyringer VERSION"
+    git commit -a -m "Keyringer $VERSION"
+    git tag -s $VERSION -m "Keyringer $VERSION"
     git checkout upstream
     git merge    master
     git checkout debian
     git merge    upstream
-    git push --all --tags
+    git push     --tags
 
 Create a release file:
 

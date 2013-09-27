@@ -58,7 +58,6 @@ Commit and tag a release:
     git merge    master
     git checkout debian
     git merge    upstream
-    git push     --tags
 
 Create a release file:
 
@@ -81,6 +80,10 @@ Upload the release:
 Add the release into the `pristine-tar` branch:
 
     pristine-tar commit ../tarballs/keyringer_$VERSION.orig.tar.bz2 $VERSION
+
+Push everything:
+
+    git push --tags
 
 Build the package from the git three using the upstream branch:
 

@@ -1,3 +1,9 @@
+keyringer (0.2.5-1) unstable; urgency=low
+
+  * Packaging upstream 0.2.5
+
+ -- Silvio Rhatto <rhatto@riseup.net>  Fri, 27 Sep 2013 18:00:52 -0300
+
 keyringer (0.2.4-1) unstable; urgency=low
 
   * Packaging upstream 0.2.4

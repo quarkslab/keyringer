@@ -1,3 +1,7 @@
+2013-09-27 Silvio Rhatto  <rhatto@riseup.net>
+
+	Development workflow enhancements
+
 2013-09-26 - 0.2.4 Silvio Rhatto  <rhatto@riseup.net>
 
 	Integrate version check and upgrade into workflow (closes #17)

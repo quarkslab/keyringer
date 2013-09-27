@@ -19,6 +19,19 @@ The following steps needs to be run just once.
 
     DIST=sid sudo cowbuilder --create
 
+Environment maintenance
+-----------------------
+
+These steps should be run once in a while to ensure we have an up to date packaging environment.
+
+### Pbuilder
+
+    DIST=sid sudo pbuilder update
+
+### Cowbuilder
+
+    DIST=sid sudo cowbuilder --update
+
 Release workflow
 ----------------
 

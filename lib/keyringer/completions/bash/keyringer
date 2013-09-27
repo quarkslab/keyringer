@@ -9,9 +9,17 @@ fi
 
 # Completion for git subcommand
 _keyringer_git_complete() {
+  local git_completion=""
+
   if [ -e "/etc/bash_completion.d/git" ]; then
+    git_completion="/etc/bash_completion.d/git"
+  elif [ -e "/usr/share/bash-completion/completions/git" ]; then
+    git_completion="/usr/share/bash-completion/completions/git"
+  fi
+
+  if [ ! -z "$git_completion" ]; then
     (
-      source /etc/bash_completion.d/git
+      source $git_completion
       cd $path
       COMP_WORDS=(git $*)
       COMP_CWORD=$((${#COMP_WORDS[*]} - 1))

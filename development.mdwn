@@ -71,7 +71,7 @@ Add the release into the `pristine-tar` branch:
 
 Build the package from the git three using the upstream branch:
 
-    git-buildpackage --git-pristine-tar
+    git-buildpackage
 
 Run lintian (or [add it to your pbuilder hooks](http://askubuntu.com/questions/140697/how-do-i-run-lintian-from-pbuilder-dist)):
 

@@ -53,7 +53,7 @@ _keyringer() {
   # Process config
   source $config/config
   path="`eval echo '$'$instance`"
-  keyrings="`ls $config | sed -e 's/config//'`"
+  keyrings="`ls --color=never $config | sed -e 's/config//'`"
 
   # Available instances
   instances="`echo $keyrings | sed -e 's/ /|/'`"
@@ -89,7 +89,7 @@ _keyringer() {
   elif [ "${#COMP_WORDS[@]}" == "5" ]; then
     case "${command}" in
       recipients)
-        opts="$(cd $path/config/recipients && ls -p ${cur}* 2> /dev/null)"
+        opts="$(cd $path/config/recipients && ls --color=never -p ${cur}* 2> /dev/null)"
         ;;
       genpair)
         opts="$(bash -c "set -f && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"

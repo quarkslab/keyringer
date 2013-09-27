@@ -19,7 +19,7 @@ _keyringer() {
     fi
 
     # Process config
-    local keyrings="`ls $config | sed -e 's/config//'`"
+    local keyrings="`ls --color=never $config | sed -e 's/config//'`"
     source $config/config
     keyring_path="`eval echo '$'$words[2]`"
 
@@ -62,7 +62,7 @@ _keyringer() {
       misc)
         case "$words[3]" in
           recipients)
-            compadd "$@" $(cd $keyring_path/config/recipients && ls -p $words[5]* 2> /dev/null)
+            compadd "$@" $(cd $keyring_path/config/recipients && ls --color=never -p $words[5]* 2> /dev/null)
             ;;
           genpair)
             # TODO: do not rely on bash

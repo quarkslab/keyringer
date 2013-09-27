@@ -21,7 +21,7 @@ _keyringer() {
     # Process config
     local keyrings="`ls --color=never $config | sed -e 's/config//'`"
     source $config/config
-    keyring_path="`eval echo '$'$words[2]`"
+    local keyring_path="`eval echo '$'$words[2]`"
 
     _arguments        \
       '1: :->keyring' \

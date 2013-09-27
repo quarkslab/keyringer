@@ -82,7 +82,7 @@ _keyringer() {
       recipients)
         opts="ls edit"
         ;;
-      ls|encrypt|encrypt-batch|decrypt|edit|append|append-batch|del|recrypt)
+      ls|encrypt|encrypt-batch|decrypt|edit|append|append-batch|del|recrypt|open)
         opts="$(bash -c "set -f && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
         ;;
       genpair)

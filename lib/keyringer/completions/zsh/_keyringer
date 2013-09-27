@@ -45,7 +45,7 @@ _keyringer() {
           recipients)
             compadd "$@" ls edit
             ;;
-          ls|encrypt|encrypt-batch|decrypt|edit|append|append-batch|del|recrypt)
+          ls|encrypt|encrypt-batch|decrypt|edit|append|append-batch|del|recrypt|open)
             # TODO: do not rely on bash
             compadd "$@" $(bash -c "set -f && keyringer $words[2] ls -p -d $words[4]*" 2> /dev/null)
             ;;

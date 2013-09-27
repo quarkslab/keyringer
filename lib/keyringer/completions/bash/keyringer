@@ -44,7 +44,7 @@ _keyringer_git_complete() {
 
 _keyringer() {
   # Standard stuff
-  local cur prev opts config
+  local cur prev command config path keyrings instances instance opts
   COMPREPLY=()
   cur="${COMP_WORDS[COMP_CWORD]}"
   prev="${COMP_WORDS[COMP_CWORD-1]}"

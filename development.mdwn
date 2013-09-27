@@ -54,6 +54,11 @@ Sign the release ([see backupninja development guidelines](https://labs.riseup.n
     cd ../tarballs
     gpg --armor --detach-sign keyringer-$VERSION.tar.bz2
 
+Upload the release:
+
+    scp keyringer-$VERSION.tar.bz2* server:/var/sites/keyringer/releases/
+    cd -
+
 Add the release into the `pristine-tar` branch:
 
     pristine-tar commit ../tarballs/keyringer_$VERSION.orig.tar.bz2 $VERSION

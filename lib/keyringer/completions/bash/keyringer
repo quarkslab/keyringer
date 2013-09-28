@@ -73,7 +73,7 @@ _keyringer() {
   if [ "${#COMP_WORDS[@]}" == "2" ]; then
     opts="$keyrings"
   elif [ "${#COMP_WORDS[@]}" == "3" ] && echo "${prev}" | grep -qe "[$instances]"; then
-    opts="`keyringer $instance commands`"
+    opts="`export KEYRINGER_CHECK_VERSION=false && keyringer $instance commands`"
   elif [ "${#COMP_WORDS[@]}" == "4" ]; then
     case "${prev}" in
       options|preferences)
@@ -83,7 +83,7 @@ _keyringer() {
         opts="ls edit"
         ;;
       ls|encrypt|encrypt-batch|decrypt|edit|append|append-batch|del|recrypt|open)
-        opts="$(bash -c "set -f && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
+        opts="$(bash -c "set -f && export KEYRINGER_CHECK_VERSION=false && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
         ;;
       genpair)
         opts="gpg ssh ssl ssl-self"
@@ -100,7 +100,7 @@ _keyringer() {
         opts="$(cd $path/config/recipients && ls --color=never -p ${cur}* 2> /dev/null)"
         ;;
       genpair)
-        opts="$(bash -c "set -f && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
+        opts="$(bash -c "set -f && export KEYRINGER_CHECK_VERSION=false && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
         ;;
       git)
         # TODO

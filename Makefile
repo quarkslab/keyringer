@@ -40,7 +40,7 @@ install_man:
 	$(INSTALL) -D --mode=0644 share/man/keyringer.1 $(DESTDIR)/$(PREFIX)/share/man/man1/keyringer.1
 
 install_completion:
-	$(INSTALL) -D --mode=0644 lib/keyringer/completions/bash/keyringer $(DESTDIR)/etc/bash_completion.d/keyringer
+	$(INSTALL) -D --mode=0644 lib/keyringer/completions/bash/keyringer $(DESTDIR)/$(PREFIX)/share/bash-completion/completions/keyringer
 	$(INSTALL) -D --mode=0644 lib/keyringer/completions/zsh/_keyringer $(DESTDIR)/$(PREFIX)/share/zsh/vendor-completions/_keyringer
 
 install: clean

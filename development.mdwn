@@ -94,6 +94,14 @@ Run lintian (or [add it to your pbuilder hooks](http://askubuntu.com/questions/1
     lintian --info --display-info --pedantic --color auto \
      ../build-area/keyringer_$VERSION*.changes
 
+Adding a subcommand
+-------------------
+
+When adding a new subcommand, ensure:
+
+* Manpage is updated.
+* Shell completions are updated.
+
 References
 ----------
 

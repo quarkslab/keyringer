@@ -20,8 +20,9 @@ _keyringer() {
 
     # Process config
     source $config/config
-    local keyrings="`ls --color=never $config | sed -e 's/config//'`"
+    local keyrings="`ls --color=never $config | sed -e 's/config//' | xargs`"
     local keyring_path="`eval echo '$'$words[2]`"
+    local instances="`echo $keyrings | sed -e 's/ /\\\|/g'`"
 
     _arguments        \
       '1: :->keyring' \
@@ -35,7 +36,11 @@ _keyringer() {
         _arguments "1:Keyrings:($keyrings)"
         ;;
       action)
-        compadd "$@" `KEYRINGER_CHECK_VERSION=false keyringer $words[2] commands`
+        if echo $words[2] | grep -qe "$instances"; then
+          compadd "$@" `KEYRINGER_CHECK_VERSION=false keyringer $words[2] commands`
+        else
+          compadd "$@" "init"
+        fi
         ;;
       options)
         case $words[3] in
@@ -53,6 +58,9 @@ _keyringer() {
             ;;
           git)
             compadd "$@" $(_keyringer_git_complete $words[4])
+            ;;
+          init)
+            _files
             ;;
           *)
             ;;

@@ -60,20 +60,22 @@ _keyringer() {
 
   # Process config
   source $config/config
-  path="`eval echo '$'$instance`"
-  keyrings="`ls --color=never $config | sed -e 's/config//'`"
+  keyrings="`ls --color=never $config | sed -e 's/config//' | xargs`"
 
   # Available instances
-  instances="`echo $keyrings | sed -e 's/ /|/'`"
+  instances="`echo $keyrings | sed -e 's/ /\\\|/g'`"
 
   # The current instance
   instance="${COMP_WORDS[1]}"
+  path="`eval echo '$'$instance`"
 
   # Command completions
   if [ "${#COMP_WORDS[@]}" == "2" ]; then
     opts="$keyrings"
-  elif [ "${#COMP_WORDS[@]}" == "3" ] && echo "${prev}" | grep -qe "[$instances]"; then
+  elif [ "${#COMP_WORDS[@]}" == "3" ] && echo "${prev}" | grep -qe "$instances"; then
     opts="`export KEYRINGER_CHECK_VERSION=false && keyringer $instance commands`"
+  elif [ "${#COMP_WORDS[@]}" == "3" ]; then
+    opts="init"
   elif [ "${#COMP_WORDS[@]}" == "4" ]; then
     case "${prev}" in
       options|preferences)
@@ -90,6 +92,13 @@ _keyringer() {
         ;;
       git)
         opts="$(_keyringer_git_complete ${cur})"
+        ;;
+      init)
+        # Thanks http://unix.stackexchange.com/questions/55520/create-bash-completion-script-to-autocomplete-paths-after-is-equal-sign
+        cur=${cur//\\ / }
+        [[ ${cur} == "~/"* ]] && cur=${cur/\~/$HOME}
+
+        opts="$(compgen -o dirnames ${cur})"
         ;;
       *)
         ;;

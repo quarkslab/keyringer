@@ -281,6 +281,10 @@ function keyringer_upgrade {
   # Variable used to hold applied version upgrades
   local version="$VERSION"
 
+  if [ "$KEYRINGER_CHECK_VERSION" == "false" ]; then
+    return
+  fi
+
   # Upgrade 0.1
   if [ "$version" == "0" ]; then
     if [ ! -d "$RECIPIENTS" ]; then

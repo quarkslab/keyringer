@@ -1,5 +1,7 @@
 2013-09-29 Silvio Rhatto  <rhatto@riseup.net>
 
+	Minor fixes
+
 	Handle file names with spaces (#20)
 
 	Added 'init' subcommand into shell completions

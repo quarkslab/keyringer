@@ -81,6 +81,7 @@ function keyringer_init {
   # Add entry
   chmod 700 "$BASEDIR"
   echo "$KEYRING=\"$BASEDIR\"" >> "$CONFIG"
+  touch $CONFIG_BASE/$KEYRING
 
   # Init
   if ! keyringer_is_git "$BASEDIR"; then
@@ -108,7 +109,8 @@ function keyringer_dispatch {
 NAME="keyringer"
 KEYRINGER_VERSION="0.2.5"
 CONFIG_VERSION="0.1"
-CONFIG="$HOME/.$NAME/config"
+CONFIG_BASE="$HOME/.$NAME"
+CONFIG="$CONFIG_BASE/config"
 BASENAME="`basename $0`"
 KEYRING="$1"
 ACTION="$2"

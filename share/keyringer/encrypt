@@ -10,7 +10,8 @@ source "$LIB" || exit 1
 # Aditional parameters
 if [ ! -z "$3" ]; then
   UNENCRYPTED_FILE="$2"
-  keyringer_get_new_file "$3"
+  shift 2
+  keyringer_get_new_file "$*"
 
   if [ ! -f "$UNENCRYPTED_FILE" ]; then
     echo "Error: cannot encrypted $UNENCRYPTED_FILE: file not found."
@@ -18,7 +19,8 @@ if [ ! -z "$3" ]; then
   fi
 else
   UNENCRYPTED_FILE="-"
-  keyringer_get_new_file "$2"
+  shift
+  keyringer_get_new_file $*
 fi
 
 # Set recipients file

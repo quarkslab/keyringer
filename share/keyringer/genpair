@@ -194,9 +194,11 @@ if [ -z "$NODE" ]; then
   echo -e "Usage: keyringer <keyring> $BASENAME <gpg|ssh|ssl|ssl-self> <file> <hostname> [outfile]"
   echo -e "Options:"
   echo -e "\t gpg|ssh|ssl[-self]: key type."
-  echo -e "\t file                      : base file name for encrypted output (relative to keys folder)"
+  echo -e "\t file                      : base file name for encrypted output (relative to keys folder),"
+  echo -e "\t                             without spaces"
   echo -e "\t hostname                  : host for the key pair"
-  echo -e "\t outfile                   : optional unencrypted output file, useful for deployment"
+  echo -e "\t outfile                   : optional unencrypted output file, useful for deployment,"
+  echo -e "\t                             without spaces"
   exit 1
 elif [ ! -e "$KEYDIR" ]; then
   echo "Folder not found: $KEYDIR, leaving"

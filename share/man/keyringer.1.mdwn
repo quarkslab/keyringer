@@ -55,6 +55,8 @@ of an encrypted file relative to keyring with optional `.asc` extension.
 If the `.asc` extension is ommited, keyringer will add it in the end of the
 pathname.
 
+No spaces are allowed in the secret name.
+
 Secret manipulation actions do not commit changes into the secret repository.
 After any manipulation, the user has to manually commit the changes using the
 git wrapper action.
@@ -79,7 +81,8 @@ edit <*secret*>
    again.
 
 encrypt [*file*] <*secret*>
-:  Encrypts content from standard input or *file* into *secret* pathname.
+:  Encrypts content from standard input or *file* into *secret* pathname. No spaces
+   are supported in the *file* name.
 
 encrypt-batch <*secret*>
 :  Encrypt content, batch mode.

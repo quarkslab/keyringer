@@ -1,3 +1,9 @@
+2013-09-29 Silvio Rhatto  <rhatto@riseup.net>
+
+	Handle file names with spaces (#20)
+
+	Added 'init' subcommand into shell completions
+
 2013-09-27 - 0.2.5 Silvio Rhatto  <rhatto@riseup.net>
 
 	Development workflow enhancements

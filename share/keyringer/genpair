@@ -20,7 +20,6 @@ function genpair_ssh {
   echo "Encrypting public key into keyringer..."
   cat "$TMPWORK/id_rsa.pub" | keyringer_exec encrypt "$BASEDIR" "$FILE.pub"
 
-  # TODO: add outfiles into version control
   if [ ! -z "$OUTFILE" ]; then
     mkdir -p `dirname $OUTFILE`
     printf "Saving copies at %s and %s.pub\n" "$OUTFILE" "$OUTFILE"
@@ -72,7 +71,6 @@ EOF
   echo "Encrypting passphrase into keyringer..."
   echo "Passphrase for $FILE: $passphrase"               | keyringer_exec encrypt "$BASEDIR" "$FILE.passwd"
 
-  # TODO: add outfiles into version control
   if [ ! -z "$OUTFILE" ]; then
     mkdir -p `dirname $OUTFILE`
     printf "Saving copies at %s and %s.pub\n" "$OUTFILE" "$OUTFILE"
@@ -162,7 +160,6 @@ EOF
   cd "$CWD"
 
   if [ ! -z "$OUTFILE" ]; then
-    # TODO: add outfiles into version control
     mkdir -p `dirname $OUTFILE`
     printf "Saving copies at %s\n" "`dirname $OUTFILE`"
     cat "$TMPWORK/${NODE}_privatekey.pem" > "$OUTFILE.pem"

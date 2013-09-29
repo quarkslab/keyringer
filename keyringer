@@ -23,6 +23,7 @@ function keyringer_init {
   URL="$4"
   RECIPIENTS="$BASEDIR/config/recipients"
   OPTIONS="$BASEDIR/config/options"
+  VERSION_INFO="$BASEDIR/config/version"
 
   # We are initializing, so avoid some checks
   export KEYRINGER_CHECK_VERSION="false"
@@ -69,6 +70,9 @@ function keyringer_init {
       # Setup README
       echo "Keyring repository powered by http://git.sarava.org/?p=keyringer.git;a=summary" > "$BASEDIR/README"
       echo "" >> "$BASEDIR/README"
+
+      # Set config version
+      echo $CONFIG_VERSION > $VERSION_INFO
     fi
 
     # Secure

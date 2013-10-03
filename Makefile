@@ -51,7 +51,3 @@ build_man:
 
 tarball:
 	git archive --prefix=keyringer-$(VERSION)/ --format=tar HEAD | bzip2 >../tarballs/keyringer-$(VERSION).tar.bz2
-
-dh:
-	#dh_make -f ../tarballs/keyringer-$(VERSION).tar.bz2 -i -p keyringer_$(VERSION)
-	git archive --prefix=keyringer-$(VERSION)/ --format=tar HEAD | bzip2 >../tarballs/keyringer_$(VERSION).orig.tar.bz2

@@ -44,28 +44,14 @@ Prepare the source code:
     $EDITOR ChangeLog
     make build_man
 
-Update debian changelog:
-
-    cd debian
-    dch -i
-    cd -
-
 Commit and tag a release:
 
     git commit -a -m "Keyringer $VERSION"
     git tag -s $VERSION -m "Keyringer $VERSION"
-    git checkout upstream
-    git merge    master
-    git checkout debian
-    git merge    upstream
 
 Create a release file:
 
     make tarball
-
-Generate a `keyringer_VERSION.orig.tar.bz2` file:
-
-    make dh
 
 Sign the release ([see backupninja development guidelines](https://labs.riseup.net/code/projects/backupninja/wiki/Release)):
 
@@ -77,15 +63,17 @@ Upload the release:
     scp keyringer-$VERSION.tar.bz2* server:/var/sites/keyringer/releases/
     cd -
 
-Add the release into the `pristine-tar` branch:
+Update the debian branch:
 
-    pristine-tar commit ../tarballs/keyringer_$VERSION.orig.tar.bz2 $VERSION
+    git checkout debian
+    git-import-orig --upstream-vcs-tag=$VERSION ../tarballs/keyringer-$VERSION.tar.bz2
+    dch -e # fine tune the changelog prepared by git-dch
 
 Push everything:
 
     git push --tags
 
-Build the package from the git three using the upstream branch:
+Build the package from the debian Git branch:
 
     git-buildpackage
 
@@ -93,6 +81,11 @@ Run lintian (or [add it to your pbuilder hooks](http://askubuntu.com/questions/1
 
     lintian --info --display-info --pedantic --color auto \
      ../build-area/keyringer_$VERSION*.changes
+
+Notes:
+
+* `git-import-orig` takes care of running `pristine-tar commit`, of merging of the tag and orig tarball into the upstream branch, and then it merges the result into the debian branch. With the above configuration, it also runs git-dch to do the bulk of the work in `debian/changelog`.
+* To build a development package, checkout the debian branch, merge master, run `git-dch --auto --snapshot` and build. 
 
 Adding a subcommand
 -------------------

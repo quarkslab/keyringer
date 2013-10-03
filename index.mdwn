@@ -9,6 +9,9 @@ commands to encrypt, decrypt, recrypt, create key pairs, etc.
 - Releases: [https://keyringer.pw/releases](releases)
 - Contact: rhatto at riseup.net
 
+Index
+-----
+
 [[!toc levels=4]]
 
 Installation

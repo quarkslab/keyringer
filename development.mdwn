@@ -60,7 +60,7 @@ Sign the release ([see backupninja development guidelines](https://labs.riseup.n
 
 Upload the release:
 
-    scp keyringer-$VERSION.tar.bz2* server:/var/sites/keyringer/releases/
+    scp keyringer-$VERSION.tar.bz2* keyringer:/var/sites/keyringer/releases/
     cd -
 
 Update the debian branch:

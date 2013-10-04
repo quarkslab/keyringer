@@ -54,6 +54,8 @@ the pathname of an encrypted file relative to keyring with optional
 If the \f[C]\&.asc\f[] extension is ommited, keyringer will add it in
 the end of the pathname.
 .PP
+No spaces are allowed in the secret name.
+.PP
 Secret manipulation actions do not commit changes into the secret
 repository.
 After any manipulation, the user has to manually commit the changes
@@ -78,6 +80,7 @@ opening the decrypted copy into the text editor defined by the
 .PP
 encrypt [\f[I]file\f[]] <\f[I]secret\f[]> : Encrypts content from
 standard input or \f[I]file\f[] into \f[I]secret\f[] pathname.
+No spaces are supported in the \f[I]file\f[] name.
 .PP
 encrypt-batch <\f[I]secret\f[]> : Encrypt content, batch mode.
 .PP

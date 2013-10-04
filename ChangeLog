@@ -1,4 +1,6 @@
-2013-09-29 Silvio Rhatto  <rhatto@riseup.net>
+2013-10-04 - 0.2.6 Silvio Rhatto  <rhatto@riseup.net>
+
+	Removing debian specifics from the master branch (#1)
 
 	Minor fixes
 

@@ -82,6 +82,10 @@ Run lintian (or [add it to your pbuilder hooks](http://askubuntu.com/questions/1
     lintian --info --display-info --pedantic --color auto \
      ../build-area/keyringer_$VERSION*.changes
 
+Create a signed tag in the debian branch:
+
+    git-buildpackage --git-tag-only --git-sign-tags
+
 Notes:
 
 * `git-import-orig` takes care of running `pristine-tar commit`, of merging of the tag and orig tarball into the upstream branch, and then it merges the result into the debian branch. With the above configuration, it also runs git-dch to do the bulk of the work in `debian/changelog`.

@@ -1,3 +1,7 @@
+2013-10-18 -       Silvio Rhatto  <rhatto@riseup.net>
+
+	Strict FHS compliance (closes #18)
+
 2013-10-04 - 0.2.6 Silvio Rhatto  <rhatto@riseup.net>
 
 	Removing debian specifics from the master branch (#1)

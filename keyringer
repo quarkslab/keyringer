@@ -137,9 +137,9 @@ else
 fi
 
 # Set actions location
-if [ -e "`dirname $(readlink -f $0)`/share/$NAME" ]; then
+if [ -e "`dirname $(readlink -f $0)`/lib/$NAME/actions" ]; then
   # Development or local installation layout
-  ACTIONS="`dirname $(readlink -f $0)`/share/$NAME"
+  ACTIONS="`dirname $(readlink -f $0)`/lib/$NAME/actions"
 else
   # System installation layout
   ACTIONS="`dirname $(readlink -f $0)`/../share/$NAME"

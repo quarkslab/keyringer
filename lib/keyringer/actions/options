@@ -4,8 +4,8 @@
 #
 
 # Load functions
-LIB="`dirname $0`/../../lib/keyringer"
-source "$LIB/functions" || exit 1
+LIB="`dirname $0`/../functions"
+source "$LIB" || exit 1
 
 # Command parser
 keyringer_get_command "$2"

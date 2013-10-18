@@ -24,10 +24,8 @@ clean:
 
 install_lib:
 	$(INSTALL) -D --mode=0755 lib/keyringer/functions $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/functions
-
-install_share:
-	$(INSTALL) -D --mode=0755 -d share/keyringer $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)
-	$(INSTALL) -D --mode=0755 share/keyringer/* $(DESTDIR)/$(PREFIX)/share/$(PACKAGE)
+	$(INSTALL) -D --mode=0755 -d lib/keyringer/actions $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/actions
+	$(INSTALL) -D --mode=0755 lib/keyringer/actions/* $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/actions
 
 install_bin:
 	$(INSTALL) -D --mode=0755 keyringer $(DESTDIR)/$(PREFIX)/bin/keyringer
@@ -44,7 +42,7 @@ install_completion:
 	$(INSTALL) -D --mode=0644 lib/keyringer/completions/zsh/_keyringer $(DESTDIR)/$(PREFIX)/share/zsh/vendor-completions/_keyringer
 
 install: clean
-	@make install_lib install_share install_bin install_doc install_man install_completion
+	@make install_lib install_bin install_doc install_man install_completion
 
 build_man:
 	pandoc -s -w man share/man/keyringer.1.mdwn -o share/man/keyringer.1

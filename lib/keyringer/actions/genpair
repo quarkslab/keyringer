@@ -179,8 +179,8 @@ EOF
 }
 
 # Load functions
-LIB="`dirname $0`/../../lib/keyringer"
-source "$LIB/functions" || exit 1
+LIB="`dirname $0`/../functions"
+source "$LIB" || exit 1
 
 # Aditional parameters
 KEYTYPE="$2"

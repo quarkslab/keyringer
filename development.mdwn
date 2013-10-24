@@ -91,11 +91,12 @@ Notes:
 * `git-import-orig` takes care of running `pristine-tar commit`, of merging of the tag and orig tarball into the upstream branch, and then it merges the result into the debian branch. With the above configuration, it also runs git-dch to do the bulk of the work in `debian/changelog`.
 * To build a development package, checkout the debian branch, merge master, run `git-dch --auto --snapshot` and build. 
 
-Adding a subcommand
--------------------
+Adding or changing a subcommand
+-------------------------------
 
-When adding a new subcommand, ensure:
+When adding a new subcommand or changing subcommand behavior, ensure:
 
+* Documentation is updated.
 * Manpage is updated.
 * Shell completions are updated.
 

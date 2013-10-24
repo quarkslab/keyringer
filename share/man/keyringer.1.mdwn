@@ -1,6 +1,6 @@
 % KEYRINGER(1) Keyringer User Manual
 % Silvio Rhatto
-% Sep 10, 2013
+% Oct 24, 2013
 
 # NAME
 
@@ -12,11 +12,17 @@ keyringer <*keyring*> <*action*> [*options*]...
 
 # DESCRIPTION
 
-Keyringer lets you manage and share secrets using GPG and git with custom
-commands to encrypt, decrypt, recrypt, create key pairs, etc.
+Keyringer lets you manage and share secrets using GnuPG and Git in a
+distributed fashion.
 
-Secrets are encrypted using GPG and added to a git tree so later then can
-be synced with remote branches.
+It has custom commands to encrypt, decrypt and recrypt secrets as well as
+create key pairs and supports encryption to multiple recipients and groups of
+different recipients to ensure the same repository can be shared with a
+workgroup but allowing to keep some secrets available just to subsets of that
+group.
+
+Secrets are encrypted using GPG and added to a git tree so later then can be
+synced with remote branches.
 
 # ACTIONS
 
@@ -58,11 +64,12 @@ pathname.
 No spaces are allowed in the secret name.
 
 Secret manipulation actions do not commit changes into the secret repository.
-After any manipulation, the user has to manually commit the changes using the
-git wrapper action.
+Instead, the user has to manually commit the changes using the git wrapper
+action.
 
 append <*secret*>
-:  Append contents into a secret.
+:  Append contents into a secret by decrypting the secret, appending lines read
+   from the standard input and encrypting again.
 
 append-batch <*secret*>
 :  Append contents into a secret, batch mode.
@@ -72,11 +79,14 @@ decrypt <*secret*>
 
 del <*secret*>
 :  Removes a secret using git. After deleting a secret a git commit and push is still
-   needed to update remote repositories. To completely remove a file from a keyring,
-   you should also rewrite the git history by yourself.
+   needed to update remote repositories.
+
+   Please note that this command **does not remove the secret from the git history.**
+   To completely remove a file from a keyring, you should also rewrite the git
+   history by yourself.
 
 edit <*secret*>
-:  Edits a secret by temporarily decrypting it, opening the decrypted copy into the 
+:  Edit a secret by temporarily decrypting it, opening the decrypted copy into the 
    text editor defined by the *$EDITOR* environment variable and then recrypting it
    again.
 
@@ -91,7 +101,11 @@ genpair <*ssh*|*gpg*|*ssl*|*ssl-self*> [*options*]
 :  Wrapper to generete encryption keypairs, useful for automated key deployment.
 
 open <*secret*>
-:  Open a secret using xdg-open.
+:  Decrypt a secret into a temporary folder and opening it using xdg-open which
+   then tries to figure out the file type and calling the associated application.
+
+   After the application exits, keyringer encrypts the temporary decrypted file
+   again into the secret file.
 
 recrypt <*secret*>
 :  Recrypts a secret by decrypting it and recrypting again. Useful when users are added
@@ -110,6 +124,9 @@ options <*ls*|*edit*|*add*>
    saved into the repository, making it available for all users with access to the
    repository and hence is a *global* configuration stanza for a given keyring.
 
+   Options are written using the *KEY=VALUE* syntax. All lines starting with the
+   hash (#) character are interpreted as comments.
+
 preferences <*ls*|*edit*|*add*>
 :  List, edit or add *user* preferences for a given repository.
 
@@ -117,11 +134,17 @@ preferences <*ls*|*edit*|*add*>
    saved into the user's keyringer folder (`$HOME/.keyringer/`) hence not
    shared with the other users.
 
+   Preferences are written using the *KEY=VALUE* syntax. All lines starting with the
+   hash (#) character are interpreted as comments.
+
+usage
+:  Show keyringer usage information.
+
 recipients <*ls*|*edit*> <*recipient-file*>
-:  List or edit recipient configuration.
+:  List, create or edit recipient configuration.
 
    Recipient files are lists of OpenPGP public key fingerprints which are used
-   by keyringer when encrypting secrets.
+   by keyringer when encrypting secrets and associated with email aliases.
 
    Keyringer uses a default recipient file and supports custom *recipient-files* which
    overrides the default recipient file according to it's matching pathname.
@@ -134,6 +157,13 @@ recipients <*ls*|*edit*> <*recipient-file*>
    public keys listed in `$KEYRING_FOLDER/config/recipients/accounting` config
    file.
 
+   Each line in a recipients file has entries in the form of
+   'john@doe.com XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', where *john@doe.com*
+   is an alias for the GPG public key whose fingerprint is
+   *XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.*
+
+   All lines starting with the hash (#) character are interpreted as comments.
+
 ### OPTIONS
 
 ls
@@ -142,14 +172,11 @@ ls
 edit
 :  Create or edit a recipient-file.
 
-   Edition happens using the editor specified by the `$EDITOR`
+   Editing happens using the editor specified by the `$EDITOR`
    environment variable.
 
    The required parameter *recipient-file* is taken relativelly
    from the `$KEYRING_FOLDER/config/recipients/` folder.
-
-usage
-:  Show keyringer usage information.
 
 # FILES
 

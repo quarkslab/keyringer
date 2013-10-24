@@ -1,4 +1,4 @@
-.TH KEYRINGER 1 "Sep 10, 2013" "Keyringer User Manual"
+.TH KEYRINGER 1 "Oct 24, 2013" "Keyringer User Manual"
 .SH NAME
 .PP
 keyringer - encrypted and distributed secret sharing software
@@ -7,8 +7,14 @@ keyringer - encrypted and distributed secret sharing software
 keyringer <\f[I]keyring\f[]> <\f[I]action\f[]> [\f[I]options\f[]]...
 .SH DESCRIPTION
 .PP
-Keyringer lets you manage and share secrets using GPG and git with
-custom commands to encrypt, decrypt, recrypt, create key pairs, etc.
+Keyringer lets you manage and share secrets using GnuPG and Git in a
+distributed fashion.
+.PP
+It has custom commands to encrypt, decrypt and recrypt secrets as well
+as create key pairs and supports encryption to multiple recipients and
+groups of different recipients to ensure the same repository can be
+shared with a workgroup but allowing to keep some secrets available just
+to subsets of that group.
 .PP
 Secrets are encrypted using GPG and added to a git tree so later then
 can be synced with remote branches.
@@ -58,10 +64,12 @@ No spaces are allowed in the secret name.
 .PP
 Secret manipulation actions do not commit changes into the secret
 repository.
-After any manipulation, the user has to manually commit the changes
-using the git wrapper action.
+Instead, the user has to manually commit the changes using the git
+wrapper action.
 .PP
-append <\f[I]secret\f[]> : Append contents into a secret.
+append <\f[I]secret\f[]> : Append contents into a secret by decrypting
+the secret, appending lines read from the standard input and encrypting
+again.
 .PP
 append-batch <\f[I]secret\f[]> : Append contents into a secret, batch
 mode.
@@ -71,10 +79,12 @@ decrypt <\f[I]secret\f[]> : Decrypts a secret into standard output.
 del <\f[I]secret\f[]> : Removes a secret using git.
 After deleting a secret a git commit and push is still needed to update
 remote repositories.
-To completely remove a file from a keyring, you should also rewrite the
-git history by yourself.
 .PP
-edit <\f[I]secret\f[]> : Edits a secret by temporarily decrypting it,
+Please note that this command \f[B]does not remove the secret from the
+git history.\f[] To completely remove a file from a keyring, you should
+also rewrite the git history by yourself.
+.PP
+edit <\f[I]secret\f[]> : Edit a secret by temporarily decrypting it,
 opening the decrypted copy into the text editor defined by the
 \f[I]$EDITOR\f[] environment variable and then recrypting it again.
 .PP
@@ -88,7 +98,12 @@ genpair <\f[I]ssh\f[]|\f[I]gpg\f[]|\f[I]ssl\f[]|\f[I]ssl-self\f[]>
 [\f[I]options\f[]] : Wrapper to generete encryption keypairs, useful for
 automated key deployment.
 .PP
-open <\f[I]secret\f[]> : Open a secret using xdg-open.
+open <\f[I]secret\f[]> : Decrypt a secret into a temporary folder and
+opening it using xdg-open which then tries to figure out the file type
+and calling the associated application.
+.PP
+After the application exits, keyringer encrypts the temporary decrypted
+file again into the secret file.
 .PP
 recrypt <\f[I]secret\f[]> : Recrypts a secret by decrypting it and
 recrypting again.
@@ -108,6 +123,10 @@ saved into the repository, making it available for all users with access
 to the repository and hence is a \f[I]global\f[] configuration stanza
 for a given keyring.
 .PP
+Options are written using the \f[I]KEY=VALUE\f[] syntax.
+All lines starting with the hash (#) character are interpreted as
+comments.
+.PP
 preferences <\f[I]ls\f[]|\f[I]edit\f[]|\f[I]add\f[]> : List, edit or add
 \f[I]user\f[] preferences for a given repository.
 .PP
@@ -115,11 +134,18 @@ User preferences are specific configurations for the keyring which are
 saved into the user\[aq]s keyringer folder (\f[C]$HOME/.keyringer/\f[])
 hence not shared with the other users.
 .PP
-recipients <\f[I]ls\f[]|\f[I]edit\f[]> <\f[I]recipient-file\f[]> : List
-or edit recipient configuration.
+Preferences are written using the \f[I]KEY=VALUE\f[] syntax.
+All lines starting with the hash (#) character are interpreted as
+comments.
+.PP
+usage : Show keyringer usage information.
+.PP
+recipients <\f[I]ls\f[]|\f[I]edit\f[]> <\f[I]recipient-file\f[]> : List,
+create or edit recipient configuration.
 .PP
 Recipient files are lists of OpenPGP public key fingerprints which are
-used by keyringer when encrypting secrets.
+used by keyringer when encrypting secrets and associated with email
+aliases.
 .PP
 Keyringer uses a default recipient file and supports custom
 \f[I]recipient-files\f[] which overrides the default recipient file
@@ -133,19 +159,25 @@ will result in a file
 \f[C]$KEYRING_FOLDER/keys/accounting/bank-accounts.asc\f[] encrypted
 using the public keys listed in
 \f[C]$KEYRING_FOLDER/config/recipients/accounting\f[] config file.
+.PP
+Each line in a recipients file has entries in the form of
+\[aq]john\@doe.com XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\[aq], where
+\f[I]john\@doe.com\f[] is an alias for the GPG public key whose
+fingerprint is \f[I]XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.\f[]
+.PP
+All lines starting with the hash (#) character are interpreted as
+comments.
 .SS OPTIONS
 .PP
 ls : List all existing recipient files.
 .PP
 edit : Create or edit a recipient-file.
 .PP
-Edition happens using the editor specified by the \f[C]$EDITOR\f[]
+Editing happens using the editor specified by the \f[C]$EDITOR\f[]
 environment variable.
 .PP
 The required parameter \f[I]recipient-file\f[] is taken relativelly from
 the \f[C]$KEYRING_FOLDER/config/recipients/\f[] folder.
-.PP
-usage : Show keyringer usage information.
 .SH FILES
 .PP
 $HOME/.keyringer/config : User\[aq]s main configuration file used to map

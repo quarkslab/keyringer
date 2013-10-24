@@ -504,7 +504,7 @@ function keyringer_set_new_recipients {
 function keyringer_create_new_recipients {
   if [ ! -e "$1" ]; then
     mkdir -p "`dirname $1`"
-    echo "# Use entries in the form of 'john@doe.com XXXXXXXX" > "$1"
+    echo "# Use entries in the form of 'john@doe.com XXXXXXXX'" > "$1"
     echo "" >> "$1"
   fi
 }

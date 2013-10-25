@@ -210,15 +210,15 @@ fingerprint is \f[I]XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.\f[]
 .PP
 All lines starting with the hash (#) character are interpreted as
 comments.
-.RE
-.SS OPTIONS
+.PP
+Parameters to the \f[I]recipients\f[] subcommand are:
 .TP
-.B ls
+.B \f[I]ls\f[]
 List all existing recipient files.
 .RS
 .RE
 .TP
-.B edit
+.B \f[I]edit\f[]
 Create or edit a recipient-file.
 .RS
 .PP
@@ -227,6 +227,7 @@ environment variable.
 .PP
 The required parameter \f[I]recipient-file\f[] is taken relativelly from
 the \f[C]$KEYRING_FOLDER/config/recipients/\f[] folder.
+.RE
 .RE
 .SH FILES
 .PP
@@ -247,4 +248,4 @@ documentation.
 The Keyringer source code and all documentation may be downloaded from
 <https://keyringer.pw>.
 .SH AUTHORS
-Silvio Rhatto.
+Silvio Rhatto <rhatto@riseup.net>.

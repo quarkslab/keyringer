@@ -198,23 +198,23 @@ $KEYRING_FOLDER/config/options
 
 Keyringer currently has the following limitations:
 
-* Metadata is not encrypted, meaning that an attacker with access to a keyringer
+1. Metadata is not encrypted, meaning that an attacker with access to a keyringer
   repository knows all public key IDs are used for encryption and which secrets
   are encrypted to which keys. This can be improved in the future by encrypting
   the repository configuration with support for *--hidden-recipient* GnuPG
   option.
 
-* History is not rewritten by default when secrets are removed from a keyringer
+2. History is not rewritten by default when secrets are removed from a keyringer
   repository. After a secret is removed with *del* action, it will still be
   available in the repository history even after a commit. This is by design
   due to the following reasons:
 
-  1. It's the default behavior of the Git content tracker. Forcing the
+  - It's the default behavior of the Git content tracker. Forcing the
      deletion by default could break the expected behavior and hence limit
      the repository's backup features, which can be helpful is someone
      mistakenly overwrites a secret.
 
-  2. History rewriting cannot be considered a security measure against the
+  - History rewriting cannot be considered a security measure against the
      unauthorized access to a secret as it doesn't automatically update all
      working copies of the repository.
 

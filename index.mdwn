@@ -5,7 +5,7 @@ commands to encrypt, decrypt, recrypt, create key pairs, etc.
 
 - Project page: [https://keyringer.pw](https://keyringer.pw)
 - Manpage: [keyringer.1](share/man/keyringer.1)
-- License: [GPLv3+](LICENSE).
+- License: [GPLv3+](LICENSE)
 - Issue tracker: [https://keyringer.pw/trac](https://keyringer.pw/trac)
 - Tor hidden service: [http://y6ntvl5bzs3c7ffa.onion](http://y6ntvl5bzs3c7ffa.onion)
 - Releases: [https://keyringer.pw/releases](releases)

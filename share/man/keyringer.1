@@ -27,12 +27,13 @@ Repository lookup and manipulation actions.
 Secret manipulation actions.
 .IP "3." 3
 Configuration actions.
-.SS REPOSITORY LOOKUP AND MANIPULATION ACTIONS
-.PP
-init <\f[I]path\f[]> [\f[I]remote\f[]] : Initialize a new keyringer
-repository.
+.SH REPOSITORY LOOKUP AND MANIPULATION ACTIONS
+.TP
+.B init <\f[I]path\f[]> [\f[I]remote\f[]]
+Initialize a new keyringer repository.
 If a \f[I]remote\f[] URL is specified, keyringer will clone an existing
 repository.
+.RS
 .PP
 After initialization, \f[I]path\f[] will contain a folder structure for
 storing secrets and metadata (user aka recipients, groups of recipients,
@@ -40,18 +41,23 @@ etc).
 .PP
 Also, an entry on \f[C]$HOME/.keyringer/config\f[] will be added
 allowing keyringer to find the keyring by it\[aq]s alias.
-.PP
-git <\f[I]action\f[]> <\f[I]options\f[]> : Git wrapper that operates
-from the toplevel keyring repository.
+.RE
+.TP
+.B git <\f[I]action\f[]> <\f[I]options\f[]>
+Git wrapper that operates from the toplevel keyring repository.
 You can issue any \f[I]GIT(1)\f[] subcommand with this action that it
 will be applied into the keyring repository.
-.PP
-ls <\f[I]path\f[]> : List contents from the toplevel repository
-\f[I]keys\f[] folder or from relative paths if \f[I]path\f[] is
-specified.
+.RS
+.RE
+.TP
+.B ls <\f[I]path\f[]>
+List contents from the toplevel repository \f[I]keys\f[] folder or from
+relative paths if \f[I]path\f[] is specified.
 Like the git wrapper, this is a wrapper around the \f[I]LS(1)\f[]
 command.
-.SS SECRET MANIPULATION ACTIONS
+.RS
+.RE
+.SH SECRET MANIPULATION ACTIONS
 .PP
 All secret manipulation actions operates upon a \f[I]secret\f[] which is
 the pathname of an encrypted file relative to keyring with optional
@@ -66,57 +72,87 @@ Secret manipulation actions do not commit changes into the secret
 repository.
 Instead, the user has to manually commit the changes using the git
 wrapper action.
-.PP
-append <\f[I]secret\f[]> : Append contents into a secret by decrypting
-the secret, appending lines read from the standard input and encrypting
-again.
-.PP
-append-batch <\f[I]secret\f[]> : Append contents into a secret, batch
-mode.
-.PP
-decrypt <\f[I]secret\f[]> : Decrypts a secret into standard output.
-.PP
-del <\f[I]secret\f[]> : Removes a secret using git.
+.TP
+.B append <\f[I]secret\f[]>
+Append contents into a secret by decrypting the secret, appending lines
+read from the standard input and encrypting again.
+.RS
+.RE
+.TP
+.B append-batch <\f[I]secret\f[]>
+Append contents into a secret, batch mode.
+.RS
+.RE
+.TP
+.B decrypt <\f[I]secret\f[]>
+Decrypts a secret into standard output.
+.RS
+.RE
+.TP
+.B del <\f[I]secret\f[]>
+Removes a secret using git.
 After deleting a secret a git commit and push is still needed to update
 remote repositories.
+.RS
 .PP
 Please note that this command \f[B]does not remove the secret from the
 git history.\f[] To completely remove a file from a keyring, you should
 also rewrite the git history by yourself.
-.PP
-edit <\f[I]secret\f[]> : Edit a secret by temporarily decrypting it,
-opening the decrypted copy into the text editor defined by the
-\f[I]$EDITOR\f[] environment variable and then recrypting it again.
-.PP
-encrypt [\f[I]file\f[]] <\f[I]secret\f[]> : Encrypts content from
-standard input or \f[I]file\f[] into \f[I]secret\f[] pathname.
+.RE
+.TP
+.B edit <\f[I]secret\f[]>
+Edit a secret by temporarily decrypting it, opening the decrypted copy
+into the text editor defined by the \f[I]$EDITOR\f[] environment
+variable and then recrypting it again.
+.RS
+.RE
+.TP
+.B encrypt [\f[I]file\f[]] <\f[I]secret\f[]>
+Encrypts content from standard input or \f[I]file\f[] into
+\f[I]secret\f[] pathname.
 No spaces are supported in the \f[I]file\f[] name.
-.PP
-encrypt-batch <\f[I]secret\f[]> : Encrypt content, batch mode.
-.PP
-genpair <\f[I]ssh\f[]|\f[I]gpg\f[]|\f[I]ssl\f[]|\f[I]ssl-self\f[]>
-[\f[I]options\f[]] : Wrapper to generete encryption keypairs, useful for
-automated key deployment.
-.PP
-open <\f[I]secret\f[]> : Decrypt a secret into a temporary folder and
-opening it using xdg-open which then tries to figure out the file type
-and calling the associated application.
+.RS
+.RE
+.TP
+.B encrypt-batch <\f[I]secret\f[]>
+Encrypt content, batch mode.
+.RS
+.RE
+.TP
+.B genpair <\f[I]ssh\f[]|\f[I]gpg\f[]|\f[I]ssl\f[]|\f[I]ssl-self\f[]>
+[\f[I]options\f[]]
+Wrapper to generete encryption keypairs, useful for automated key
+deployment.
+.RS
+.RE
+.TP
+.B open <\f[I]secret\f[]>
+Decrypt a secret into a temporary folder and opening it using xdg-open
+which then tries to figure out the file type and calling the associated
+application.
+.RS
 .PP
 After the application exits, keyringer encrypts the temporary decrypted
 file again into the secret file.
-.PP
-recrypt <\f[I]secret\f[]> : Recrypts a secret by decrypting it and
-recrypting again.
+.RE
+.TP
+.B recrypt <\f[I]secret\f[]>
+Recrypts a secret by decrypting it and recrypting again.
 Useful when users are added into recipient configuration.
 If no \f[I]secret\f[] is given, all secrets in the repository are
 re-encrypted.
-.SS CONFIGURATION ACTIONS
-.PP
-commands : List available actions, useful for shell completion and
-syntax check.
-.PP
-options <\f[I]ls\f[]|\f[I]edit\f[]|\f[I]add\f[]> : List, edit or add
-miscelaneous \f[I]repository\f[] options.
+.RS
+.RE
+.SH CONFIGURATION ACTIONS
+.TP
+.B commands
+List available actions, useful for shell completion and syntax check.
+.RS
+.RE
+.TP
+.B options <\f[I]ls\f[]|\f[I]edit\f[]|\f[I]add\f[]>
+List, edit or add miscelaneous \f[I]repository\f[] options.
+.RS
 .PP
 Repository options are specific configurations for the keyring which are
 saved into the repository, making it available for all users with access
@@ -126,9 +162,11 @@ for a given keyring.
 Options are written using the \f[I]KEY=VALUE\f[] syntax.
 All lines starting with the hash (#) character are interpreted as
 comments.
-.PP
-preferences <\f[I]ls\f[]|\f[I]edit\f[]|\f[I]add\f[]> : List, edit or add
-\f[I]user\f[] preferences for a given repository.
+.RE
+.TP
+.B preferences <\f[I]ls\f[]|\f[I]edit\f[]|\f[I]add\f[]>
+List, edit or add \f[I]user\f[] preferences for a given repository.
+.RS
 .PP
 User preferences are specific configurations for the keyring which are
 saved into the user\[aq]s keyringer folder (\f[C]$HOME/.keyringer/\f[])
@@ -137,11 +175,16 @@ hence not shared with the other users.
 Preferences are written using the \f[I]KEY=VALUE\f[] syntax.
 All lines starting with the hash (#) character are interpreted as
 comments.
-.PP
-usage : Show keyringer usage information.
-.PP
-recipients <\f[I]ls\f[]|\f[I]edit\f[]> <\f[I]recipient-file\f[]> : List,
-create or edit recipient configuration.
+.RE
+.TP
+.B usage
+Show keyringer usage information.
+.RS
+.RE
+.TP
+.B recipients <\f[I]ls\f[]|\f[I]edit\f[]> <\f[I]recipient-file\f[]>
+List, create or edit recipient configuration.
+.RS
 .PP
 Recipient files are lists of OpenPGP public key fingerprints which are
 used by keyringer when encrypting secrets and associated with email
@@ -167,17 +210,24 @@ fingerprint is \f[I]XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.\f[]
 .PP
 All lines starting with the hash (#) character are interpreted as
 comments.
+.RE
 .SS OPTIONS
-.PP
-ls : List all existing recipient files.
-.PP
-edit : Create or edit a recipient-file.
+.TP
+.B ls
+List all existing recipient files.
+.RS
+.RE
+.TP
+.B edit
+Create or edit a recipient-file.
+.RS
 .PP
 Editing happens using the editor specified by the \f[C]$EDITOR\f[]
 environment variable.
 .PP
 The required parameter \f[I]recipient-file\f[] is taken relativelly from
 the \f[C]$KEYRING_FOLDER/config/recipients/\f[] folder.
+.RE
 .SH FILES
 .PP
 $HOME/.keyringer/config : User\[aq]s main configuration file used to map

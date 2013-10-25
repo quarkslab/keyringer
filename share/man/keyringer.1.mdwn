@@ -32,28 +32,28 @@ Keyringer has three types of actions:
 2. Secret manipulation actions.
 3. Configuration actions.
 
-## REPOSITORY LOOKUP AND MANIPULATION ACTIONS
+# REPOSITORY LOOKUP AND MANIPULATION ACTIONS
 
 init <*path*> [*remote*]
-:  Initialize a new keyringer repository. If a *remote* URL is specified, keyringer will
-   clone an existing repository.
+:   Initialize a new keyringer repository. If a *remote* URL is specified, keyringer will
+    clone an existing repository.
 
-   After initialization, *path* will contain a folder structure for storing secrets
-   and metadata (user aka recipients, groups of recipients, etc).
+    After initialization, *path* will contain a folder structure for storing secrets
+    and metadata (user aka recipients, groups of recipients, etc).
 
-   Also, an entry on `$HOME/.keyringer/config` will be added allowing keyringer to
-   find the keyring by it's alias.
+    Also, an entry on `$HOME/.keyringer/config` will be added allowing keyringer to
+    find the keyring by it's alias.
 
 git <*action*> <*options*>
-:  Git wrapper that operates from the toplevel keyring repository. You can issue any
-   *GIT(1)* subcommand with this action that it will be applied into the keyring repository.
+:   Git wrapper that operates from the toplevel keyring repository. You can issue any
+    *GIT(1)* subcommand with this action that it will be applied into the keyring repository.
 
 ls <*path*>
-:  List contents from the toplevel repository *keys* folder or from relative paths
-   if *path* is specified. Like the git wrapper, this is a wrapper around the *LS(1)*
-   command.
+:   List contents from the toplevel repository *keys* folder or from relative paths
+    if *path* is specified. Like the git wrapper, this is a wrapper around the *LS(1)*
+    command.
 
-## SECRET MANIPULATION ACTIONS
+# SECRET MANIPULATION ACTIONS
 
 All secret manipulation actions operates upon a *secret* which is the pathname
 of an encrypted file relative to keyring with optional `.asc` extension.
@@ -68,127 +68,127 @@ Instead, the user has to manually commit the changes using the git wrapper
 action.
 
 append <*secret*>
-:  Append contents into a secret by decrypting the secret, appending lines read
-   from the standard input and encrypting again.
+:   Append contents into a secret by decrypting the secret, appending lines read
+    from the standard input and encrypting again.
 
 append-batch <*secret*>
-:  Append contents into a secret, batch mode.
+:   Append contents into a secret, batch mode.
 
 decrypt <*secret*>
-:  Decrypts a secret into standard output.
+:   Decrypts a secret into standard output.
 
 del <*secret*>
-:  Removes a secret using git. After deleting a secret a git commit and push is still
-   needed to update remote repositories.
+:   Removes a secret using git. After deleting a secret a git commit and push is still
+    needed to update remote repositories.
 
-   Please note that this command **does not remove the secret from the git history.**
-   To completely remove a file from a keyring, you should also rewrite the git
-   history by yourself.
+    Please note that this command **does not remove the secret from the git history.**
+    To completely remove a file from a keyring, you should also rewrite the git
+    history by yourself.
 
 edit <*secret*>
-:  Edit a secret by temporarily decrypting it, opening the decrypted copy into the 
-   text editor defined by the *$EDITOR* environment variable and then recrypting it
-   again.
+:   Edit a secret by temporarily decrypting it, opening the decrypted copy into the 
+    text editor defined by the *$EDITOR* environment variable and then recrypting it
+    again.
 
 encrypt [*file*] <*secret*>
-:  Encrypts content from standard input or *file* into *secret* pathname. No spaces
-   are supported in the *file* name.
+:   Encrypts content from standard input or *file* into *secret* pathname. No spaces
+    are supported in the *file* name.
 
 encrypt-batch <*secret*>
-:  Encrypt content, batch mode.
+:   Encrypt content, batch mode.
 
 genpair <*ssh*|*gpg*|*ssl*|*ssl-self*> [*options*]
-:  Wrapper to generete encryption keypairs, useful for automated key deployment.
+:   Wrapper to generete encryption keypairs, useful for automated key deployment.
 
 open <*secret*>
-:  Decrypt a secret into a temporary folder and opening it using xdg-open which
-   then tries to figure out the file type and calling the associated application.
+:   Decrypt a secret into a temporary folder and opening it using xdg-open which
+    then tries to figure out the file type and calling the associated application.
 
-   After the application exits, keyringer encrypts the temporary decrypted file
-   again into the secret file.
+    After the application exits, keyringer encrypts the temporary decrypted file
+    again into the secret file.
 
 recrypt <*secret*>
-:  Recrypts a secret by decrypting it and recrypting again. Useful when users are added
-   into recipient configuration. If no *secret* is given, all secrets in the repository
-   are re-encrypted.
+:   Recrypts a secret by decrypting it and recrypting again. Useful when users are added
+    into recipient configuration. If no *secret* is given, all secrets in the repository
+    are re-encrypted.
 
-## CONFIGURATION ACTIONS
+# CONFIGURATION ACTIONS
 
 commands
-:  List available actions, useful for shell completion and syntax check.
+:   List available actions, useful for shell completion and syntax check.
 
 options <*ls*|*edit*|*add*>
-:  List, edit or add miscelaneous *repository* options.
+:   List, edit or add miscelaneous *repository* options.
 
-   Repository options are specific configurations for the keyring which are
-   saved into the repository, making it available for all users with access to the
-   repository and hence is a *global* configuration stanza for a given keyring.
+    Repository options are specific configurations for the keyring which are
+    saved into the repository, making it available for all users with access to the
+    repository and hence is a *global* configuration stanza for a given keyring.
 
-   Options are written using the *KEY=VALUE* syntax. All lines starting with the
-   hash (#) character are interpreted as comments.
+    Options are written using the *KEY=VALUE* syntax. All lines starting with the
+    hash (#) character are interpreted as comments.
 
 preferences <*ls*|*edit*|*add*>
-:  List, edit or add *user* preferences for a given repository.
+:   List, edit or add *user* preferences for a given repository.
 
-   User preferences are specific configurations for the keyring which are
-   saved into the user's keyringer folder (`$HOME/.keyringer/`) hence not
-   shared with the other users.
+    User preferences are specific configurations for the keyring which are
+    saved into the user's keyringer folder (`$HOME/.keyringer/`) hence not
+    shared with the other users.
 
-   Preferences are written using the *KEY=VALUE* syntax. All lines starting with the
-   hash (#) character are interpreted as comments.
+    Preferences are written using the *KEY=VALUE* syntax. All lines starting with the
+    hash (#) character are interpreted as comments.
 
 usage
-:  Show keyringer usage information.
+:   Show keyringer usage information.
 
 recipients <*ls*|*edit*> <*recipient-file*>
-:  List, create or edit recipient configuration.
+:   List, create or edit recipient configuration.
 
-   Recipient files are lists of OpenPGP public key fingerprints which are used
-   by keyringer when encrypting secrets and associated with email aliases.
+    Recipient files are lists of OpenPGP public key fingerprints which are used
+    by keyringer when encrypting secrets and associated with email aliases.
 
-   Keyringer uses a default recipient file and supports custom *recipient-files* which
-   overrides the default recipient file according to it's matching pathname.
+    Keyringer uses a default recipient file and supports custom *recipient-files* which
+    overrides the default recipient file according to it's matching pathname.
 
-   For instance, a the *recipient-file* called *accounting* will be used
-   wherever a user encrypts a secret to a file residing from the *accounting*
-   folder in the keyring repository. In that case, encrypting a secret into
-   *accounting/bank-accounts* will result in a file
-   `$KEYRING_FOLDER/keys/accounting/bank-accounts.asc` encrypted using the
-   public keys listed in `$KEYRING_FOLDER/config/recipients/accounting` config
-   file.
+    For instance, a the *recipient-file* called *accounting* will be used
+    wherever a user encrypts a secret to a file residing from the *accounting*
+    folder in the keyring repository. In that case, encrypting a secret into
+    *accounting/bank-accounts* will result in a file
+    `$KEYRING_FOLDER/keys/accounting/bank-accounts.asc` encrypted using the
+    public keys listed in `$KEYRING_FOLDER/config/recipients/accounting` config
+    file.
 
-   Each line in a recipients file has entries in the form of
-   'john@doe.com XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', where *john@doe.com*
-   is an alias for the GPG public key whose fingerprint is
-   *XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.*
+    Each line in a recipients file has entries in the form of
+    'john@doe.com XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', where *john@doe.com*
+    is an alias for the GPG public key whose fingerprint is
+    *XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.*
 
-   All lines starting with the hash (#) character are interpreted as comments.
+    All lines starting with the hash (#) character are interpreted as comments.
 
-### OPTIONS
+## OPTIONS
 
 ls
-:  List all existing recipient files.
+:   List all existing recipient files.
 
 edit
-:  Create or edit a recipient-file.
+:   Create or edit a recipient-file.
 
-   Editing happens using the editor specified by the `$EDITOR`
-   environment variable.
+    Editing happens using the editor specified by the `$EDITOR`
+    environment variable.
 
-   The required parameter *recipient-file* is taken relativelly
-   from the `$KEYRING_FOLDER/config/recipients/` folder.
+    The required parameter *recipient-file* is taken relativelly
+    from the `$KEYRING_FOLDER/config/recipients/` folder.
 
 # FILES
 
 $HOME/.keyringer/config
-: User's main configuration file used to map alias names to keyrings.
+:  User's main configuration file used to map alias names to keyrings.
 
 $HOME/.keyringer/*keyring*
-: User preferences for the keyringer aliased *keyring* keyring.
+:  User preferences for the keyringer aliased *keyring* keyring.
 
 $KEYRING_FOLDER/config/options
-: Custom keyring options which will be applied for all users that use
-  the keyringer repository.
+:  Custom keyring options which will be applied for all users that use
+   the keyringer repository.
 
 # LIMITATIONS
 

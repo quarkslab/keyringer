@@ -244,28 +244,28 @@ applied for all users that use the keyringer repository.
 .SH LIMITATIONS
 .PP
 Keyringer currently has the following limitations:
-.IP \[bu] 2
+.IP "1." 3
 Metadata is not encrypted, meaning that an attacker with access to a
 keyringer repository knows all public key IDs are used for encryption
 and which secrets are encrypted to which keys.
 This can be improved in the future by encrypting the repository
 configuration with support for \f[I]--hidden-recipient\f[] GnuPG option.
-.IP \[bu] 2
+.IP "2." 3
 History is not rewritten by default when secrets are removed from a
 keyringer repository.
 After a secret is removed with \f[I]del\f[] action, it will still be
 available in the repository history even after a commit.
 This is by design due to the following reasons:
-.IP "1." 3
+.IP \[bu] 2
 It\[aq]s the default behavior of the Git content tracker.
 Forcing the deletion by default could break the expected behavior and
 hence limit the repository\[aq]s backup features, which can be helpful
 is someone mistakenly overwrites a secret.
-.IP "2." 3
+.IP \[bu] 2
 History rewriting cannot be considered a security measure against the
 unauthorized access to a secret as it doesn\[aq]t automatically update
 all working copies of the repository.
-.RS 4
+.RS 2
 .PP
 In the case that the secret is a passphrase, the recommended measure
 against such attack is to change the passphrase, making useless the

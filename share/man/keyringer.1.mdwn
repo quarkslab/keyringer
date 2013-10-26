@@ -106,10 +106,10 @@ genpair <*ssh*|*gpg*|*ssl*|*ssl-self*> [*options*]
 
 open <*secret*>
 :   Decrypt a secret into a temporary folder and opening it using xdg-open which
-    then tries to figure out the file type and calling the associated application.
+    tries to figure out the file type and then calling the associated application.
 
     After the application exits, keyringer encrypts the temporary decrypted file
-    again into the secret file.
+    again into the secret file and deletes the temporary file.
 
 recrypt <*secret*>
 :   Recrypts a secret by decrypting it and recrypting again. Useful when users are added

@@ -15,23 +15,22 @@ keyringer <*keyring*> <*action*> [*options*]...
 Keyringer lets you manage and share secrets using GnuPG and Git in a
 distributed fashion.
 
-It has custom commands to encrypt, decrypt and recrypt secrets as well as
-create key pairs and supports encryption to multiple recipients and groups of
-different recipients to ensure the same repository can be shared with a
-workgroup but allowing to keep some secrets available just to subsets of that
-group.
+It has custom commands to create key-pairs and to encrypt, decrypt and
+re-encrypt secrets. It also supports encryption to multiple recipients
+and groups of recipients, to allow a workgroup to share access to a single
+repository while restricting some secrets to subsets of the group.
 
-Secrets are encrypted using GPG and added to a git tree so later then can be
-synced with remote branches.
+Secrets are encrypted using GPG and added to a Git tree so that they can be
+synced with remote branches later.
 
 # ACTIONS
 
 Keyringer has three types of actions:
 
-1. Repository lookup and manipulation actions, which handles repository initialization,
+1. Repository lookup and manipulation actions, which handle repository initialization,
    content tracking and navigation.
 
-2. Secret manipulation actions, which takes care of encrypting, decrypting and other
+2. Secret manipulation actions, which take care of encrypting, decrypting and other
    read/write operations on secrets.
 
 3. Configuration actions, handling repository metadata.
@@ -45,12 +44,12 @@ init <*path*> [*remote*]
     After initialization, *path* will contain a folder structure for storing secrets
     and metadata (user aka recipients, groups of recipients, etc).
 
-    Also, an entry on `$HOME/.keyringer/config` will be added allowing keyringer to
-    find the keyring by it's alias.
+    Also, an entry will be added to `$HOME/.keyringer/config` allowing keyringer to
+    find the keyring by its alias.
 
 git <*action*> <*options*>
 :   Git wrapper that operates from the toplevel keyring repository. You can issue any
-    *GIT(1)* subcommand with this action that it will be applied into the keyring repository.
+    *GIT(1)* subcommand with this action to have it applied in the keyring repository.
 
 ls <*path*>
 :   List contents from the toplevel repository *keys* folder or from relative paths
@@ -59,10 +58,10 @@ ls <*path*>
 
 # SECRET MANIPULATION ACTIONS
 
-All secret manipulation actions operates upon a *secret* which is the pathname
-of an encrypted file relative to keyring with optional `.asc` extension.
+All secret manipulation actions operate upon a *secret* which is the pathname
+of an encrypted file relative to the keyring with optional `.asc` extension.
 
-If the `.asc` extension is ommited, keyringer will add it in the end of the
+If the `.asc` extension is omitted, keyringer will add it at the end of the
 pathname.
 
 No spaces are allowed in the secret name.
@@ -82,17 +81,16 @@ decrypt <*secret*>
 :   Decrypts a secret into standard output.
 
 del <*secret*>
-:   Removes a secret using git. After deleting a secret a git commit and push is still
+:   Removes a secret using Git. After deleting a secret a git commit and push is still
     needed to update remote repositories.
 
-    Please note that this command **does not remove the secret from the git history.**
-    To completely remove a file from a keyring, you should also rewrite the git
-    history by yourself.
+    Please note that this command **does not remove the secret from the Git history.**
+    To completely remove a file from a keyring, you should also rewrite the Git
+    history yourself.
 
 edit <*secret*>
 :   Edit a secret by temporarily decrypting it, opening the decrypted copy into the 
-    text editor defined by the *$EDITOR* environment variable and then recrypting it
-    again.
+    text editor defined by the *$EDITOR* environment variable and then re-encrypting it.
 
 encrypt [*file*] <*secret*>
 :   Encrypts content from standard input or *file* into *secret* pathname. No spaces
@@ -102,18 +100,18 @@ encrypt-batch <*secret*>
 :   Encrypt content, batch mode.
 
 genpair <*ssh*|*gpg*|*ssl*|*ssl-self*> [*options*]
-:   Wrapper to generete encryption keypairs, useful for automated key deployment.
+:   Wrapper to generate encryption key-pairs, useful for automated key deployment.
 
 open <*secret*>
-:   Decrypt a secret into a temporary folder and opening it using xdg-open which
-    tries to figure out the file type and then calling the associated application.
+:   Decrypt a secret into a temporary folder and open it using xdg-open, which
+    tries to figure out the file type and then calls the associated application.
 
     After the application exits, keyringer encrypts the temporary decrypted file
     again into the secret file and deletes the temporary file.
 
 recrypt <*secret*>
-:   Recrypts a secret by decrypting it and recrypting again. Useful when users are added
-    into recipient configuration. If no *secret* is given, all secrets in the repository
+:   Re-encrypts a secret by decrypting it and encrypting it again. Useful when users are added
+    into the recipient configuration. If no *secret* is given, all secrets in the repository
     are re-encrypted.
 
 # CONFIGURATION ACTIONS
@@ -122,11 +120,11 @@ commands
 :   List available actions, useful for shell completion and syntax check.
 
 options <*ls*|*edit*|*add*>
-:   List, edit or add miscelaneous *repository* options.
+:   List, edit or add miscellaneous *repository* options.
 
-    Repository options are specific configurations for the keyring which are
-    saved into the repository, making it available for all users with access to the
-    repository and hence is a *global* configuration stanza for a given keyring.
+    Repository options are settings which are saved in the repository as a *global*
+    configuration stanza for a given keyring, shared by all users with access to
+    the repository.
 
     Options are written using the *KEY=VALUE* syntax. All lines starting with the
     hash (#) character are interpreted as comments.
@@ -134,9 +132,8 @@ options <*ls*|*edit*|*add*>
 preferences <*ls*|*edit*|*add*>
 :   List, edit or add *user* preferences for a given repository.
 
-    User preferences are specific configurations for the keyring which are
-    saved into the user's keyringer folder (`$HOME/.keyringer/`) hence not
-    shared with the other users.
+    User preferences are settings which are saved in the user's keyringer folder
+    (`$HOME/.keyringer/`), and not shared with the other users.
 
     Preferences are written using the *KEY=VALUE* syntax. All lines starting with the
     hash (#) character are interpreted as comments.
@@ -144,24 +141,22 @@ preferences <*ls*|*edit*|*add*>
 usage
 :   Show keyringer usage information.
 
-recipients <*ls*|*edit*> <*recipient-file*>
-:   List, create or edit recipient configuration.
+recipients <*ls*|*edit*> <*recipients-file*>
+:   List, create or edit recipients configuration.
 
-    Recipient files are lists of OpenPGP public key fingerprints which are used
+    Recipients files are lists of OpenPGP public key fingerprints which are used
     by keyringer when encrypting secrets and associated with email aliases.
 
-    Keyringer uses a default recipient file and supports custom *recipient-files* which
-    overrides the default recipient file according to it's matching pathname.
+    Keyringer uses a default recipients file, but specifying a custom *recipients-file*
+    pathname will override this default.
 
-    For instance, a the *recipient-file* called *accounting* will be used
-    wherever a user encrypts a secret to a file residing from the *accounting*
-    folder in the keyring repository. In that case, encrypting a secret into
-    *accounting/bank-accounts* will result in a file
-    `$KEYRING_FOLDER/keys/accounting/bank-accounts.asc` encrypted using the
-    public keys listed in `$KEYRING_FOLDER/config/recipients/accounting` config
-    file.
+    For instance, if a user encrypts a secret to a file in the keyring repository's
+    *accounting* folder, a *recipients-file* under *accounting* will be used.
+    Encrypting a secret into *accounting/bank-accounts* will result in a file
+   `$KEYRING_FOLDER/keys/accounting/bank-accounts.asc` encrypted using the public
+    keys listed in the config file`$KEYRING_FOLDER/config/recipients/accounting`.
 
-    Each line in a recipients file has entries in the form of
+    Each line in a recipients file has entries in the format
     'john@doe.com XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', where *john@doe.com*
     is an alias for the GPG public key whose fingerprint is
     *XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.*
@@ -171,16 +166,16 @@ recipients <*ls*|*edit*> <*recipient-file*>
     Parameters to the *recipients* action are:
 
       *ls*
-      :   List all existing recipient files.
+      :   List all existing recipients files.
 
       *edit*
-      :   Create or edit a recipient-file.
+      :   Create or edit a recipients file.
 
           Editing happens using the editor specified by the `$EDITOR`
           environment variable.
 
-          The required parameter *recipient-file* is taken relativelly
-          from the `$KEYRING_FOLDER/config/recipients/` folder.
+          The required parameter *recipients-file* is interpreted relative
+          to the `$KEYRING_FOLDER/config/recipients/` folder.
 
 # FILES
 
@@ -199,19 +194,19 @@ $KEYRING_FOLDER/config/options
 Keyringer currently has the following limitations:
 
 1. Metadata is not encrypted, meaning that an attacker with access to a keyringer
-  repository knows all public key IDs are used for encryption and which secrets
+  repository can discover all public key IDs used for encryption, and which secrets
   are encrypted to which keys. This can be improved in the future by encrypting
-  the repository configuration with support for *--hidden-recipient* GnuPG
+  the repository configuration with support for the *--hidden-recipient* GnuPG
   option.
 
 2. History is not rewritten by default when secrets are removed from a keyringer
-  repository. After a secret is removed with *del* action, it will still be
+  repository. After a secret is removed with the *del* action, it will still be
   available in the repository history even after a commit. This is by design
-  due to the following reasons:
+  for the following reasons:
 
   - It's the default behavior of the Git content tracker. Forcing the
      deletion by default could break the expected behavior and hence limit
-     the repository's backup features, which can be helpful is someone
+     the repository's backup features, which can be helpful if someone
      mistakenly overwrites a secret.
 
   - History rewriting cannot be considered a security measure against the
@@ -219,7 +214,7 @@ Keyringer currently has the following limitations:
      working copies of the repository.
 
      In the case that the secret is a passphrase, the recommended measure
-     against such attack is to change the passphrase, making useless the
+     against such attacks is to change the passphrase, making useless the
      knowledge of the previous secret.
 
      Users wishing to edit their repository history should proceed manually

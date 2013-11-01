@@ -19,6 +19,12 @@ The following steps needs to be run just once.
 
     DIST=sid sudo cowbuilder --create
 
+You can also setup chroots for other archs and distributions:
+
+    mkdir /var/cache/pbuilder/squeeze-amd64
+    cowbuilder --create --basepath /var/cache/pbuilder/squeeze-amd64/base.cow \
+               --distribution squeeze --debootstrapopts --arch --debootstrapopts amd64
+
 Environment maintenance
 -----------------------
 

@@ -3,7 +3,7 @@
 Development environment
 -----------------------
 
-The following steps needs to be run just once.
+The following steps needs to be run just once for each arch and distro version.
 
 ### Create the `debian/` structure
 
@@ -13,17 +13,11 @@ The following steps needs to be run just once.
 
 ### Setup a sid pbuilder chroot
 
-    DIST=sid sudo pbuilder create --debootstrapopts --variant=buildd
+    DIST=sid sudo -E pbuilder create --debootstrapopts --variant=buildd
 
 ### Setup a sid cowbuilder chroot
 
-    DIST=sid sudo cowbuilder --create
-
-You can also setup chroots for other archs and distributions:
-
-    mkdir /var/cache/pbuilder/squeeze-amd64
-    cowbuilder --create --basepath /var/cache/pbuilder/squeeze-amd64/base.cow \
-               --distribution squeeze --debootstrapopts --arch --debootstrapopts amd64
+    DIST=sid sudo -E cowbuilder --create
 
 Environment maintenance
 -----------------------
@@ -32,11 +26,11 @@ These steps should be run once in a while to ensure we have an up to date packag
 
 ### Pbuilder
 
-    DIST=sid sudo pbuilder update
+    DIST=sid sudo -E pbuilder update
 
 ### Cowbuilder
 
-    DIST=sid sudo cowbuilder --update
+    DIST=sid sudo -E cowbuilder --update
 
 Release workflow
 ----------------

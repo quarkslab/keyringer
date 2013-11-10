@@ -9,12 +9,12 @@ source "$LIB" || exit 1
 
 # Aditional parameters
 if [ ! -z "$3" ]; then
-  UNENCRYPTED_FILE="$2"
-  shift 2
-  keyringer_get_new_file "$*"
+  shift 1
+  UNENCRYPTED_FILE="$*"
+  keyringer_get_new_file $*
 
   if [ ! -f "$UNENCRYPTED_FILE" ]; then
-    echo "Error: cannot encrypted $UNENCRYPTED_FILE: file not found."
+    echo "Error: cannot encrypt $UNENCRYPTED_FILE: file not found."
     exit 1
   fi
 else
@@ -36,7 +36,7 @@ if [ "$BASENAME" == "encrypt" ]; then
   fi
 fi
 
-$GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") --yes --output "$KEYDIR/$FILE" $UNENCRYPTED_FILE
+$GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") --yes --output "$KEYDIR/$FILE" "$UNENCRYPTED_FILE"
 
 err="$?"
 

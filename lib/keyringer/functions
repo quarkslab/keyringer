@@ -342,7 +342,6 @@ function keyringer_get_new_file {
   # File must not contain spaces
   if [ ! -z "$2" ] ; then
     FILE="`echo "$*" | sed -e 's/ /_/g'`"
-    echo "File $* has spaces, secret will be named as $FILE..."
   else
     FILE="$1"
   fi
@@ -350,8 +349,13 @@ function keyringer_get_new_file {
   # Sanitize and complete file name
   FILE="`echo $FILE | sed -e s/[^A-Za-z0-9.\/]/_/g`"
   FILE="$(keyringer_filename "$FILE")"
+
+  # Warn user about file name change:w
+  if [ "`basename "$*"`" != "$FILE" ]; then
+    echo "Sanitizing destination filename to `basename $FILE`"
+  fi
   
-  if [ -z "$FILE" ]; then
+  if [ -z "$*" ]; then
     keyringer_action_usage
     exit 1
   fi

@@ -100,6 +100,19 @@ When adding a new subcommand or changing subcommand behavior, ensure:
 * Manpage is updated.
 * Shell completions are updated.
 
+Test environment
+----------------
+
+Setup:
+
+    keyringer test init ~/code/tests/keyringer
+
+Teardown:
+
+    rm -rf ~/code/tests/keyringer
+    rm ~/.keyringer/test
+    sed -i -e '/^test=/d' ~/.keyringer/config
+
 References
 ----------
 

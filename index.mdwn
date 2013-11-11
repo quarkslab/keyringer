@@ -86,28 +86,28 @@ secrets with lines such as:
     emma - /dev/hda : : secret2
 
 Or you may also have a different encrypted file for each secret, e.g. a file called
-emma.root that contains the root passphrase for the server named emma and
-another called emma.hda with the passphrase to decrypt /dev/hda on emma.
+emma.root that contains the root passphrase for the server named `emma` and
+another called emma.hda with the passphrase to decrypt `/dev/hda` on `emma`.
 
 Encrypting a secret
 
-    keyringer <keyring> encrypt <file>
+    keyringer <keyring> encrypt <secret>
 
 Encrypting a secret from a file
 
-    keyringer <keyring> encrypt <plaintext-file> <file>
+    keyringer <keyring> encrypt <secret> <plaintext-file>
 
 Decrypting a secret (only to stdout)
 
-    keyringer <keyring> decrypt <file>
+    keyringer <keyring> decrypt <secret>
 
 Re-encrypting a secret or the whole repository
 
-    keyringer <keyring> recrypt [file]
+    keyringer <keyring> recrypt [secret]
 
 Appending information to a secret
 
-    keyringer <keyring> append <file>
+    keyringer <keyring> append <secret>
 
 Editing a secret
 

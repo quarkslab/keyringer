@@ -347,14 +347,16 @@ function keyringer_get_new_file {
   fi
 
   # Sanitize and complete file name
-  FILE="`echo $FILE | sed -e s/[^A-Za-z0-9.\/]/_/g`"
-  FILE="$(keyringer_filename "$FILE")"
+  FILE="`echo $FILE | sed -e s/[^A-Za-z0-9.\/\-]/_/g`"
 
-  # Warn user about file name change:w
-  if [ "`basename "$*"`" != "$FILE" ]; then
+  # Warn user about file name change
+  if [ "`basename $*`" != "`basename $FILE`" ]; then
     echo "Sanitizing destination filename to `basename $FILE`"
   fi
-  
+
+  # Complete file name
+  FILE="$(keyringer_filename "$FILE")"
+
   if [ -z "$*" ]; then
     keyringer_action_usage
     exit 1
@@ -365,7 +367,7 @@ function keyringer_get_new_file {
 function keyringer_get_command {
   # Aditional parameters
   COMMAND="$1"
-  
+
   if [ -z "$COMMAND" ]; then
     keyringer_action_usage command
     exit 1

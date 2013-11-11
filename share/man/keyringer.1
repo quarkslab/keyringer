@@ -10,22 +10,22 @@ keyringer <\f[I]keyring\f[]> <\f[I]action\f[]> [\f[I]options\f[]]...
 Keyringer lets you manage and share secrets using GnuPG and Git in a
 distributed fashion.
 .PP
-It has custom commands to encrypt, decrypt and recrypt secrets as well
-as create key pairs and supports encryption to multiple recipients and
-groups of different recipients to ensure the same repository can be
-shared with a workgroup but allowing to keep some secrets available just
-to subsets of that group.
+It has custom commands to create key-pairs and to encrypt, decrypt and
+re-encrypt secrets.
+It also supports encryption to multiple recipients and groups of
+recipients, to allow a workgroup to share access to a single repository
+while restricting some secrets to subsets of the group.
 .PP
-Secrets are encrypted using GPG and added to a git tree so later then
-can be synced with remote branches.
+Secrets are encrypted using GPG and added to a Git tree so that they can
+be synced with remote branches later.
 .SH ACTIONS
 .PP
 Keyringer has three types of actions:
 .IP "1." 3
-Repository lookup and manipulation actions, which handles repository
+Repository lookup and manipulation actions, which handle repository
 initialization, content tracking and navigation.
 .IP "2." 3
-Secret manipulation actions, which takes care of encrypting, decrypting
+Secret manipulation actions, which take care of encrypting, decrypting
 and other read/write operations on secrets.
 .IP "3." 3
 Configuration actions, handling repository metadata.
@@ -41,14 +41,14 @@ After initialization, \f[I]path\f[] will contain a folder structure for
 storing secrets and metadata (user aka recipients, groups of recipients,
 etc).
 .PP
-Also, an entry on \f[C]$HOME/.keyringer/config\f[] will be added
-allowing keyringer to find the keyring by it\[aq]s alias.
+Also, an entry will be added to \f[C]$HOME/.keyringer/config\f[]
+allowing keyringer to find the keyring by its alias.
 .RE
 .TP
 .B git <\f[I]action\f[]> <\f[I]options\f[]>
 Git wrapper that operates from the toplevel keyring repository.
-You can issue any \f[I]GIT(1)\f[] subcommand with this action that it
-will be applied into the keyring repository.
+You can issue any \f[I]GIT(1)\f[] subcommand with this action to have it
+applied in the keyring repository.
 .RS
 .RE
 .TP
@@ -61,11 +61,11 @@ command.
 .RE
 .SH SECRET MANIPULATION ACTIONS
 .PP
-All secret manipulation actions operates upon a \f[I]secret\f[] which is
-the pathname of an encrypted file relative to keyring with optional
+All secret manipulation actions operate upon a \f[I]secret\f[] which is
+the pathname of an encrypted file relative to the keyring with optional
 \f[C]\&.asc\f[] extension.
 .PP
-If the \f[C]\&.asc\f[] extension is ommited, keyringer will add it in
+If the \f[C]\&.asc\f[] extension is omitted, keyringer will add it at
 the end of the pathname.
 .PP
 No spaces are allowed in the secret name.
@@ -92,27 +92,27 @@ Decrypts a secret into standard output.
 .RE
 .TP
 .B del <\f[I]secret\f[]>
-Removes a secret using git.
+Removes a secret using Git.
 After deleting a secret a git commit and push is still needed to update
 remote repositories.
 .RS
 .PP
 Please note that this command \f[B]does not remove the secret from the
-git history.\f[] To completely remove a file from a keyring, you should
-also rewrite the git history by yourself.
+Git history.\f[] To completely remove a file from a keyring, you should
+also rewrite the Git history yourself.
 .RE
 .TP
 .B edit <\f[I]secret\f[]>
 Edit a secret by temporarily decrypting it, opening the decrypted copy
 into the text editor defined by the \f[I]$EDITOR\f[] environment
-variable and then recrypting it again.
+variable and then re-encrypting it.
 .RS
 .RE
 .TP
-.B encrypt [\f[I]file\f[]] <\f[I]secret\f[]>
+.B encrypt <\f[I]secret\f[]> [\f[I]file\f[]]
 Encrypts content from standard input or \f[I]file\f[] into
 \f[I]secret\f[] pathname.
-No spaces are supported in the \f[I]file\f[] name.
+No spaces are supported in the \f[I]secret\f[] name.
 .RS
 .RE
 .TP
@@ -123,24 +123,24 @@ Encrypt content, batch mode.
 .TP
 .B genpair <\f[I]ssh\f[]|\f[I]gpg\f[]|\f[I]ssl\f[]|\f[I]ssl-self\f[]>
 [\f[I]options\f[]]
-Wrapper to generete encryption keypairs, useful for automated key
+Wrapper to generate encryption key-pairs, useful for automated key
 deployment.
 .RS
 .RE
 .TP
 .B open <\f[I]secret\f[]>
-Decrypt a secret into a temporary folder and opening it using xdg-open
-which then tries to figure out the file type and calling the associated
+Decrypt a secret into a temporary folder and open it using xdg-open,
+which tries to figure out the file type and then calls the associated
 application.
 .RS
 .PP
 After the application exits, keyringer encrypts the temporary decrypted
-file again into the secret file.
+file again into the secret file and deletes the temporary file.
 .RE
 .TP
 .B recrypt <\f[I]secret\f[]>
-Recrypts a secret by decrypting it and recrypting again.
-Useful when users are added into recipient configuration.
+Re-encrypts a secret by decrypting it and encrypting it again.
+Useful when users are added into the recipient configuration.
 If no \f[I]secret\f[] is given, all secrets in the repository are
 re-encrypted.
 .RS
@@ -153,13 +153,12 @@ List available actions, useful for shell completion and syntax check.
 .RE
 .TP
 .B options <\f[I]ls\f[]|\f[I]edit\f[]|\f[I]add\f[]>
-List, edit or add miscelaneous \f[I]repository\f[] options.
+List, edit or add miscellaneous \f[I]repository\f[] options.
 .RS
 .PP
-Repository options are specific configurations for the keyring which are
-saved into the repository, making it available for all users with access
-to the repository and hence is a \f[I]global\f[] configuration stanza
-for a given keyring.
+Repository options are settings which are saved in the repository as a
+\f[I]global\f[] configuration stanza for a given keyring, shared by all
+users with access to the repository.
 .PP
 Options are written using the \f[I]KEY=VALUE\f[] syntax.
 All lines starting with the hash (#) character are interpreted as
@@ -170,9 +169,9 @@ comments.
 List, edit or add \f[I]user\f[] preferences for a given repository.
 .RS
 .PP
-User preferences are specific configurations for the keyring which are
-saved into the user\[aq]s keyringer folder (\f[C]$HOME/.keyringer/\f[])
-hence not shared with the other users.
+User preferences are settings which are saved in the user\[aq]s
+keyringer folder (\f[C]$HOME/.keyringer/\f[]), and not shared with the
+other users.
 .PP
 Preferences are written using the \f[I]KEY=VALUE\f[] syntax.
 All lines starting with the hash (#) character are interpreted as
@@ -184,53 +183,51 @@ Show keyringer usage information.
 .RS
 .RE
 .TP
-.B recipients <\f[I]ls\f[]|\f[I]edit\f[]> <\f[I]recipient-file\f[]>
-List, create or edit recipient configuration.
+.B recipients <\f[I]ls\f[]|\f[I]edit\f[]> <\f[I]recipients-file\f[]>
+List, create or edit recipients configuration.
 .RS
 .PP
-Recipient files are lists of OpenPGP public key fingerprints which are
+Recipients files are lists of OpenPGP public key fingerprints which are
 used by keyringer when encrypting secrets and associated with email
 aliases.
 .PP
-Keyringer uses a default recipient file and supports custom
-\f[I]recipient-files\f[] which overrides the default recipient file
-according to it\[aq]s matching pathname.
+Keyringer uses a default recipients file, but specifying a custom
+\f[I]recipients-file\f[] pathname will override this default.
+For instance, if a user encrypts a secret to a file in the keyring
+repository\[aq]s \f[I]accounting\f[] folder, a \f[I]recipients-file\f[]
+under \f[I]accounting\f[] will be used.
+Encrypting a secret into \f[I]accounting/bank-accounts\f[] will result
+in a file
+.RE
 .PP
-For instance, a the \f[I]recipient-file\f[] called \f[I]accounting\f[]
-will be used wherever a user encrypts a secret to a file residing from
-the \f[I]accounting\f[] folder in the keyring repository.
-In that case, encrypting a secret into \f[I]accounting/bank-accounts\f[]
-will result in a file
 \f[C]$KEYRING_FOLDER/keys/accounting/bank-accounts.asc\f[] encrypted
-using the public keys listed in
-\f[C]$KEYRING_FOLDER/config/recipients/accounting\f[] config file.
-.PP
-Each line in a recipients file has entries in the form of
-\[aq]john\@doe.com XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\[aq], where
-\f[I]john\@doe.com\f[] is an alias for the GPG public key whose
-fingerprint is \f[I]XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.\f[]
-.PP
-All lines starting with the hash (#) character are interpreted as
-comments.
-.PP
-Parameters to the \f[I]recipients\f[] action are:
-.TP
-.B \f[I]ls\f[]
-List all existing recipient files.
-.RS
-.RE
-.TP
-.B \f[I]edit\f[]
-Create or edit a recipient-file.
-.RS
-.PP
-Editing happens using the editor specified by the \f[C]$EDITOR\f[]
-environment variable.
-.PP
-The required parameter \f[I]recipient-file\f[] is taken relativelly from
-the \f[C]$KEYRING_FOLDER/config/recipients/\f[] folder.
-.RE
-.RE
+using the public keys listed in the config
+file\f[C]$KEYRING_FOLDER/config/recipients/accounting\f[].
+.IP
+.nf
+\f[C]
+Each\ line\ in\ a\ recipients\ file\ has\ entries\ in\ the\ format
+\[aq]john\@doe.com\ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\[aq],\ where\ *john\@doe.com*
+is\ an\ alias\ for\ the\ GPG\ public\ key\ whose\ fingerprint\ is
+*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.*
+
+All\ lines\ starting\ with\ the\ hash\ (#)\ character\ are\ interpreted\ as\ comments.
+
+Parameters\ to\ the\ *recipients*\ action\ are:
+
+\ \ *ls*
+\ \ :\ \ \ List\ all\ existing\ recipients\ files.
+
+\ \ *edit*
+\ \ :\ \ \ Create\ or\ edit\ a\ recipients\ file.
+
+\ \ \ \ \ \ Editing\ happens\ using\ the\ editor\ specified\ by\ the\ `$EDITOR`
+\ \ \ \ \ \ environment\ variable.
+
+\ \ \ \ \ \ The\ required\ parameter\ *recipients-file*\ is\ interpreted\ relative
+\ \ \ \ \ \ to\ the\ `$KEYRING_FOLDER/config/recipients/`\ folder.
+\f[]
+.fi
 .SH FILES
 .PP
 $HOME/.keyringer/config : User\[aq]s main configuration file used to map
@@ -246,21 +243,22 @@ applied for all users that use the keyringer repository.
 Keyringer currently has the following limitations:
 .IP "1." 3
 Metadata is not encrypted, meaning that an attacker with access to a
-keyringer repository knows all public key IDs are used for encryption
-and which secrets are encrypted to which keys.
+keyringer repository can discover all public key IDs used for
+encryption, and which secrets are encrypted to which keys.
 This can be improved in the future by encrypting the repository
-configuration with support for \f[I]--hidden-recipient\f[] GnuPG option.
+configuration with support for the \f[I]--hidden-recipient\f[] GnuPG
+option.
 .IP "2." 3
 History is not rewritten by default when secrets are removed from a
 keyringer repository.
-After a secret is removed with \f[I]del\f[] action, it will still be
+After a secret is removed with the \f[I]del\f[] action, it will still be
 available in the repository history even after a commit.
-This is by design due to the following reasons:
+This is by design for the following reasons:
 .IP \[bu] 2
 It\[aq]s the default behavior of the Git content tracker.
 Forcing the deletion by default could break the expected behavior and
 hence limit the repository\[aq]s backup features, which can be helpful
-is someone mistakenly overwrites a secret.
+if someone mistakenly overwrites a secret.
 .IP \[bu] 2
 History rewriting cannot be considered a security measure against the
 unauthorized access to a secret as it doesn\[aq]t automatically update
@@ -268,7 +266,7 @@ all working copies of the repository.
 .RS 2
 .PP
 In the case that the secret is a passphrase, the recommended measure
-against such attack is to change the passphrase, making useless the
+against such attacks is to change the passphrase, making useless the
 knowledge of the previous secret.
 .PP
 Users wishing to edit their repository history should proceed manually

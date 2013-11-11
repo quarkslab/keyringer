@@ -7,11 +7,27 @@
 LIB="`dirname $0`/../functions"
 source "$LIB" || exit 1
 
+# Usage
+function keyringer_usage_encrypt {
+  echo "Usage: keyringer <keyring> $BASENAME <secret> [file]"
+}
+
+# Alias for keyringer_usage_encrypt
+function keyringer_usage_encrypt_batch {
+  keyringer_usage_encrypt $*
+}
+
+# Usage
+if [ -z "$2" ]; then
+  keyringer_action_usage
+  exit 1
+fi
+
 # Aditional parameters
 if [ ! -z "$3" ]; then
-  shift 1
+  keyringer_get_new_file $2
+  shift 2
   UNENCRYPTED_FILE="$*"
-  keyringer_get_new_file $*
 
   if [ ! -f "$UNENCRYPTED_FILE" ]; then
     echo "Error: cannot encrypt $UNENCRYPTED_FILE: file not found."
@@ -45,7 +61,7 @@ if [ "$err" != "0" ]; then
 fi
 
 if [ "$UNENCRYPTED_FILE" != "-" ]; then
-  echo "Now make to wipe the non-encrypted $UNENCRYPTED_FILE."
+  echo "Done. PLEASE WIPE the non-encrypted $UNENCRYPTED_FILE."
 fi
 
 # Stage

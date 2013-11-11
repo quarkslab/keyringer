@@ -1,4 +1,8 @@
-2013-10-27 -       Silvio Rhatto  <rhatto@riseup.net>
+2013-11-10 -       Silvio Rhatto  <rhatto@riseup.net>
+
+	Changed encrypt syntax
+
+	Fix handing of file names with spaces (#20)
 
 	Manpage enhancements and english review (#5)
 

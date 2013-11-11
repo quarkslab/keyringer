@@ -1,0 +1,603 @@
+# SOME DESCRIPTIVE TITLE
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2013-11-10 23:20-0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. type: Plain text
+#: keyringer.1.mdwn:4
+msgid ""
+"% KEYRINGER(1) Keyringer User Manual % Silvio Rhatto <rhatto@riseup.net> % "
+"Oct 25, 2013"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:6
+msgid "# NAME"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:8
+msgid "keyringer - encrypted and distributed secret sharing software"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:10
+msgid "# SYNOPSIS"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:12
+msgid "keyringer <*keyring*> <*action*> [*options*]..."
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:14
+msgid "# DESCRIPTION"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:17
+msgid ""
+"Keyringer lets you manage and share secrets using GnuPG and Git in a "
+"distributed fashion."
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:22
+msgid ""
+"It has custom commands to create key-pairs and to encrypt, decrypt and "
+"re-encrypt secrets. It also supports encryption to multiple recipients and "
+"groups of recipients, to allow a workgroup to share access to a single "
+"repository while restricting some secrets to subsets of the group."
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:25
+msgid ""
+"Secrets are encrypted using GPG and added to a Git tree so that they can be "
+"synced with remote branches later."
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:27
+msgid "# ACTIONS"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:29
+msgid "Keyringer has three types of actions:"
+msgstr ""
+
+#. type: Bullet: '1. '
+#: keyringer.1.mdwn:32
+msgid ""
+"Repository lookup and manipulation actions, which handle repository "
+"initialization, content tracking and navigation."
+msgstr ""
+
+#. type: Bullet: '2. '
+#: keyringer.1.mdwn:35
+msgid ""
+"Secret manipulation actions, which take care of encrypting, decrypting and "
+"other read/write operations on secrets."
+msgstr ""
+
+#. type: Bullet: '3. '
+#: keyringer.1.mdwn:37
+msgid "Configuration actions, handling repository metadata."
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:39
+msgid "# REPOSITORY LOOKUP AND MANIPULATION ACTIONS"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:43
+#, no-wrap
+msgid ""
+"init <*path*> [*remote*]\n"
+":   Initialize a new keyringer repository. If a *remote* URL is specified, "
+"keyringer will\n"
+"    clone an existing repository.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:46
+#, no-wrap
+msgid ""
+"    After initialization, *path* will contain a folder structure for storing "
+"secrets\n"
+"    and metadata (user aka recipients, groups of recipients, etc).\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:49
+#, no-wrap
+msgid ""
+"    Also, an entry will be added to `$HOME/.keyringer/config` allowing "
+"keyringer to\n"
+"    find the keyring by its alias.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:53
+#, no-wrap
+msgid ""
+"git <*action*> <*options*>\n"
+":   Git wrapper that operates from the toplevel keyring repository. You can "
+"issue any\n"
+"    *GIT(1)* subcommand with this action to have it applied in the keyring "
+"repository.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:58
+#, no-wrap
+msgid ""
+"ls <*path*>\n"
+":   List contents from the toplevel repository *keys* folder or from "
+"relative paths\n"
+"    if *path* is specified. Like the git wrapper, this is a wrapper around "
+"the *LS(1)*\n"
+"    command.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:60
+msgid "# SECRET MANIPULATION ACTIONS"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:63
+msgid ""
+"All secret manipulation actions operate upon a *secret* which is the "
+"pathname of an encrypted file relative to the keyring with optional `.asc` "
+"extension."
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:66
+msgid ""
+"If the `.asc` extension is omitted, keyringer will add it at the end of the "
+"pathname."
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:68
+msgid "No spaces are allowed in the secret name."
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:72
+msgid ""
+"Secret manipulation actions do not commit changes into the secret "
+"repository.  Instead, the user has to manually commit the changes using the "
+"git wrapper action."
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:76
+#, no-wrap
+msgid ""
+"append <*secret*>\n"
+":   Append contents into a secret by decrypting the secret, appending lines "
+"read\n"
+"    from the standard input and encrypting again.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:79
+#, no-wrap
+msgid ""
+"append-batch <*secret*>\n"
+":   Append contents into a secret, batch mode.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:82
+#, no-wrap
+msgid ""
+"decrypt <*secret*>\n"
+":   Decrypts a secret into standard output.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:86
+#, no-wrap
+msgid ""
+"del <*secret*>\n"
+":   Removes a secret using Git. After deleting a secret a git commit and "
+"push is still\n"
+"    needed to update remote repositories.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:90
+#, no-wrap
+msgid ""
+"    Please note that this command **does not remove the secret from the Git "
+"history.**\n"
+"    To completely remove a file from a keyring, you should also rewrite the "
+"Git\n"
+"    history yourself.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:94
+#, no-wrap
+msgid ""
+"edit <*secret*>\n"
+":   Edit a secret by temporarily decrypting it, opening the decrypted copy "
+"into the \n"
+"    text editor defined by the *$EDITOR* environment variable and then "
+"re-encrypting it.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:98
+#, no-wrap
+msgid ""
+"encrypt <*secret*> [*file*]\n"
+":   Encrypts content from standard input or *file* into *secret* "
+"pathname. No spaces\n"
+"    are supported in the *secret* name.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:101
+#, no-wrap
+msgid ""
+"encrypt-batch <*secret*>\n"
+":   Encrypt content, batch mode.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:104
+#, no-wrap
+msgid ""
+"genpair <*ssh*|*gpg*|*ssl*|*ssl-self*> [*options*]\n"
+":   Wrapper to generate encryption key-pairs, useful for automated key "
+"deployment.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:108
+#, no-wrap
+msgid ""
+"open <*secret*>\n"
+":   Decrypt a secret into a temporary folder and open it using xdg-open, "
+"which\n"
+"    tries to figure out the file type and then calls the associated "
+"application.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:111
+#, no-wrap
+msgid ""
+"    After the application exits, keyringer encrypts the temporary decrypted "
+"file\n"
+"    again into the secret file and deletes the temporary file.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:116
+#, no-wrap
+msgid ""
+"recrypt <*secret*>\n"
+":   Re-encrypts a secret by decrypting it and encrypting it again. Useful "
+"when users are added\n"
+"    into the recipient configuration. If no *secret* is given, all secrets "
+"in the repository\n"
+"    are re-encrypted.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:118
+msgid "# CONFIGURATION ACTIONS"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:121
+#, no-wrap
+msgid ""
+"commands\n"
+":   List available actions, useful for shell completion and syntax check.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:124
+#, no-wrap
+msgid ""
+"options <*ls*|*edit*|*add*>\n"
+":   List, edit or add miscellaneous *repository* options.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:128
+#, no-wrap
+msgid ""
+"    Repository options are settings which are saved in the repository as a "
+"*global*\n"
+"    configuration stanza for a given keyring, shared by all users with "
+"access to\n"
+"    the repository.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:131
+#, no-wrap
+msgid ""
+"    Options are written using the *KEY=VALUE* syntax. All lines starting "
+"with the\n"
+"    hash (#) character are interpreted as comments.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:134
+#, no-wrap
+msgid ""
+"preferences <*ls*|*edit*|*add*>\n"
+":   List, edit or add *user* preferences for a given repository.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:137
+#, no-wrap
+msgid ""
+"    User preferences are settings which are saved in the user's keyringer "
+"folder\n"
+"    (`$HOME/.keyringer/`), and not shared with the other users.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:140
+#, no-wrap
+msgid ""
+"    Preferences are written using the *KEY=VALUE* syntax. All lines starting "
+"with the\n"
+"    hash (#) character are interpreted as comments.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:143
+#, no-wrap
+msgid ""
+"usage\n"
+":   Show keyringer usage information.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:146
+#, no-wrap
+msgid ""
+"recipients <*ls*|*edit*> <*recipients-file*>\n"
+":   List, create or edit recipients configuration.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:149
+#, no-wrap
+msgid ""
+"    Recipients files are lists of OpenPGP public key fingerprints which are "
+"used\n"
+"    by keyringer when encrypting secrets and associated with email "
+"aliases.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:152
+#, no-wrap
+msgid ""
+"    Keyringer uses a default recipients file, but specifying a custom "
+"*recipients-file*\n"
+"    pathname will override this default.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:158
+#, no-wrap
+msgid ""
+"    For instance, if a user encrypts a secret to a file in the keyring "
+"repository's\n"
+"    *accounting* folder, a *recipients-file* under *accounting* will be "
+"used.\n"
+"    Encrypting a secret into *accounting/bank-accounts* will result in a "
+"file\n"
+"   `$KEYRING_FOLDER/keys/accounting/bank-accounts.asc` encrypted using the "
+"public\n"
+"    keys listed in the config "
+"file`$KEYRING_FOLDER/config/recipients/accounting`.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:163
+#, no-wrap
+msgid ""
+"    Each line in a recipients file has entries in the format\n"
+"    'john@doe.com XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX', where "
+"*john@doe.com*\n"
+"    is an alias for the GPG public key whose fingerprint is\n"
+"    *XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.*\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:165
+#, no-wrap
+msgid ""
+"    All lines starting with the hash (#) character are interpreted as "
+"comments.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:167
+#, no-wrap
+msgid "    Parameters to the *recipients* action are:\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:170
+#, no-wrap
+msgid ""
+"      *ls*\n"
+"      :   List all existing recipients files.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:173
+#, no-wrap
+msgid ""
+"      *edit*\n"
+"      :   Create or edit a recipients file.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:176
+#, no-wrap
+msgid ""
+"          Editing happens using the editor specified by the `$EDITOR`\n"
+"          environment variable.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:179
+#, no-wrap
+msgid ""
+"          The required parameter *recipients-file* is interpreted relative\n"
+"          to the `$KEYRING_FOLDER/config/recipients/` folder.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:181
+msgid "# FILES"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:184
+msgid ""
+"$HOME/.keyringer/config : User's main configuration file used to map alias "
+"names to keyrings."
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:187
+msgid ""
+"$HOME/.keyringer/*keyring* : User preferences for the keyringer aliased "
+"*keyring* keyring."
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:191
+#, no-wrap
+msgid ""
+"$KEYRING_FOLDER/config/options\n"
+":  Custom keyring options which will be applied for all users that use\n"
+"   the keyringer repository.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:193
+msgid "# LIMITATIONS"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:195
+msgid "Keyringer currently has the following limitations:"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:201
+#, no-wrap
+msgid ""
+"1. Metadata is not encrypted, meaning that an attacker with access to a "
+"keyringer\n"
+"  repository can discover all public key IDs used for encryption, and which "
+"secrets\n"
+"  are encrypted to which keys. This can be improved in the future by "
+"encrypting\n"
+"  the repository configuration with support for the *--hidden-recipient* "
+"GnuPG\n"
+"  option.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:206
+#, no-wrap
+msgid ""
+"2. History is not rewritten by default when secrets are removed from a "
+"keyringer\n"
+"  repository. After a secret is removed with the *del* action, it will still "
+"be\n"
+"  available in the repository history even after a commit. This is by "
+"design\n"
+"  for the following reasons:\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:211
+#, no-wrap
+msgid ""
+"  - It's the default behavior of the Git content tracker. Forcing the\n"
+"     deletion by default could break the expected behavior and hence limit\n"
+"     the repository's backup features, which can be helpful if someone\n"
+"     mistakenly overwrites a secret.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:215
+#, no-wrap
+msgid ""
+"  - History rewriting cannot be considered a security measure against the\n"
+"     unauthorized access to a secret as it doesn't automatically update "
+"all\n"
+"     working copies of the repository.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:219
+#, no-wrap
+msgid ""
+"     In the case that the secret is a passphrase, the recommended measure\n"
+"     against such attacks is to change the passphrase, making useless the\n"
+"     knowledge of the previous secret.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:222
+#, no-wrap
+msgid ""
+"     Users wishing to edit their repository history should proceed "
+"manually\n"
+"     using the *git* action.\n"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:224
+msgid "# SEE ALSO"
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:226
+msgid "The *README* file distributed with Keyringer contains full documentation."
+msgstr ""
+
+#. type: Plain text
+#: keyringer.1.mdwn:228
+msgid ""
+"The Keyringer source code and all documentation may be downloaded from "
+"<https://keyringer.pw>."
+msgstr ""

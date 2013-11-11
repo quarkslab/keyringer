@@ -119,7 +119,7 @@ Translation
 Run just once:
 
     cd share/man
-    po4a-gettextize -f text  -m keyringer.1.mdwn -p keyringer.pot
+    po4a-gettextize -f text -m keyringer.1.mdwn -p keyringer.pot
 
 References
 ----------

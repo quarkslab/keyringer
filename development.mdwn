@@ -13,11 +13,11 @@ The following steps needs to be run just once for each arch and distro version.
 
 ### Setup a sid pbuilder chroot
 
-    git-pbuilder create
+    DIST=sid git-pbuilder create
 
 ### Setup a sid cowbuilder chroot
 
-    sudo cowbuilder --create
+    DIST=sid sudo cowbuilder --create
 
 Environment maintenance
 -----------------------
@@ -26,11 +26,11 @@ These steps should be run once in a while to ensure we have an up to date packag
 
 ### Pbuilder
 
-    git-pbuilder update
+    DIST=sid git-pbuilder update
 
 ### Cowbuilder
 
-    sudo cowbuilder --update
+    DIST=sid sudo cowbuilder --update
 
 Release workflow
 ----------------

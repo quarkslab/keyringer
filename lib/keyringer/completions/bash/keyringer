@@ -42,6 +42,15 @@ _keyringer_git_complete() {
   fi
 }
 
+# Path completion
+function _keyringer_path_complete() {
+  # Thanks http://unix.stackexchange.com/questions/55520/create-bash-completion-script-to-autocomplete-paths-after-is-equal-sign
+  cur=${1//\\ / }
+  [[ ${cur} == "~/"* ]] && cur=${cur/\~/$HOME}
+
+  echo ${cur}
+}
+
 _keyringer() {
   # Standard stuff
   local cur prev command config path keyrings instances instance opts
@@ -94,10 +103,7 @@ _keyringer() {
         opts="$(_keyringer_git_complete ${cur})"
         ;;
       init)
-        # Thanks http://unix.stackexchange.com/questions/55520/create-bash-completion-script-to-autocomplete-paths-after-is-equal-sign
-        cur=${cur//\\ / }
-        [[ ${cur} == "~/"* ]] && cur=${cur/\~/$HOME}
-
+        cur="$(_keyringer_path_complete ${cur})"
         opts="$(compgen -o dirnames ${cur})"
         ;;
       *)
@@ -114,6 +120,10 @@ _keyringer() {
       git)
         # TODO
         opts="$(_keyringer_git_complete ${prev} ${cur})"
+        ;;
+      encrypt|encrypt-batch)
+        cur="$(_keyringer_path_complete ${cur})"
+        opts="$(compgen -o dirnames ${cur})"
         ;;
       *)
         ;;

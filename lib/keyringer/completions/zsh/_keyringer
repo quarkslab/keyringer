@@ -77,6 +77,9 @@ _keyringer() {
           git)
             compadd "$@" $(_keyringer_git_complete $words[4] $words[5])
             ;;
+          encrypt|encrypt-batch)
+            _files
+            ;;
           *)
             ;;
         esac

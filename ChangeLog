@@ -1,5 +1,7 @@
 2013-11-14 -       Silvio Rhatto  <rhatto@riseup.net>
 
+	Ramdisk check for temporary folders (closes #13)
+
 	Shred of temporary files (closes #27)
 
 	Encrypt/open improvements (closes #9)

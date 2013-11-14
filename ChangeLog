@@ -1,12 +1,12 @@
 2013-11-14 -       Silvio Rhatto  <rhatto@riseup.net>
 
-	Encrypt/open improvements (closes #9).
+	Encrypt/open improvements (closes #9)
 
-	Initialization now asks user to edit the default preferences file.
+	Initialization now asks user to edit the default preferences file
 
-	Usage improvements.
+	Usage improvements
 
-	Added keyringer.pot for easy manpage translation (closes #5).
+	Added keyringer.pot for easy manpage translation (closes #5)
 
 	Changed encrypt syntax
 

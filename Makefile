@@ -15,7 +15,7 @@
 #
 
 PACKAGE = keyringer
-VERSION = 0.2.6
+VERSION = 0.2.7
 PREFIX ?= /usr/local
 INSTALL = /usr/bin/install
 

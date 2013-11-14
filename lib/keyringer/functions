@@ -144,13 +144,42 @@ function keyringer_set_tmpfile {
   trap "keyringer_unset_tmpfile $TMPWORK; exit" INT TERM EXIT
 }
 
+# Shred files
+function keyringer_shred {
+  local path="$1"
+  local tool
+
+  if [ -z "$path" ]; then
+    return
+  fi
+
+  # Get shred implementation
+  if which wipe &> /dev/null; then
+    tool="wipe"
+  elif which shred &> /dev/null; then
+    tool="shred"
+  else
+    # Worst implementation
+    tool="rm"
+  fi
+
+  echo "Removing $path using $tool..."
+
+  if [ -d "$path" ]; then
+    find $path -exec $tool -f {} \;
+    rmdir $path
+  elif [ -e "$path" ]; then
+    $tool -f "$path"
+  fi
+}
+
 # Remove a temporary file
 function keyringer_unset_tmpfile {
   if [ -z "$1" ]; then
     echo "No tmp file set"
   fi
 
-  rm -f "$1"
+  keyringer_shred "$1"
 
   if [ "$?" != "0" ]; then
     echo "Warning: could not delete file $1. Please delete it manually as it might have sensitive information."

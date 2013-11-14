@@ -51,6 +51,7 @@ Prepare the source code:
 
 Commit and tag a release:
 
+    VERSION="X.Y.Z"
     git commit -a -m "Keyringer $VERSION"
     git tag -s $VERSION -m "Keyringer $VERSION"
 

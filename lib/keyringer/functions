@@ -148,6 +148,7 @@ function keyringer_set_tmpfile {
 function keyringer_shred {
   local path="$1"
   local tool
+  local message="Removing"
 
   if [ -z "$path" ]; then
     return
@@ -160,10 +161,11 @@ function keyringer_shred {
     tool="shred"
   else
     # Worst implementation
+    message="WARNING $message"
     tool="rm"
   fi
 
-  echo "Removing $path using $tool..."
+  echo "$message $path using $tool..."
 
   if [ -d "$path" ]; then
     find $path -exec $tool -f {} \;

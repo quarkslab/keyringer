@@ -111,16 +111,64 @@ function keyringer_is_git {
   fi
 }
 
+# Check the security of a temporary folder
+function keyringer_check_tmp {
+  local path="$1"
+  local minor
+  local mode
+
+  if [ -z "$path" ]; then
+    return
+  fi
+
+  # Mode check
+  if [ "`stat -c "%A" $path`" != "drwxrwxrwt" ]; then
+    return 1
+  fi
+
+  # Ramdisk check
+  if [ -x "/sbin/udevadm" ]; then
+    minor="$(/sbin/udevadm info --device-id-of-file "$path" | cut -d : -f 1)"
+  elif which mountpoint &> /dev/null; then
+    minor="$(mountpoint -d $(df "$path" | sed -n '$p' | awk '{print $NF}') | cut -d : -f 1)"
+  fi
+
+  if [ ! -z "$minor" ]; then
+    return $minor
+  else
+    return 1
+  fi
+}
+
 # Setup a temporary file
 function keyringer_set_tmpfile {
+  local tmp
+  local candidate
+  local candidates="/tmp /run/shm $TMP"
+
   if [ -z "$BASEDIR" ]; then
     echo "Please set BASEDIR before creating a tmp file"
     exit 1
   fi
 
-  # Set base temp folder
-  local tmp="$BASEDIR/tmp"
+  # Ramdisk check
+  for candidate in $candidates; do
+    if keyringer_check_tmp $candidate; then
+      tmp="$candidate/keyringer.`whoami`"
+      break
+    fi
+  done
 
+  # Set base temp folder
+  if [ -z "$tmp" ]; then
+    echo "WARNING: neither one of $candidates is mounted in a tmpfs/ramdisk, using $BASEDIR/tmp as fallback."
+    echo "Make sure that $BASEDIR is atop of an encrypted volume."
+    echo "Press any key to continue, Ctrl-C to abort"
+    read key
+    tmp="$BASEDIR/tmp"
+  fi
+
+  # Determine template
   if [ -z "$1" ]; then
     template="$tmp/keyringer.XXXXXXXXXX"
   else

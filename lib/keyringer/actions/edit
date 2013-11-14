@@ -13,9 +13,6 @@ keyringer_get_file "$2"
 # Set recipients file
 keyringer_set_recipients "$FILE"
 
-# Warn user
-echo "Make sure that $BASEDIR is atop of an encrypted volume."
-
 # Get original file EXTENSION
 FILENAME="$(basename "$FILE" .asc)"
 FILENAME="$(basename "$FILENAME")"

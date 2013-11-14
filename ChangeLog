@@ -1,4 +1,10 @@
-2013-11-10 -       Silvio Rhatto  <rhatto@riseup.net>
+2013-11-14 -       Silvio Rhatto  <rhatto@riseup.net>
+
+	Encrypt/open improvements (closes #9).
+
+	Initialization now asks user to edit the default preferences file.
+
+	Usage improvements.
 
 	Added keyringer.pot for easy manpage translation (closes #5).
 

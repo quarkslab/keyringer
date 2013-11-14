@@ -31,7 +31,6 @@ if [ "$BASENAME" == "edit" ]; then
   APP="$EDITOR"
 elif [ "$BASENAME" == "open" ]; then
   if which xdg-open &> /dev/null; then
-    # TODO: set TMPWORK depending on the MIME type (`file -i` or `xdg-mime query filetype`)
     APP="xdg-open"
   else
     echo "You should have xdg-open application to perform this action, aborting."

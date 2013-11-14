@@ -396,10 +396,16 @@ function keyringer_show_actions {
 
 # Usage
 function keyringer_usage {
+  local keyrings="$(ls --color=never `dirname $CONFIG` | sed -e 's/config//' | xargs)"
+
   printf "Usage: %s <keyring> <action> [arguments]\n\n" "$BASENAME"
   printf "Available commands: \n\n"
   keyringer_show_actions | sed -e 's/^/\t/'
   printf "\tinit <path> [remote]\n\n" $BASENAME
+
+  if [ ! -z "$keyrings" ]; then
+    printf "Available keyrings: %s \n" "$keyrings"
+  fi
 }
 
 # Check recipients

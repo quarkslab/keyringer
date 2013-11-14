@@ -25,9 +25,24 @@ fi
 
 # Aditional parameters
 if [ ! -z "$3" ]; then
-  keyringer_get_new_file $2
+  # Set secret name and original file
+  FILE="$2"
   shift 2
   UNENCRYPTED_FILE="$*"
+
+  # Get original file EXTENSION
+  FILENAME="$(basename "$UNENCRYPTED_FILE")"
+  EXTENSION="${FILENAME##*.}"
+
+  # Append file extension in the secret name
+  #
+  # Useful when opening files and the application needs the
+  # extension to guess the file type.
+  if ! echo $FILE | grep -q -e "\.$EXTENSION$"; then
+    FILE="$FILE.$EXTENSION"
+  fi
+
+  keyringer_get_new_file $FILE
 
   if [ ! -f "$UNENCRYPTED_FILE" ]; then
     echo "Error: cannot encrypt $UNENCRYPTED_FILE: file not found."

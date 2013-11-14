@@ -118,13 +118,16 @@ function keyringer_set_tmpfile {
     exit 1
   fi
 
+  # Set base temp folder
+  local tmp="$BASEDIR/tmp"
+
   if [ -z "$1" ]; then
-    template="$BASEDIR/tmp/keyringer.XXXXXXXXXX"
+    template="$tmp/keyringer.XXXXXXXXXX"
   else
-    template="$BASEDIR/tmp/$1.XXXXXXXXXX"
+    template="$tmp/XXXXXXXXXX.$1"
   fi
 
-  mkdir -p "$BASEDIR/tmp"
+  mkdir -p "$tmp"
   keyringer_git_ignore 'tmp/*'
 
   if [ "$2" == "-d" ]; then

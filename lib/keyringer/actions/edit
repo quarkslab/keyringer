@@ -16,8 +16,13 @@ keyringer_set_recipients "$FILE"
 # Warn user
 echo "Make sure that $BASEDIR is atop of an encrypted volume."
 
+# Get original file EXTENSION
+FILENAME="$(basename "$FILE" .asc)"
+FILENAME="$(basename "$FILENAME")"
+EXTENSION="${FILENAME##*.}"
+
 # Set a tmp file
-keyringer_set_tmpfile edit
+keyringer_set_tmpfile $BASENAME.$EXTENSION
 
 # Decrypt the information to the file
 $GPG --yes -o "$TMPWORK" --use-agent -d "$KEYDIR/$FILE"
@@ -26,6 +31,7 @@ if [ "$BASENAME" == "edit" ]; then
   APP="$EDITOR"
 elif [ "$BASENAME" == "open" ]; then
   if which xdg-open &> /dev/null; then
+    # TODO: set TMPWORK depending on the MIME type (`file -i` or `xdg-mime query filetype`)
     APP="xdg-open"
   else
     echo "You should have xdg-open application to perform this action, aborting."

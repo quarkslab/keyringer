@@ -1,5 +1,7 @@
 2013-11-14 -       Silvio Rhatto  <rhatto@riseup.net>
 
+	Shred of temporary files (closes #27)
+
 	Encrypt/open improvements (closes #9)
 
 	Initialization now asks user to edit the default preferences file

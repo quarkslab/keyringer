@@ -152,6 +152,8 @@ function keyringer_shred {
 
   if [ -z "$path" ]; then
     return
+  elif [ ! -e "$path" ]; then
+    return
   fi
 
   # Get shred implementation
@@ -170,7 +172,7 @@ function keyringer_shred {
   if [ -d "$path" ]; then
     find $path -exec $tool -f {} \;
     rmdir $path
-  elif [ -e "$path" ]; then
+  else
     $tool -f "$path"
   fi
 }

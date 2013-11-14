@@ -90,8 +90,16 @@ function keyringer_init {
   # Init
   if ! keyringer_is_git "$BASEDIR"; then
     keyringer_exec git "$BASEDIR" init
+
+    # Edit default recipients
+    echo "Now you have to edit the default recipient configuration to be able to encrypt secrets."
+    echo "Press any key to proceed editing..."
+    read key
+    keyringer $KEYRING recipients edit default
+
+    # Stage and commit
     keyringer_exec git "$BASEDIR" add .
-    keyringer_exec git "$BASEDIR" commit -m Importing
+    keyringer_exec git "$BASEDIR" commit -m Initializing
   fi
 }
 

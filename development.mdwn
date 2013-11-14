@@ -46,12 +46,13 @@ Go to master branch
 
 Prepare the source code:
 
+    $EDITOR keyringer # and update KEYRINGER_VERSION
     $EDITOR ChangeLog
     make build_man
 
 Commit and tag a release:
 
-    VERSION="X.Y.Z"
+    VERSION="`./keyringer | head -n 1 | cut -d ' ' -f 2`"
     git commit -a -m "Keyringer $VERSION"
     git tag -s $VERSION -m "Keyringer $VERSION"
 

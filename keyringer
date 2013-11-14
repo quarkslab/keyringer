@@ -119,7 +119,7 @@ function keyringer_dispatch {
 
 # Config
 NAME="keyringer"
-KEYRINGER_VERSION="0.2.6"
+KEYRINGER_VERSION="0.2.8"
 CONFIG_VERSION="0.1"
 CONFIG_BASE="$HOME/.$NAME"
 CONFIG="$CONFIG_BASE/config"

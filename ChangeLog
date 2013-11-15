@@ -1,3 +1,7 @@
+2013-11-14 -       Silvio Rhatto  <rhatto@riseup.net>
+
+	Support for encrypting a whole tree (closes #21)
+
 2013-11-14 - 0.2.8 Silvio Rhatto  <rhatto@riseup.net>
 
 	Updated development workflow and version scheme

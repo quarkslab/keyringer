@@ -94,10 +94,12 @@ edit <*secret*>
 
 encrypt <*secret*> [*file*]
 :   Encrypts content from standard input or *file* into *secret* pathname. No spaces
-    are supported in the *secret* name.
+    are supported in the *secret* name. If *file* is actually a folder, keyringer
+    will recursivelly encrypt all it's contents.
 
-encrypt-batch <*secret*>
-:   Encrypt content, batch mode.
+encrypt-batch <*secret*> [*file*]
+:   Encrypt content, batch mode. Behavior is identical to *encrypt* action, but less
+    verbose. Useful inside scripts.
 
 genpair <*ssh*|*gpg*|*ssl*|*ssl-self*> [*options*]
 :   Wrapper to generate encryption key-pairs, useful for automated key deployment.

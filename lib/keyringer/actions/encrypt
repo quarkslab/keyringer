@@ -17,6 +17,24 @@ function keyringer_usage_encrypt_batch {
   keyringer_usage_encrypt $*
 }
 
+# Encrypt a file into the datastore
+function keyringer_encrypt {
+  local file="$1"
+  shift
+
+  if [ -z "$1" ]; then
+    return 1
+  fi
+
+  if [ "$*" != "-" ]; then
+    echo "Encrypting $*..."
+  fi
+
+  mkdir -p "$KEYDIR/`dirname "$file"`"
+  $GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") --yes --output "$KEYDIR/$file" "$*"
+  printf "\n"
+}
+
 # Usage
 if [ -z "$2" ]; then
   keyringer_action_usage
@@ -26,26 +44,31 @@ fi
 # Aditional parameters
 if [ ! -z "$3" ]; then
   # Set secret name and original file
-  FILE="$2"
+  BASEPATH="$2"
   shift 2
   UNENCRYPTED_FILE="$*"
 
-  # Get original file EXTENSION
-  FILENAME="$(basename "$UNENCRYPTED_FILE")"
-  EXTENSION="${FILENAME##*.}"
+  if [ ! -d "$UNENCRYPTED_FILE" ] && echo "$UNENCRYPTED_FILE" | grep -q -e '\.'; then
+    # Get original file EXTENSION
+    FILENAME="$(basename "$UNENCRYPTED_FILE")"
+    EXTENSION="${FILENAME##*.}"
 
-  # Append file extension in the secret name
-  #
-  # Useful when opening files and the application needs the
-  # extension to guess the file type.
-  if ! echo $FILE | grep -q -e "\.$EXTENSION$"; then
-    FILE="$FILE.$EXTENSION"
+    # Append file extension in the secret name
+    #
+    # Useful when opening files and the application needs the
+    # extension to guess the file type.
+    if ! echo $BASEPATH | grep -q -e "\.$EXTENSION$"; then
+      echo "Appending '$EXTENSION' into secret name..."
+      FILE="$BASEPATH.$EXTENSION"
+    fi
+  else
+    FILE="$BASEPATH"
   fi
 
   keyringer_get_new_file $FILE
 
-  if [ ! -f "$UNENCRYPTED_FILE" ]; then
-    echo "Error: cannot encrypt $UNENCRYPTED_FILE: file not found."
+  if [ ! -e "$UNENCRYPTED_FILE" ]; then
+    echo "Error: cannot encrypt $UNENCRYPTED_FILE: path not found."
     exit 1
   fi
 else
@@ -57,9 +80,7 @@ fi
 # Set recipients file
 keyringer_set_recipients "$FILE"
 
-# Encrypt
-mkdir -p "$KEYDIR/`dirname $FILE`"
-
+# Verbosity
 if [ "$BASENAME" == "encrypt" ]; then
   # Only display directions if we're running encrypt, not encrypt-batch
   if [ "$UNENCRYPTED_FILE" == "-" ]; then
@@ -67,7 +88,23 @@ if [ "$BASENAME" == "encrypt" ]; then
   fi
 fi
 
-$GPG --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") --yes --output "$KEYDIR/$FILE" "$UNENCRYPTED_FILE"
+# Encrypt
+if [ "$UNENCRYPTED_FILE" != "-" ] && [ -d "$UNENCRYPTED_FILE" ]; then
+  # Time to go recursive
+  BASEPATH="`basename $FILE .asc`"
+  FILEPATH="`dirname "$UNENCRYPTED_FILE"`"
+  find $UNENCRYPTED_FILE | while read file; do
+    if [ ! -d "$file" ]; then
+      dir="`dirname "$file" | sed -e "s|^$FILEPATH|$BASEPATH|g"`"
+      keyringer_get_new_file `basename "$file"`
+      keyringer_encrypt "$dir/$FILE" $file
+    fi
+  done
+
+  FILE="$OLD_FILE"
+else
+  keyringer_encrypt $FILE $UNENCRYPTED_FILE
+fi
 
 err="$?"
 

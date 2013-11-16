@@ -1,4 +1,10 @@
-2013-11-14 -       Silvio Rhatto  <rhatto@riseup.net>
+2013-11-16 -       Silvio Rhatto  <rhatto@riseup.net>
+
+	Shell completion enhancements.
+
+	Fixing keyringer_has_action() to correctly handle "/" and ".".
+
+	Action ls now supports leading slash ("/").
 
 	Support for encrypting a whole tree (closes #21)
 

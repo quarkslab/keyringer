@@ -46,11 +46,12 @@ _keyringer_git_complete() {
 function _keyringer_path_complete() {
   # Thanks http://unix.stackexchange.com/questions/55520/create-bash-completion-script-to-autocomplete-paths-after-is-equal-sign
   cur=${1//\\ / }
-  [[ ${cur} == "~/"* ]] && cur=${cur/\~/$HOME}
+  [[ ${cur} == "~"* ]] && cur=${cur/\~/$HOME}
 
   echo ${cur}
 }
 
+# Main completion
 _keyringer() {
   # Standard stuff
   local cur prev command config path keyrings instances instance opts
@@ -94,6 +95,7 @@ _keyringer() {
         opts="ls edit"
         ;;
       ls|encrypt|encrypt-batch|decrypt|edit|append|append-batch|del|recrypt|open)
+        cur="`echo ${cur} | sed -e "s|^/*||"`" # avoid trailing slash
         opts="$(bash -c "set -f && export KEYRINGER_CHECK_VERSION=false && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
         ;;
       genpair)
@@ -104,7 +106,7 @@ _keyringer() {
         ;;
       init)
         cur="$(_keyringer_path_complete ${cur})"
-        opts="$(compgen -o dirnames ${cur})"
+        opts="`compgen -o default "${cur}"`"
         ;;
       *)
         ;;
@@ -112,9 +114,11 @@ _keyringer() {
   elif [ "${#COMP_WORDS[@]}" == "5" ]; then
     case "${command}" in
       recipients)
+        cur="`echo ${cur} | sed -e "s|^/*||"`" # avoid trailing slash
         opts="$(cd $path/config/recipients && ls --color=never -p ${cur}* 2> /dev/null)"
         ;;
       genpair)
+        cur="`echo ${cur} | sed -e "s|^/*||"`" # avoid trailing slash
         opts="$(bash -c "set -f && export KEYRINGER_CHECK_VERSION=false && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
         ;;
       git)
@@ -123,7 +127,7 @@ _keyringer() {
         ;;
       encrypt|encrypt-batch)
         cur="$(_keyringer_path_complete ${cur})"
-        opts="$(compgen -o dirnames ${cur})"
+        opts="`compgen -o default "${cur}"`"
         ;;
       *)
         ;;

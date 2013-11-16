@@ -59,7 +59,7 @@ function keyringer_has_action {
    exit 1
  fi
 
- if [ -e "$ACTIONS/$1" ]; then
+ if [ -e "$ACTIONS/$1" ] && [ ! -d "$ACTIONS/$1" ]; then
    true
  else
    false

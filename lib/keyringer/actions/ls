@@ -10,7 +10,10 @@ source "$LIB" || exit 1
 # Aditional parameters
 CWD="`pwd`"
 
-# Run list command
+# Avoid trailing slash
 shift
-cd "$KEYDIR" && ls $*
+ARGS="`echo "$*" | sed -e "s|^/*||"`"
+
+# Run list command
+cd "$KEYDIR" && ls $ARGS
 cd "$CWD"

@@ -1,4 +1,12 @@
-2013-11-16 -       Silvio Rhatto  <rhatto@riseup.net>
+2013-11-25 -       Silvio Rhatto  <rhatto@riseup.net>
+
+	Fixed minor typos
+
+	Man page update
+
+	Temp folder priority set to "$TMPDIR $TMP /tmp /run/shm"
+
+	Avoid bash arrays on append action (closes #26)
 
 	Shell completion enhancements.
 

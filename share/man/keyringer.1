@@ -59,6 +59,14 @@ Like the git wrapper, this is a wrapper around the \f[I]LS(1)\f[]
 command.
 .RS
 .RE
+.TP
+.B tree <\f[I]path\f[]>
+List contents from the toplevel repository \f[I]keys\f[] folder or from
+relative paths if \f[I]path\f[] is specified using a tree-like format.
+Like the ls wrapper, this is a wrapper around the \f[I]TREE(1)\f[]
+command.
+.RS
+.RE
 .SH SECRET MANIPULATION ACTIONS
 .PP
 All secret manipulation actions operate upon a \f[I]secret\f[] which is
@@ -100,6 +108,11 @@ remote repositories.
 Please note that this command \f[B]does not remove the secret from the
 Git history.\f[] To completely remove a file from a keyring, you should
 also rewrite the Git history yourself.
+.RE
+.TP
+.B rm <\f[I]secret\f[]>
+Alias for \f[I]del\f[] action.
+.RS
 .RE
 .TP
 .B edit <\f[I]secret\f[]>

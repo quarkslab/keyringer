@@ -123,8 +123,7 @@ function keyringer_check_tmp {
 
   # Ramdisk check
   mount="`df "$path" | sed -n '$p' | awk '{ print $NF }'`"
-  mount -l -t tmpfs | awk '{ print $3 }' | grep -q -e "^$mount$";
-  return $?
+  mount -l -t tmpfs | awk '{ print $3 }' | grep -q -e "^$mount$"
 }
 
 # Setup a temporary file

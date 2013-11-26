@@ -90,6 +90,7 @@ function keyringer_init {
   # Init
   if ! keyringer_is_git "$BASEDIR"; then
     keyringer_exec git "$BASEDIR" init
+    keyringer_git_ignore 'tmp/*'
 
     # Edit default recipients
     echo "Now you have to edit the default recipient configuration to be able to encrypt secrets."

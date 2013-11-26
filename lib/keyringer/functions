@@ -153,6 +153,9 @@ function keyringer_set_tmpfile {
     echo "Press any key to continue, Ctrl-C to abort"
     read key
     tmp="$BASEDIR/tmp"
+
+    # Just to be sure
+    keyringer_git_ignore 'tmp/*'
   fi
 
   # Determine template
@@ -163,7 +166,6 @@ function keyringer_set_tmpfile {
   fi
 
   mkdir -p "$tmp"
-  keyringer_git_ignore 'tmp/*'
 
   if [ "$2" == "-d" ]; then
     TMPWORK="$(mktemp -d "$template")"

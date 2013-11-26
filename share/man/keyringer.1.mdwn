@@ -155,7 +155,7 @@ recipients <*ls*|*edit*> <*recipients-file*>
     For instance, if a user encrypts a secret to a file in the keyring repository's
     *accounting* folder, a *recipients-file* under *accounting* will be used.
     Encrypting a secret into *accounting/bank-accounts* will result in a file
-   `$KEYRING_FOLDER/keys/accounting/bank-accounts.asc` encrypted using the public
+    `$KEYRING_FOLDER/keys/accounting/bank-accounts.asc` encrypted using the public
     keys listed in the config file`$KEYRING_FOLDER/config/recipients/accounting`.
 
     Each line in a recipients file has entries in the format

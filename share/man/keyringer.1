@@ -113,11 +113,15 @@ variable and then re-encrypting it.
 Encrypts content from standard input or \f[I]file\f[] into
 \f[I]secret\f[] pathname.
 No spaces are supported in the \f[I]secret\f[] name.
+If \f[I]file\f[] is actually a folder, keyringer will recursivelly
+encrypt all it\[aq]s contents.
 .RS
 .RE
 .TP
-.B encrypt-batch <\f[I]secret\f[]>
+.B encrypt-batch <\f[I]secret\f[]> [\f[I]file\f[]]
 Encrypt content, batch mode.
+Behavior is identical to \f[I]encrypt\f[] action, but less verbose.
+Useful inside scripts.
 .RS
 .RE
 .TP
@@ -193,41 +197,41 @@ aliases.
 .PP
 Keyringer uses a default recipients file, but specifying a custom
 \f[I]recipients-file\f[] pathname will override this default.
+.PP
 For instance, if a user encrypts a secret to a file in the keyring
 repository\[aq]s \f[I]accounting\f[] folder, a \f[I]recipients-file\f[]
 under \f[I]accounting\f[] will be used.
 Encrypting a secret into \f[I]accounting/bank-accounts\f[] will result
-in a file
-.RE
-.PP
-\f[C]$KEYRING_FOLDER/keys/accounting/bank-accounts.asc\f[] encrypted
-using the public keys listed in the config
+in a file \f[C]$KEYRING_FOLDER/keys/accounting/bank-accounts.asc\f[]
+encrypted using the public keys listed in the config
 file\f[C]$KEYRING_FOLDER/config/recipients/accounting\f[].
-.IP
-.nf
-\f[C]
-Each\ line\ in\ a\ recipients\ file\ has\ entries\ in\ the\ format
-\[aq]john\@doe.com\ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\[aq],\ where\ *john\@doe.com*
-is\ an\ alias\ for\ the\ GPG\ public\ key\ whose\ fingerprint\ is
-*XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.*
-
-All\ lines\ starting\ with\ the\ hash\ (#)\ character\ are\ interpreted\ as\ comments.
-
-Parameters\ to\ the\ *recipients*\ action\ are:
-
-\ \ *ls*
-\ \ :\ \ \ List\ all\ existing\ recipients\ files.
-
-\ \ *edit*
-\ \ :\ \ \ Create\ or\ edit\ a\ recipients\ file.
-
-\ \ \ \ \ \ Editing\ happens\ using\ the\ editor\ specified\ by\ the\ `$EDITOR`
-\ \ \ \ \ \ environment\ variable.
-
-\ \ \ \ \ \ The\ required\ parameter\ *recipients-file*\ is\ interpreted\ relative
-\ \ \ \ \ \ to\ the\ `$KEYRING_FOLDER/config/recipients/`\ folder.
-\f[]
-.fi
+.PP
+Each line in a recipients file has entries in the format
+\[aq]john\@doe.com XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\[aq], where
+\f[I]john\@doe.com\f[] is an alias for the GPG public key whose
+fingerprint is \f[I]XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.\f[]
+.PP
+All lines starting with the hash (#) character are interpreted as
+comments.
+.PP
+Parameters to the \f[I]recipients\f[] action are:
+.TP
+.B \f[I]ls\f[]
+List all existing recipients files.
+.RS
+.RE
+.TP
+.B \f[I]edit\f[]
+Create or edit a recipients file.
+.RS
+.PP
+Editing happens using the editor specified by the \f[C]$EDITOR\f[]
+environment variable.
+.PP
+The required parameter \f[I]recipients-file\f[] is interpreted relative
+to the \f[C]$KEYRING_FOLDER/config/recipients/\f[] folder.
+.RE
+.RE
 .SH FILES
 .PP
 $HOME/.keyringer/config : User\[aq]s main configuration file used to map

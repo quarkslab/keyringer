@@ -115,14 +115,9 @@ function keyringer_is_git {
 function keyringer_check_tmp {
   local path="$1"
   local major
-  local mode
-
-  if [ -z "$path" ]; then
-    return
-  fi
 
   # Mode check
-  if [ "`stat -c "%A" $path`" != "drwxrwxrwt" ]; then
+  if [ -z "$path" ] || [ ! -d "$path" ] || [ ! -w "$path" ] || [ ! -x "$path" ]; then
     return 1
   fi
 

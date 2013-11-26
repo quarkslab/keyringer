@@ -1,5 +1,9 @@
 2013-11-26 -       Silvio Rhatto  <rhatto@riseup.net>
 
+  Added 'tree' action
+
+  Added 'rm' alias to 'del' action
+
   Set .gitignore during initialization and when using tmp inside the repository
 
   Pass options to git-rm at del action

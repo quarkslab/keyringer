@@ -56,6 +56,11 @@ ls <*path*>
     if *path* is specified. Like the git wrapper, this is a wrapper around the *LS(1)*
     command.
 
+tree <*path*>
+:   List contents from the toplevel repository *keys* folder or from relative paths
+    if *path* is specified using a tree-like format. Like the ls wrapper, this is a
+    wrapper around the *TREE(1)* command.
+
 # SECRET MANIPULATION ACTIONS
 
 All secret manipulation actions operate upon a *secret* which is the pathname
@@ -87,6 +92,9 @@ del <*secret*>
     Please note that this command **does not remove the secret from the Git history.**
     To completely remove a file from a keyring, you should also rewrite the Git
     history yourself.
+
+rm <*secret*>
+:   Alias for *del* action.
 
 edit <*secret*>
 :   Edit a secret by temporarily decrypting it, opening the decrypted copy into the 

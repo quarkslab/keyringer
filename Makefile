@@ -56,7 +56,9 @@ tarball:
 release:
 	@make build_man
 	git commit -a -m "Keyringer $(VERSION)"
-	git tag -s $(VERSION) -m "Keyringer $(VERSION)"
 	@make tarball
 	gpg --use-agent --armor --detach-sign --output ../tarballs/keyringer-$(VERSION).tar.bz2.asc ../tarballs/keyringer-$(VERSION).tar.bz2
 	scp ../tarballs/keyringer-$(VERSION).tar.bz2* keyringer:/var/sites/keyringer/releases/
+	# We're doing tagging afterwards:
+	# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=568375
+	git tag -s $(VERSION) -m "Keyringer $(VERSION)"

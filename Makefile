@@ -58,5 +58,5 @@ release:
 	git commit -a -m "Keyringer $(VERSION)"
 	git tag -s $(VERSION) -m "Keyringer $(VERSION)"
 	@make tarball
-	gpg --armor --detach-sign --output ../tarballs/keyringer-$(VERSION).tar.bz2.asc ../tarballs/keyringer-$(VERSION).tar.bz2
+	gpg --use-agent --armor --detach-sign --output ../tarballs/keyringer-$(VERSION).tar.bz2.asc ../tarballs/keyringer-$(VERSION).tar.bz2
 	scp ../tarballs/keyringer-$(VERSION).tar.bz2* keyringer:/var/sites/keyringer/releases/

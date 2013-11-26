@@ -1,4 +1,12 @@
-2013-11-25 -       Silvio Rhatto  <rhatto@riseup.net>
+2013-11-26 -       Silvio Rhatto  <rhatto@riseup.net>
+
+  Set .gitignore during initialization and when using tmp inside the repository
+
+  Pass options to git-rm at del action
+
+  Simpler ramdisk/tmpfs check at keyringer_check_tmp
+
+  Better mode check on keyringer_check_tmp (closes #30)
 
 	Fixed minor typos
 

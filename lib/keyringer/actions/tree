@@ -3,6 +3,11 @@
 # List keys.
 #
 
+# Thanks http://www.centerkey.com/tree/
+function keyringer_tree {
+  ls -R $* | grep ":$" | sed -e 's/:$//' -e 's/[^-][^\/]*\//--/g' -e 's/^/   /' -e 's/-/|/'
+}
+
 # Load functions
 LIB="`dirname $0`/../functions"
 source "$LIB" || exit 1
@@ -14,6 +19,13 @@ CWD="`pwd`"
 shift
 ARGS="`echo "$*" | sed -e "s|^/*||"`"
 
+# Check implementation
+if which tree &> /dev/null; then
+  TREE="tree"
+else
+  TREE="keyringer_tree"
+fi
+
 # Run list command
-cd "$KEYDIR" && tree $ARGS
+cd "$KEYDIR" && $TREE $ARGS
 cd "$CWD"

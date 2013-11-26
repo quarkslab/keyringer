@@ -144,7 +144,7 @@ function keyringer_check_tmp {
 function keyringer_set_tmpfile {
   local tmp
   local candidate
-  local candidates="/tmp /run/shm $TMP"
+  local candidates="$TMPDIR $TMP /tmp /run/shm"
 
   if [ -z "$BASEDIR" ]; then
     echo "Please set BASEDIR before creating a tmp file"

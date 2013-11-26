@@ -114,7 +114,7 @@ function keyringer_is_git {
 # Check the security of a temporary folder
 function keyringer_check_tmp {
   local path="$1"
-  local major
+  local mount
 
   # Mode check
   if [ -z "$path" ] || [ ! -d "$path" ] || [ ! -w "$path" ] || [ ! -x "$path" ]; then
@@ -122,19 +122,9 @@ function keyringer_check_tmp {
   fi
 
   # Ramdisk check
-  # Non-device mounts have major number "0", see
-  # https://www.kernel.org/doc/Documentation/devices.txt
-  if [ -x "/sbin/udevadm" ]; then
-    major="$(/sbin/udevadm info --device-id-of-file "$path" | cut -d : -f 1)"
-  elif which mountpoint &> /dev/null; then
-    major="$(mountpoint -d $(df "$path" | sed -n '$p' | awk '{print $NF}') | cut -d : -f 1)"
-  fi
-
-  if [ ! -z "$major" ]; then
-    return $major
-  else
-    return 1
-  fi
+  mount="`df "$path" | sed -n '$p' | awk '{ print $NF }'`"
+  mount -l -t tmpfs | awk '{ print $3 }' | grep -q -e "^$mount$";
+  return $?
 }
 
 # Setup a temporary file

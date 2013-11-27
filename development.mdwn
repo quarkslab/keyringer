@@ -60,6 +60,7 @@ Update the debian branch:
     git-import-orig --upstream-vcs-tag=$VERSION ../tarballs/keyringer-$VERSION.tar.bz2
     dch -e # fine tune the changelog prepared by git-dch
     git commit -a -m "Updating debian/changelog"
+    git tag -s debian_keyringer_$VERSION-1 -m "Keyringer debian package $VERSION-1"
 
 Push everything:
 

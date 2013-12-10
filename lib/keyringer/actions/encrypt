@@ -65,7 +65,7 @@ if [ ! -z "$3" ]; then
     FILE="$BASEPATH"
   fi
 
-  keyringer_get_new_file $RELATIVE_PATH/$FILE
+  keyringer_get_new_file $FILE
 
   if [ ! -e "$UNENCRYPTED_FILE" ]; then
     echo "Error: cannot encrypt $UNENCRYPTED_FILE: path not found."
@@ -74,7 +74,7 @@ if [ ! -z "$3" ]; then
 else
   UNENCRYPTED_FILE="-"
   shift
-  keyringer_get_new_file $RELATIVE_PATH/$*
+  keyringer_get_new_file $*
 fi
 
 # Set recipients file

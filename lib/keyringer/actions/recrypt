@@ -9,7 +9,7 @@ source "$LIB" || exit 1
 
 function keyringer_recrypt {
   # Get file
-  keyringer_get_file "$RELATIVE_PATH/$1"
+  keyringer_get_file "$1"
 
   # Set recipients file
   keyringer_set_recipients "$FILE"

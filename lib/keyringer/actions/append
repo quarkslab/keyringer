@@ -8,7 +8,7 @@ LIB="`dirname $0`/../functions"
 source "$LIB" || exit 1
 
 # Get file
-keyringer_get_file "$RELATIVE_PATH/$2"
+keyringer_get_file "$2"
 
 # Only display directions if we're running append, not append-batch
 if [ "$BASENAME" == "append" ]; then

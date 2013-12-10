@@ -398,7 +398,7 @@ function keyringer_upgrade {
 
 # Get a file argument
 function keyringer_get_file {
-  FILE="$(keyringer_filename "$1")"
+  FILE="$(keyringer_filename "$RELATIVE_PATH/$1")"
   
   if [ -z "$FILE" ]; then
     keyringer_action_usage
@@ -427,7 +427,7 @@ function keyringer_get_new_file {
   fi
 
   # Complete file name
-  FILE="$(keyringer_filename "$FILE")"
+  FILE="$RELATIVE_PATH/$(keyringer_filename "$FILE")"
 
   if [ -z "$*" ]; then
     keyringer_action_usage

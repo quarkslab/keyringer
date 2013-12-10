@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+# Create folders.
+#
+
+# Load functions
+LIB="`dirname $0`/../functions"
+source "$LIB" || exit 1
+
+# Aditional parameters
+CWD="`pwd`"
+
+# Avoid leading slash
+shift
+ARGS="`echo "$*" | sed -e "s|^/*||"`"
+
+# Run mkdir command
+cd "$KEYDIR/$RELATIVE_PATH" && mkdir -p $ARGS
+cd "$CWD"

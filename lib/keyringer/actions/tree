@@ -27,5 +27,5 @@ else
 fi
 
 # Run list command
-cd "$KEYDIR" && $TREE $ARGS
+cd "$KEYDIR/$RELATIVE_PATH" && $TREE $ARGS
 cd "$CWD"

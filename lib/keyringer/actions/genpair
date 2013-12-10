@@ -184,7 +184,7 @@ source "$LIB" || exit 1
 
 # Aditional parameters
 KEYTYPE="$2"
-FILE="$3"
+FILE="$RELATIVE_PATH/$3"
 NODE="$4"
 OUTFILE="$5"
 CWD="`pwd`"

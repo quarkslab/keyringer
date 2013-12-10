@@ -15,5 +15,5 @@ shift
 ARGS="`echo "$*" | sed -e "s|^/*||"`"
 
 # Run list command
-cd "$KEYDIR" && ls $ARGS
+cd "$KEYDIR/$RELATIVE_PATH" && ls $ARGS
 cd "$CWD"

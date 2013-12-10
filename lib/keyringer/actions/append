@@ -8,7 +8,7 @@ LIB="`dirname $0`/../functions"
 source "$LIB" || exit 1
 
 # Get file
-keyringer_get_file "$2"
+keyringer_get_file "$RELATIVE_PATH/$2"
 
 # Only display directions if we're running append, not append-batch
 if [ "$BASENAME" == "append" ]; then
@@ -17,4 +17,4 @@ fi
 
 # Append content to an existing secret
 ( keyringer_exec decrypt "$BASEDIR" "$FILE" && cat ) | \
-  keyringer_exec encrypt-batch $BASEDIR $FILE
+  keyringer_exec encrypt-batch "$BASEDIR" "$FILE"

@@ -474,9 +474,10 @@ function keyringer_usage {
   printf "Usage: %s <keyring> <action> [arguments]\n\n" "$BASENAME"
   printf "Available commands: \n\n"
   keyringer_show_actions | sed -e 's/^/\t/'
-  printf "\tinit <path> [remote]\n\n" $BASENAME
 
-  if [ ! -z "$keyrings" ]; then
+  # Display only when not in a keyring context
+  if [ ! -z "$keyrings" ] && [ -z "$1" ]; then
+    printf "\tinit <path> [remote]\n\n" $BASENAME
     printf "Available keyrings: %s \n" "$keyrings"
   fi
 }

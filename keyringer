@@ -131,11 +131,12 @@ ACTION="$2"
 # Turn off pathname expansion so expansion can work properly
 set -f
 
-# Export preferences and version for other scripts
+# Export globals for other scripts
 export PREFERENCES="`dirname $CONFIG`/$KEYRING"
 export KEYRINGER_VERSION
 export CONFIG_VERSION
 export KEYRING
+export CONFIG
 
 # Set functions location
 if [ -e "`dirname $(readlink -f $0)`/lib/$NAME/functions" ]; then

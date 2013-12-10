@@ -8,7 +8,7 @@ LIB="`dirname $0`/../functions"
 source "$LIB" || exit 1
 
 # Get file
-keyringer_get_file "$2"
+keyringer_get_file "$RELATIVE_PATH/$2"
 
 # Set options
 if [ ! -z "$3" ]; then

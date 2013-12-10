@@ -12,8 +12,10 @@ SHELLPATH="/"
 
 # While a "quit" command isn't entered, read STDIN
 while read -rep "keyringer:/${KEYRING}${SHELLPATH}> " STDIN; do
-  if [ "$STDIN" == "quit" ]; then
+  if [ "$STDIN" == "quit" ] || [ "$STDIN" == "exit" ] || [ "$STDIN" == "bye" ]; then
     break
+  elif [ "$STDIN" == "shell" ]; then
+    echo "Why you need nesting?"
   elif [[ "$STDIN" == "cd"* ]]; then
 
     # Update current path

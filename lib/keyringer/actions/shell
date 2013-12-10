@@ -18,18 +18,26 @@ while read -rep "keyringer:/${KEYRING}${SHELLPATH}> " STDIN; do
 
     # Update current path
     OLDPATH="$SHELLPATH"
-    SHELLPATH="/`echo $STDIN | sed -e 's/^cd//' | cut -d ' ' -f 2`"
+    SHELLPATH="`echo $STDIN | sed -e 's/^cd//' | cut -d ' ' -f 2`"
 
     # Fix current path
-    if [ "$SHELLPATH" == "/" ]; then
+    if [ "$SHELLPATH" == "/" ] || [ "$SHELLPATH" == "" ]; then
       SHELLPATH="/"
-    elif [[ "$SHELLPATH" == "/.."* ]]; then
+    elif [[ "$SHELLPATH" == ".."* ]]; then
       ARGS="$SHELLPATH"
       SHELLPATH="$OLDPATH"
       for colons in `echo $ARGS | sed -e 's|/| |g'`; do
-        SHELLPATH="`dirname $SHELLPATH`"
+        SHELLPATH="`dirname $SHELLPATH | sed -e 's|^\.||'`"
       done
     fi
+
+    # Ensure path is absolute
+    if echo "$SHELLPATH" | grep -v -q -e "^/"; then
+      SHELLPATH="/$OLDPATH/$SHELLPATH"
+    fi
+
+    # Removing multiple slashes
+    SHELLPATH="`echo $SHELLPATH | sed -e 's/\/\+/\//g'`"
 
     # Check if path exists
     if [ ! -d "$KEYDIR/$SHELLPATH" ]; then

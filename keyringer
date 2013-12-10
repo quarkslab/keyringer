@@ -162,12 +162,14 @@ source "$LIB" || exit 1
 # Setup main configuration and load preferences
 keyringer_config_load
 
-if [ -z "$ACTION" ]; then
+# Dispatch
+if [ -z "$KEYRING" ]; then
   keyringer_usage
   exit 1
-fi
-
-if [ "$ACTION" == "init" ]; then
+elif [ -z "$ACTION" ]; then
+  # Run shell if no action were given
+  keyringer $KEYRING shell
+elif [ "$ACTION" == "init" ]; then
   keyringer_init $*
 elif keyringer_has_action "$ACTION"; then
   keyringer_dispatch $*

@@ -10,6 +10,9 @@ source "$LIB" || exit 1
 # Basic parameters
 SHELLPATH="/"
 
+# Show usage
+keyringer_usage $KEYRING
+
 # While a "quit" command isn't entered, read STDIN
 while read -rep "keyringer:/${KEYRING}${SHELLPATH}> " STDIN; do
   if [ "$STDIN" == "quit" ] || [ "$STDIN" == "exit" ] || [ "$STDIN" == "bye" ]; then

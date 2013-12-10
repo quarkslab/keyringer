@@ -7,12 +7,38 @@
 LIB="`dirname $0`/../functions"
 source "$LIB" || exit 1
 
+# Basic parameters
+SHELLPATH="/"
+
 # While a "quit" command isn't entered, read STDIN
-while read -rep "keyringer:/> " STDIN; do
+while read -rep "keyringer:/${KEYRING}${SHELLPATH}> " STDIN; do
   if [ "$STDIN" == "quit" ]; then
     break
-  # If line is not empty or commented, process command
+  elif [[ "$STDIN" == "cd"* ]]; then
+
+    # Update current path
+    OLDPATH="$SHELLPATH"
+    SHELLPATH="/`echo $STDIN | sed -e 's/^cd//' | cut -d ' ' -f 2`"
+
+    # Fix current path
+    if [ "$SHELLPATH" == "/" ]; then
+      SHELLPATH="/"
+    elif [[ "$SHELLPATH" == "/.."* ]]; then
+      ARGS="$SHELLPATH"
+      SHELLPATH="$OLDPATH"
+      for colons in `echo $ARGS | sed -e 's|/| |g'`; do
+        SHELLPATH="`dirname $SHELLPATH`"
+      done
+    fi
+
+    # Check if path exists
+    if [ ! -d "$KEYDIR/$SHELLPATH" ]; then
+      echo "No such folder $SHELLPATH"
+      SHELLPATH="$OLDPATH"
+    fi
+
   elif [[ -n "$STDIN" && "$STDIN" != "#"* ]]; then
-    keyringer "$KEYRING" $STDIN
+    # If line is not empty or commented, process command
+    RELATIVE_PATH="$SHELLPATH" keyringer "$KEYRING" $STDIN
   fi
 done

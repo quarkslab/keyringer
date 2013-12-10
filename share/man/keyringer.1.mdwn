@@ -61,6 +61,16 @@ tree <*path*>
     if *path* is specified using a tree-like format. Like the ls wrapper, this is a
     wrapper around the *TREE(1)* command.
 
+shell
+:   Run keyringer on interactive mode from a built-in command-line prompt where
+    all other actions can be called and are operated from the current selected
+    keyring.
+
+    An additional "cd" internal command is available for directory navigation.
+
+    All <*secret*> parameters from actions invoked from the shell are called
+    relatively from the current selected directory.
+
 # SECRET MANIPULATION ACTIONS
 
 All secret manipulation actions operate upon a *secret* which is the pathname
@@ -150,6 +160,9 @@ preferences <*ls*|*edit*|*add*>
 
 usage
 :   Show keyringer usage information.
+
+help
+:   Alias for usage action.
 
 recipients <*ls*|*edit*> <*recipients-file*>
 :   List, create or edit recipients configuration.

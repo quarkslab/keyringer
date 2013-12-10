@@ -135,6 +135,7 @@ set -f
 export PREFERENCES="`dirname $CONFIG`/$KEYRING"
 export KEYRINGER_VERSION
 export CONFIG_VERSION
+export KEYRING
 
 # Set functions location
 if [ -e "`dirname $(readlink -f $0)`/lib/$NAME/functions" ]; then

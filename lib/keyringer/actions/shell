@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+# Interactive shell.
+#
+
+# Load functions
+LIB="`dirname $0`/../functions"
+source "$LIB" || exit 1
+
+# While a "quit" command isn't entered, read STDIN
+while read -rep "keyringer:/> " STDIN; do
+  if [ "$STDIN" == "quit" ]; then
+    break
+  # If line is not empty or commented, process command
+  elif [[ -n "$STDIN" && "$STDIN" != "#"* ]]; then
+    keyringer "$KEYRING" $STDIN
+  fi
+done

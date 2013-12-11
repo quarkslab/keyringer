@@ -10,6 +10,7 @@ source "$LIB" || exit 1
 # Options
 CONFIRM="$2"
 
+# Confirmation
 if [ -z "$CONFIRM" ] || [ "$CONFIRM" != "-y" ]; then
   echo "WARNING: about to remove the LOCAL copy of $KEYRING"
   echo "WARNING: This will irrevocably destroy $KEYDIR"

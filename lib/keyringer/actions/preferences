@@ -7,8 +7,10 @@
 LIB="`dirname $0`/../functions"
 source "$LIB" || exit 1
 
+# Options
 COMMAND="$2"
 
+# Syntax check
 if [ -z "$COMMAND" ]; then
   echo "Usage: keyringer <keyring> preferences <command> [arguments]"
   echo "Available commands:"
@@ -24,6 +26,7 @@ if [ ! -e "$PREFERENCES" ]; then
   touch "$PREFERENCES"
 fi
 
+# Dispatch
 if [ "$COMMAND" == "ls" ]; then
   cat "$PREFERENCES"
 elif [ "$COMMAND" == "edit" ]; then

@@ -24,6 +24,7 @@ keyringer_set_tmpfile $BASENAME.$EXTENSION
 # Decrypt the information to the file
 $GPG --yes -o "$TMPWORK" --use-agent -d "$KEYDIR/$FILE"
 
+# Action check
 if [ "$BASENAME" == "edit" ]; then
   APP="$EDITOR"
 elif [ "$BASENAME" == "open" ]; then

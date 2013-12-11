@@ -17,6 +17,7 @@ if [ ! -e "$OPTIONS" ]; then
   keyringer_exec git "$BASEDIR" add config/options
 fi
 
+# Dispatch
 if [ "$COMMAND" == "ls" ]; then
   cat "$OPTIONS"
 elif [ "$COMMAND" == "edit" ]; then

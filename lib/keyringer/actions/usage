@@ -7,4 +7,5 @@
 LIB="`dirname $0`/../functions"
 source "$LIB" || exit 1
 
+# Dispatch
 keyringer_usage $KEYRING

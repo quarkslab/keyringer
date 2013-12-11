@@ -7,6 +7,7 @@
 LIB="`dirname $0`/../functions"
 source "$LIB" || exit 1
 
+# Recrypt a single secret
 function keyringer_recrypt {
   # Get file
   keyringer_get_file "$1"
@@ -34,6 +35,7 @@ function keyringer_recrypt {
   echo "$recrypted" > "$KEYDIR/$FILE"
 }
 
+# Syntax check and dispatcher
 if [ ! -z "$2" ]; then
   keyringer_recrypt $2
 else

@@ -13,6 +13,7 @@ keyringer_get_command "$2"
 # Set recipients file
 keyringer_set_new_recipients "$3"
 
+# Syntax check and dispatcher
 if [ "$COMMAND" == "ls" ]; then
   if [ ! -z "$3" ]; then
     if [ -e "$RECIPIENTS_FILE" ]; then

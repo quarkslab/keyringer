@@ -106,12 +106,13 @@ else
   keyringer_encrypt $FILE $UNENCRYPTED_FILE
 fi
 
+# Check exit status
 err="$?"
-
 if [ "$err" != "0" ]; then
   exit "$err"
 fi
 
+# Wipe information
 if [ "$UNENCRYPTED_FILE" != "-" ]; then
   echo "Done. PLEASE WIPE the non-encrypted $UNENCRYPTED_FILE."
 fi
@@ -121,4 +122,5 @@ if [ -d "$BASEDIR/.git" ]; then
   keyringer_exec git "$BASEDIR" add "keys/$FILE"
 fi
 
+# Done
 exit "$?"

@@ -1,0 +1,27 @@
+#!/bin/bash
+#
+# Remove a keyring.
+#
+
+# Load functions
+LIB="`dirname $0`/../functions"
+source "$LIB" || exit 1
+
+# Options
+CONFIRM="$2"
+
+if [ -z "$CONFIRM" ] || [ "$CONFIRM" != "-y" ]; then
+  echo "WARNING: about to remove the LOCAL copy of $KEYRING"
+  echo "WARNING: This will irrevocably destroy $KEYDIR"
+  echo "WARNING: the action cannot be undone!"
+
+  read -rep "Are you sure to WIPE keyring $KEYRING (type YES to confirm)? " key
+  if [ "$key" != "YES" ]; then
+    exit 1
+  fi
+fi
+
+# Teardown
+keyringer_shred `dirname $KEYDIR`
+keyringer_shred $HOME/.keyringer/$KEYRING
+sed -i -e "/^$KEYRING=/d" $HOME/.keyringer/config

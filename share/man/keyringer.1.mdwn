@@ -74,6 +74,10 @@ shell
     All <*secret*> parameters from actions invoked from the shell are called
     relatively from the current selected directory.
 
+teardown
+:   Remove permanently a local copy of a repository, very dangerous if you
+    have just a single copy.
+
 # SECRET MANIPULATION ACTIONS
 
 All secret manipulation actions operate upon a *secret* which is the pathname

@@ -102,9 +102,7 @@ Setup:
 
 Teardown:
 
-    rm -rf ~/code/tests/keyringer
-    rm ~/.keyringer/test
-    sed -i -e '/^test=/d' ~/.keyringer/config
+    keyringer test teardown -y
 
 Translation
 -----------

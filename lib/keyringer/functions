@@ -206,10 +206,17 @@ function keyringer_shred {
   echo "$message $path using $tool..."
 
   if [ -d "$path" ]; then
-    find $path -exec $tool -f {} \;
-    rmdir $path
+    if [ "$tool" == "wipe" ] || [ "$tool" == "rm" ]; then
+      $tool -rf $path
+    else
+      find $path -exec $tool -uf {} \;
+    fi
   else
-    $tool -f "$path"
+    if [ "$tool" == "wipe" ] || [ "$tool" == "rm" ]; then
+      $tool -f "$path"
+    else
+      $tool -uf "$path"
+    fi
   fi
 }
 

@@ -70,10 +70,10 @@ _keyringer() {
 
   # Process config
   source $config/config
-  keyrings="`ls --color=never $config | sed -e 's/config//' | xargs`"
+  keyrings="`ls --color=never $config | sed -e '/^config$/d' | xargs`"
 
   # Available instances
-  instances="`echo $keyrings | sed -e 's/ /\\\|/g'`"
+  instances="`echo $keyrings | sed -e 's/ /$\\\|^/g' -e 's/^/^/' -e 's/$/$/'`"
 
   # The current instance
   instance="${COMP_WORDS[1]}"

@@ -20,9 +20,9 @@ _keyringer() {
 
     # Process config
     source $config/config
-    local keyrings="`ls --color=never $config | sed -e 's/config//' | xargs`"
+    local keyrings="`ls --color=never $config | sed -e '/^config$/d' | xargs`"
     local keyring_path="`eval echo '$'$words[2]`"
-    local instances="`echo $keyrings | sed -e 's/ /\\\|/g'`"
+    local instances="`echo $keyrings | sed -e 's/ /$\\\|^/g' -e 's/^/^/' -e 's/$/$/'`"
 
     _arguments        \
       '1: :->keyring' \

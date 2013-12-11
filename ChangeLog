@@ -1,16 +1,20 @@
+2013-12-10 - Silvio Rhatto  <rhatto@riseup.net>
+
+	New actions: shell (#34), help, mkdir, teardown.
+
 2013-11-26 - 0.2.9 Silvio Rhatto  <rhatto@riseup.net>
 
-  Added 'tree' action
+	Added 'tree' action
 
-  Added 'rm' alias to 'del' action
+	Added 'rm' alias to 'del' action
 
-  Set .gitignore during initialization and when using tmp inside the repository
+	Set .gitignore during initialization and when using tmp inside the repository
 
-  Pass options to git-rm at del action
+	Pass options to git-rm at del action
 
-  Simpler ramdisk/tmpfs check at keyringer_check_tmp
+	Simpler ramdisk/tmpfs check at keyringer_check_tmp
 
-  Better mode check on keyringer_check_tmp (closes #30)
+	Better mode check on keyringer_check_tmp (closes #30)
 
 	Fixed minor typos
 

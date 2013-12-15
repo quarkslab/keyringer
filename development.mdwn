@@ -60,7 +60,7 @@ Update the debian branch:
     git-import-orig --upstream-vcs-tag=$VERSION ../tarballs/keyringer-$VERSION.tar.bz2
     dch -e # fine tune the changelog prepared by git-dch
     git commit -a -m "Updating debian/changelog"
-    git tag -s debian_keyringer_$VERSION-1 -m "Keyringer debian package $VERSION-1"
+    git-buildpackage --git-tag-only --git-sign-tags
 
 Push everything:
 
@@ -74,10 +74,6 @@ Run lintian (or [add it to your pbuilder hooks](http://askubuntu.com/questions/1
 
     lintian --info --display-info --pedantic --color auto \
      ../build-area/keyringer_$VERSION*.changes
-
-Create a signed tag in the debian branch:
-
-    git-buildpackage --git-tag-only --git-sign-tags
 
 Notes:
 

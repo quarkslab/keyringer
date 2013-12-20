@@ -1,6 +1,6 @@
 [[!meta title="Keyringer: encrypted and distributed secret sharing software"]]
 
-Keyringer lets you manage and share secrets using GPG and git with custom
+Keyringer lets you manage and share secrets using GnuPG and Git with custom
 commands to encrypt, decrypt, recrypt, create key pairs, etc.
 
 - Project page: [https://keyringer.pw](https://keyringer.pw)
@@ -73,6 +73,9 @@ Fill it with your friends key IDs. Now encrypt a secret just for then:
 In other words, if keyringer finds a recipient file matching a given path,
 it will use it instead of the global recipients file.
 
+Each recipient list is defined in a file placed at `config/recipients` in your
+keyring repository. Take care to add just trustable recipients.
+
 Managing secrets
 ----------------
 
@@ -111,16 +114,17 @@ Appending information to a secret
 
 Editing a secret
 
-To edit a secret, use
-
-    keyringer <keyring> edit <file>
+    keyringer <keyring> edit <secret>
 
 Use this option with caution as it keeps temporary unencrypted data
-into keyringer temp folder and at your editor's temp files.
+into a temporary folder.
 
 Listing secrets
 
     keyringer <keyring> ls [arguments]
+
+Each `<secret>` is stored as a file inside the `keys/` folder of your keyring
+directory.
 
 Git wrapper
 -----------
@@ -154,18 +158,6 @@ keyringer, use
 Example:
 
     keyringer <keyring> preferences add KEYID=0123456789ABCDEF0123456789ABCDE012345678
-
-Notes
------
-
-  1. The `<file>` is any file inside the `keys/` folder of your
-     keyring directory.
-
-  2. Never decrypt a key and write it to the disk, except
-     if you're adding it to your personall keyring.
-
-  3. Recipients are defined at file `config/recipients`.
-     Take care to add just trustable recipients.
 
 Concepts
 --------
@@ -206,6 +198,9 @@ given key), but it's possible to:
   - Keep the repo just atop of an encrypted and non-public place.        
 
   - Or to consider an integration with gpg's --hidden-recipient option.
+
+Never decrypt a key and write it to the disk, except if you're adding it to
+your personall keyring.
 
 Requirements
 ------------

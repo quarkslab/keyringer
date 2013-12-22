@@ -554,7 +554,7 @@ function keyringer_set_recipients {
     candidate_no_extension="`echo $1 | sed -e 's/.asc$//'`"
 
     # Find the first matching recipient
-    while [ ! -z "$candidate" ] && [ "$candidate" != "." ] && [ "$candidate" != "/" ]; do
+    while [ ! -z "$candidate" ] && [ "$candidate" != "." ] && [ "$candidate" != "/" ] && [ "$candidate" != "/." ]; do
       if [ -e "$RECIPIENTS/$candidate" ]; then
         RECIPIENTS_FILE="$RECIPIENTS/$candidate"
         RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$candidate"

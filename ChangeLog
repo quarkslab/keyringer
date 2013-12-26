@@ -1,3 +1,7 @@
+2013-12-26 - Silvio Rhatto  <rhatto@riseup.net>
+
+	New action: find.
+
 2013-12-10 - Silvio Rhatto  <rhatto@riseup.net>
 
 	New actions: shell (#34), help, mkdir, teardown.

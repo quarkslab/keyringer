@@ -37,6 +37,9 @@ Keyringer has three types of actions:
 
 # REPOSITORY LOOKUP AND MANIPULATION ACTIONS
 
+find <*expression*>
+:   Find secrets in the repository.
+
 init <*path*> [*remote*]
 :   Initialize a new keyringer repository. If a *remote* URL is specified, keyringer will
     clone an existing repository.

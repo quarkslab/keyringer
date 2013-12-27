@@ -1,10 +1,12 @@
 2013-12-26 - Silvio Rhatto  <rhatto@riseup.net>
 
-	New action: find.
+	New actions: find, mv, rmdir
+
+	Support for RELATIVE_FOLDER at git action
 
 2013-12-10 - Silvio Rhatto  <rhatto@riseup.net>
 
-	New actions: shell (#34), help, mkdir, teardown.
+	New actions: shell (#34), help, mkdir, teardown
 
 2013-11-26 - 0.2.9 Silvio Rhatto  <rhatto@riseup.net>
 

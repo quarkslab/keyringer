@@ -62,6 +62,9 @@ ls <*path*>
 mkdir <*path*>
 :   Create a directory inside the repository *keys* folder.
 
+:rmdir <*path*>
+:   Remove an empty folder inside the repository *keys* folder.
+
 tree <*path*>
 :   List contents from the toplevel repository *keys* folder or from relative paths
     if *path* is specified using a tree-like format. Like the ls wrapper, this is a
@@ -115,6 +118,9 @@ del <*secret*>
 
 rm <*secret*>
 :   Alias for *del* action.
+
+mv <*secret*> <*dest*>
+:   Rename a secret.
 
 edit <*secret*>
 :   Edit a secret by temporarily decrypting it, opening the decrypted copy into the 

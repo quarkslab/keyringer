@@ -1,0 +1,28 @@
+#!/bin/bash
+#
+# Move secrets.
+#
+
+# Load functions
+LIB="`dirname $0`/../functions"
+source "$LIB" || exit 1
+
+# Avoid leading slash
+ORIG="$(keyringer_filename `echo "$2" | sed -e "s|^/*||"`)"
+DEST="`echo "$3" | sed -e "s|^/*||"`"
+
+# Set destination
+if [ ! -d "$KEYDIR/$RELATIVE_PATH/$DEST" ]; then
+  keyringer_get_new_file $DEST
+else
+  FILE="$DEST"
+fi
+
+# Check if secret exists
+if ! echo "$ORIG" | grep -q '*' && [ ! -e "$KEYDIR/$RELATIVE_PATH/$ORIG" ]; then
+  echo "Secret not found: $ORIG"
+  exit 1
+fi
+
+# Run move command
+keyringer_exec git "$BASEDIR" mv $ORIG $FILE

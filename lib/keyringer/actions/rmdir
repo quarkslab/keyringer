@@ -1,0 +1,19 @@
+#!/bin/bash
+#
+# Remove folders.
+#
+
+# Load functions
+LIB="`dirname $0`/../functions"
+source "$LIB" || exit 1
+
+# Aditional parameters
+CWD="`pwd`"
+
+# Avoid leading slash
+shift
+ARGS="`echo "$*" | sed -e "s|^/*||"`"
+
+# Run rmdir command
+cd "$KEYDIR/$RELATIVE_PATH" && rmdir $ARGS
+cd "$CWD"

@@ -18,6 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
+# Initialize a new keyring
 function keyringer_init {
   BASEDIR="$3"
   URL="$4"
@@ -104,6 +105,7 @@ function keyringer_init {
   fi
 }
 
+# Action dispatcher
 function keyringer_dispatch {
   BASEDIR="`keyringer_config $KEYRING`"
 

@@ -290,9 +290,9 @@ function keyringer_set_env {
   fi
 
   if [ ! -z "$KEYID" ]; then
-    GPG="gpg -u $KEYID"
+    GPG="gpg --quiet -u $KEYID"
   else
-    GPG="gpg"
+    GPG="gpg --quiet"
   fi
 
   # Check keyring config version

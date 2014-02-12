@@ -541,6 +541,31 @@ EOF
         echo "Please check for this key or fix the recipient file."
         exit 1
       fi
+
+      # Current date
+      seconds="`date +%s`"
+
+      # Check the main key
+      expiry="`gpg --with-colons --fixed-list-mode --list-keys "$recipient" | grep ^pub | cut -d : -f 7`"
+
+      # Check if key is expired
+      if [[ "$seconds" -gt "$expiry" ]]; then
+        echo "Fatal: primary key for $recipient expired on `date --date="@$expiry"`"
+        exit 1
+      else
+        # Check the subkeys
+        for expiry in `gpg --with-colons --fixed-list-mode --list-keys "$recipient" | grep ^sub | cut -d : -f 7`; do
+          if [[ "$seconds" -lt "$expiry" ]]; then
+            not_expired="1"
+          fi
+
+          if [ "$not_expired" != "1" ]; then
+            echo "Fatal: key $recipient has no keys suitable for encryption: all subkeys expired."
+            exit 1
+          fi
+        done
+      fi
+
     fi
   done
 }

@@ -1,4 +1,8 @@
-2013-12-26 - Silvio Rhatto  <rhatto@riseup.net>
+2014-02-12 - Silvio Rhatto  <rhatto@riseup.net>
+
+	Check key expirations (#37)
+
+	Proper error handling at edit action
 
 	New actions: find, mv, rmdir
 

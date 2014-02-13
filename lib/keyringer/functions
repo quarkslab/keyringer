@@ -549,7 +549,7 @@ EOF
       expiry="`gpg --with-colons --fixed-list-mode --list-keys "$recipient" | grep ^pub | cut -d : -f 7`"
 
       # Check if key is expired
-      if [[ "$seconds" -gt "$expiry" ]]; then
+      if [ ! -z "$expiry" ] && [[ "$seconds" -gt "$expiry" ]]; then
         echo "Fatal: primary key for $recipient expired on `date --date="@$expiry"`"
         exit 1
       else

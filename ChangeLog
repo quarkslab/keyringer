@@ -1,5 +1,7 @@
 2014-02-19 - Silvio Rhatto  <rhatto@riseup.net>
 
+	Try to find a similar file at keyringer_get_file
+
 	Added xclip action (#33)
 
 	Check key expirations (#37)

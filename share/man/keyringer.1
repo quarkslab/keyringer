@@ -31,6 +31,11 @@ and other read/write operations on secrets.
 Configuration actions, handling repository metadata.
 .SH REPOSITORY LOOKUP AND MANIPULATION ACTIONS
 .TP
+.B find <\f[I]expression\f[]>
+Find secrets in the repository.
+.RS
+.RE
+.TP
 .B init <\f[I]path\f[]> [\f[I]remote\f[]]
 Initialize a new keyringer repository.
 If a \f[I]remote\f[] URL is specified, keyringer will clone an existing
@@ -60,11 +65,40 @@ command.
 .RS
 .RE
 .TP
+.B mkdir <\f[I]path\f[]>
+Create a directory inside the repository \f[I]keys\f[] folder.
+.RS
+.RE
+.TP
+.B :rmdir <\f[I]path\f[]>
+Remove an empty folder inside the repository \f[I]keys\f[] folder.
+.RS
+.RE
+.TP
 .B tree <\f[I]path\f[]>
 List contents from the toplevel repository \f[I]keys\f[] folder or from
 relative paths if \f[I]path\f[] is specified using a tree-like format.
 Like the ls wrapper, this is a wrapper around the \f[I]TREE(1)\f[]
 command.
+.RS
+.RE
+.TP
+.B shell
+Run keyringer on interactive mode from a built-in command-line prompt
+where all other actions can be called and are operated from the current
+selected keyring.
+.RS
+.PP
+An additional "cd" internal command is available for directory
+navigation.
+.PP
+All <\f[I]secret\f[]> parameters from actions invoked from the shell are
+called relatively from the current selected directory.
+.RE
+.TP
+.B teardown
+Remove permanently a local copy of a repository, very dangerous if you
+have just a single copy.
 .RS
 .RE
 .SH SECRET MANIPULATION ACTIONS
@@ -115,6 +149,11 @@ Alias for \f[I]del\f[] action.
 .RS
 .RE
 .TP
+.B mv <\f[I]secret\f[]> <\f[I]dest\f[]>
+Rename a secret.
+.RS
+.RE
+.TP
 .B edit <\f[I]secret\f[]>
 Edit a secret by temporarily decrypting it, opening the decrypted copy
 into the text editor defined by the \f[I]$EDITOR\f[] environment
@@ -162,6 +201,17 @@ If no \f[I]secret\f[] is given, all secrets in the repository are
 re-encrypted.
 .RS
 .RE
+.TP
+.B clip <\f[I]secret\f[]>
+Copy the first line of a secret to the clipboard, following
+password-store convention.
+.RS
+.RE
+.TP
+.B xclip <\f[I]secret\f[]>
+Alis to clip action.
+.RS
+.RE
 .SH CONFIGURATION ACTIONS
 .TP
 .B commands
@@ -197,6 +247,11 @@ comments.
 .TP
 .B usage
 Show keyringer usage information.
+.RS
+.RE
+.TP
+.B help
+Alias for usage action.
 .RS
 .RE
 .TP

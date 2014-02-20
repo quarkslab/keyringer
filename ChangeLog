@@ -1,4 +1,4 @@
-2014-02-19 - Silvio Rhatto  <rhatto@riseup.net>
+2014-02-20 - 0.3 - Silvio Rhatto  <rhatto@riseup.net>
 
 	Try to find a similar file at keyringer_get_file
 
@@ -11,8 +11,6 @@
 	New actions: find, mv, rmdir
 
 	Support for RELATIVE_FOLDER at git action
-
-2013-12-10 - Silvio Rhatto  <rhatto@riseup.net>
 
 	New actions: shell (#34), help, mkdir, teardown
 

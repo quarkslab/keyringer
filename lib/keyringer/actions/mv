@@ -25,4 +25,4 @@ if ! echo "$ORIG" | grep -q '*' && [ ! -e "$KEYDIR/$RELATIVE_PATH/$ORIG" ]; then
 fi
 
 # Run move command
-keyringer_exec git "$BASEDIR" mv $ORIG $FILE
+keyringer_exec git "$BASEDIR" mv "keys/$RELATIVE_PATH/$ORIG" "keys/$FILE"

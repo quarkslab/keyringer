@@ -1,8 +1,10 @@
 2014-02-20 - Silvio Rhatto  <rhatto@riseup.net>
 
+	Fixed secret paths at mv action
+
 	Do not use RELATIVE_PATH on git action
 
-	Fix test output at xclip action
+	Fixed test output at xclip action
 
 2014-02-20 - 0.3 - Silvio Rhatto  <rhatto@riseup.net>
 

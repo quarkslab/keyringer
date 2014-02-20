@@ -26,6 +26,10 @@ Just clone
 And then leave it somewhere, optionally adding it to your `$PATH` environment variable
 or package it to your preferred distro.
 
+If you're using debian `jessie` or `unstable`, just run
+
+    apt-get install keyringer
+
 Creating a keyringer repository
 -------------------------------
 

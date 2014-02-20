@@ -13,12 +13,5 @@ CWD="`pwd`"
 # Run git command
 shift
 
-# Set working folder
-if [ ! -z "$RELATIVE_PATH" ]; then
-  WORK="$KEYDIR/$RELATIVE_PATH"
-else
-  WORK="$BASEDIR"
-fi
-
-mkdir -p "$WORK" && cd "$WORK" && git $*
+mkdir -p "$BASEDIR" && cd "$BASEDIR" && git $*
 cd "$CWD"

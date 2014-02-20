@@ -38,6 +38,12 @@ clip() {
 LIB="`dirname $0`/../functions"
 source "$LIB" || exit 1
 
+# Check for xclip
+if ! which xclip; then
+  echo "fatal: xclip not found"
+  exit 1
+fi
+
 # Get file
 keyringer_get_file "$2"
 

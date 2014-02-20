@@ -150,6 +150,9 @@ recrypt <*secret*>
     into the recipient configuration. If no *secret* is given, all secrets in the repository
     are re-encrypted.
 
+clip <*secret*>, xclip <*secret*>
+:   Copy the first line of a secret to the clipboard, following password-store convention.
+
 # CONFIGURATION ACTIONS
 
 commands

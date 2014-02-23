@@ -1,0 +1,46 @@
+#!/bin/bash
+#
+# Keyringer's canary warrant implementation.
+#
+# Inspired by:
+#
+#   https://en.wikipedia.org/wiki/Warrant_canary
+#   http://www.rsync.net/resources/notices/canary.txt
+#
+# A canary is:
+#
+#   - Generated using any combination of public available RSS
+#     feeds configured by user preferences.
+#
+#   - Configured to generate new information once a day.
+#     If you run it more than that interval, no canary will
+#     be updated.
+#
+# A canary is stored:
+#
+#   - In a folder called "canaries" followed by the user ID.
+#
+#   - With an addiditonal timestamp stored plain+signed so it
+#     can be easily checked.
+#
+#   - Can optionally be uploaded (encrypted or plain+signed) to a
+#     remote url via scp.
+#
+#   - Can optinally be included in another git repository
+#     (encrypted or plain+signed), commited and pushed
+#     to a remote repository (ikiwiki instance, etc).
+#
+# How to run:
+#
+#  - First, "keyringer <keyringe> preferences edit # basic canary preferences".
+#
+#  - Then, add the following at your ~/.profile or wherever you want your canary
+#    be called from: "keyringer <keyring> canary".
+
+# Load functions
+LIB="`dirname $0`/../functions"
+source "$LIB" || exit 1
+
+# TODO: code!
+echo "Not implemented :("
+exit 1

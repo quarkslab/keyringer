@@ -94,7 +94,7 @@ _keyringer() {
       recipients)
         opts="ls edit"
         ;;
-      ls|tree|mkdir|encrypt|encrypt-batch|decrypt|edit|append|append-batch|del|rm|recrypt|open|clip|xclip)
+      ls|tree|mkdir|encrypt|encrypt-batch|decrypt|edit|append|append-batch|del|rm|recrypt|open|clip|xclip|find)
         cur="`echo ${cur} | sed -e "s|^/*||"`" # avoid leading slash
         opts="$(bash -c "set -f && export KEYRINGER_CHECK_VERSION=false && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
         ;;

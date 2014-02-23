@@ -1,4 +1,6 @@
-2014-02-20 - Silvio Rhatto  <rhatto@riseup.net>
+2014-02-23 - Silvio Rhatto  <rhatto@riseup.net>
+
+	Added find action into shell completions
 
 	Using XA_PRIMARY selection at xclip action
 

@@ -1,5 +1,7 @@
 2014-02-23 - Silvio Rhatto  <rhatto@riseup.net>
 
+	Enhanced secret finder at keyringer_get_file
+
 	Added find action into shell completions
 
 	Using XA_PRIMARY selection at xclip action

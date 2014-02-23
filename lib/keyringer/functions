@@ -413,11 +413,10 @@ function keyringer_get_file {
   elif [ ! -f "$KEYDIR/$FILE" ]; then
     # Try to find a similar file
     count=0
-    candidates=(`keyringer_exec find "$BASEDIR" "$1" | grep -e '.asc$'`)
+    candidates=(`keyringer_exec find "$BASEDIR" | grep -i "$1" | grep -e '.asc$'`)
 
     if [ ! -z "$candidates" ]; then
-      echo "Could not find exact match \"$1\", please chose one"
-      echo "of the following secrets:"
+      echo "Could not find exact match \"$1\", please chose one of the following secrets:"
       echo ""
 
       for candidate in ${candidates[@]}; do
@@ -426,7 +425,7 @@ function keyringer_get_file {
       done
 
       echo ""
-      read -p "Enter option: " option
+      read -p "Enter option (Ctrl-C to abort): " option
 
       if [[ "$option" =~ ^[0-9]+$ ]] && [ ! -z "${candidates[$option]}" ]; then
         FILE="$(keyringer_filename "$RELATIVE_PATH/${candidates[$option]}")"

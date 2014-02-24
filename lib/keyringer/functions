@@ -514,9 +514,21 @@ function keyringer_usage {
 }
 
 # Check recipients
+# TODO: break in smaller pieces
 function keyringer_check_recipients {
+  # Shall we check recipients?
   if [ "$KEYRINGER_CHECK_RECIPIENTS" == "false" ]; then
     return
+  fi
+
+  # Local variables
+  local processed=":"
+
+  # Sync the repository
+  if [ "$BASENAME" == "check" ]; then
+    echo "Syncing git repository..."
+    keyringer_exec git "$BASEDIR" pull
+    echo ""
   fi
 
   # Check if recipients file is empty.
@@ -538,6 +550,13 @@ function keyringer_check_recipients {
   fi
 
   for recipient in $(cat "$RECIPIENTS"/* | grep -v '^#' | awk '{ print $2 }'); do
+    # Process a recipient just once
+    if echo $processed | grep -q "$recipient:"; then
+      continue
+    else
+      processed="$processed$recipient:"
+    fi
+
     size=$(echo "$recipient" | wc -c)
     if (( $size < 41 )); then
       echo "Fatal: please set the full GPG signature hash for key ID $recipient:"
@@ -561,9 +580,32 @@ EOF
     else
       gpg --list-key "$recipient" &> /dev/null
       if [ "$?" != "0" ]; then
-        echo "Fatal: no such key $recipient on your GPG keyring."
-        echo "Please check for this key or fix the recipient file."
-        exit 1
+        if [ "$BASENAME" == "check" ]; then
+          # TODO: gpg-maintenance trickery
+          # TODO: should be controlled by user preference
+          refresh="no"
+          echo "Trying to receive missing key $recipient..."
+          gpg --batch --recv-keys "$recipient"
+          echo ""
+          if [ "$?" != 0 ]; then
+            echo "Error fetching $recipient from keyservers."
+            continue
+          fi
+        else
+          echo "Fatal: no such key $recipient on your GPG keyring."
+          echo "Please check for this key or fix the recipient file."
+
+          exit 1
+        fi
+      fi
+
+      # Refresh keys
+      if [ "$BASENAME" == "check" ] && [ "$refresh" != "no" ]; then
+        # TODO: gpg-maintenance trickery
+        # TODO: should be controlled by user preference
+        echo "Trying to refresh key $recipient..."
+        gpg --batch --refresh-keys "$recipient"
+        echo ""
       fi
 
       # Current date
@@ -573,6 +615,7 @@ EOF
       expiry="`gpg --with-colons --fixed-list-mode --list-keys "$recipient" | grep ^pub | cut -d : -f 7`"
 
       # Check if key is expired
+      # TODO: check if key is about to expire
       if [ ! -z "$expiry" ] && [[ "$seconds" -gt "$expiry" ]]; then
         echo "Fatal: primary key for $recipient expired on `date --date="@$expiry"`"
         exit 1
@@ -580,6 +623,7 @@ EOF
         # Check the subkeys
         for expiry in `gpg --with-colons --fixed-list-mode --list-keys "$recipient" | grep ^sub | cut -d : -f 7`; do
           if [[ "$seconds" -lt "$expiry" ]]; then
+            # TODO: check if subkey is about to expire
             not_expired="1"
           fi
 

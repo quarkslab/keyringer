@@ -27,3 +27,4 @@ source "$LIB" || exit 1
 
 # This should be done here:
 # TODO: Check canaries' timestamps, warning by mail if configured by user preferences.
+# TODO: Git maintenance operations.

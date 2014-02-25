@@ -408,6 +408,17 @@ function keyringer_upgrade {
   fi
 }
 
+# Get an option
+#
+# Given that options are shared among users through the
+# repository, we can't just "source $OPTIONS" as we would
+# be opening a simple arbitrary code execution hole.
+#
+# TODO
+function keyringer_get_option {
+  false
+}
+
 # Get a file argument
 function keyringer_get_file {
   FILE="$(keyringer_filename "$RELATIVE_PATH/$1")"

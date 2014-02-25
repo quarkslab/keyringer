@@ -1,6 +1,6 @@
-2014-02-24 - Silvio Rhatto  <rhatto@riseup.net>
+2014-02-25 - Silvio Rhatto  <rhatto@riseup.net>
 
-	Starting to code new actions: check (#39) and canary (#40)
+	New action: check (#39)
 
 	Enhanced secret finder at keyringer_get_file and on find action
 

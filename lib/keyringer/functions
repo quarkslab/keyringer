@@ -665,13 +665,10 @@ function keyringer_check_recipient_key {
 }
 
 # Check key expiration
-# TODO: Check if keys in all recipients files are about to expire.
-# TODO: Time to expire can be configured via repository options.
-# TODO: Users can be alerted by mail if configured by user preferences.
-# TODO: Outgoing emails can be encrypted.
 function keyringer_check_expiration {
   # Variables
   local recipient="$1"
+  local not_expired="0"
 
   # Current date
   seconds="`date +%s`"
@@ -679,24 +676,37 @@ function keyringer_check_expiration {
   # Check the main key
   expiry="`gpg --with-colons --fixed-list-mode --list-keys "$recipient" | grep ^pub | cut -d : -f 7`"
 
+  # TODO: Time to expire can be configured via repository options.
+  ahead="$((86400 * 30 + $seconds))"
+
   # Check if key is expired
-  # TODO: check if key is about to expire
   if [ ! -z "$expiry" ] && [[ "$seconds" -gt "$expiry" ]]; then
     echo "Fatal: primary key for $recipient expired on `date --date="@$expiry"`"
     exit 1
-  else
-    # Check the subkeys
-    for expiry in `gpg --with-colons --fixed-list-mode --list-keys "$recipient" | grep ^sub | cut -d : -f 7`; do
-      if [[ "$seconds" -lt "$expiry" ]]; then
-        # TODO: check if subkey is about to expire
-        not_expired="1"
-      fi
+  fi
 
-      if [ "$not_expired" != "1" ]; then
-        echo "Fatal: key $recipient has no keys suitable for encryption: all subkeys expired."
-        exit 1
-      fi
-    done
+  # Check if key is about to expire
+  # TODO: Users can be alerted by mail if configured by user preferences.
+  # TODO: Outgoing emails can be encrypted.
+  if [ "$BASENAME" == "check" ] && [ ! -z "$expiry" ] && [[ "$ahead" -gt "$expiry" ]]; then
+    echo "Warning: key $recipient will expire soon, on `date --date="@$expiry"`"
+  fi
+
+  # Check the subkeys
+  for expiry in `gpg --with-colons --fixed-list-mode --list-keys "$recipient" | grep ^sub | cut -d : -f 7`; do
+    if [[ "$seconds" -lt "$expiry" ]]; then
+      not_expired="1"
+    fi
+
+    if [[ "$ahead" -gt "$expiry" ]] && [ "$BASENAME" == "check" ]; then
+      echo "Warning: subkey from $recipient will expire soon, on `date --date="@$expiry"`"
+    fi
+  done
+
+  # All subkeys are expired
+  if [ "$not_expired" != "1" ]; then
+    echo "Fatal: key $recipient has no keys suitable for encryption: all subkeys expired."
+    exit 1
   fi
 }
 

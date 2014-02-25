@@ -16,7 +16,8 @@
 LIB="`dirname $0`/../functions"
 source "$LIB" || exit 1
 
-# The following should run automatically from keyringer_check_recipients:
+# The following should run automatically from keyringer_check_recipients
+# and keyringer_check_repository:
 #
 # TODO: Pull the keyring repository.
 # TODO: Fetch absent keys from all recipients.
@@ -24,16 +25,7 @@ source "$LIB" || exit 1
 # TODO: Time to expire can be configured via repository options.
 # TODO: Users can be alerted by mail if configured by user preferences.
 # TODO: Outgoing emails can be encrypted.
+# TODO: Git maintenance operations.
 
 # This should be done here:
 # TODO: Check canaries' timestamps, warning by mail if configured by user preferences.
-
-# Git maintenance operations.
-if [ -d "$BASEDIR/.git" ]; then
-  echo "Running git maintenance operations..."
-  keyringer_exec git "$BASEDIR" fsck
-  keyringer_exec git "$BASEDIR" gc --prune=all
-else
-  echo "Fatal: not a git repository: $BASEDIR"
-  exit 1
-fi

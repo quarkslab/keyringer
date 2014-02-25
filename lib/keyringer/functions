@@ -301,6 +301,11 @@ function keyringer_set_env {
   # Upgrade configuration
   keyringer_upgrade
 
+  # Check repository integrity
+  if [ "$BASENAME" == "check" ]; then
+    keyringer_check_repository
+  fi
+
   # Check recipients file
   keyringer_check_recipients $SUBCOMMAND
 
@@ -513,6 +518,28 @@ function keyringer_usage {
   fi
 }
 
+# Check repository integrity
+function keyringer_check_repository {
+  # Check if it's a git repository
+  if [ ! -d "$BASEDIR/.git" ]; then
+    echo "Fatal: not a git repository: $BASEDIR"
+    exit 1
+  fi
+
+  # Git maintenance operations
+  echo "Running git maintenance operations..."
+  keyringer_exec git "$BASEDIR" fsck
+  keyringer_exec git "$BASEDIR" gc --prune=all
+  echo ""
+
+  # Sync the repository
+  if [ "`keyringer_exec git "$BASEDIR" remote | wc -l`" != "0" ]; then
+    echo "Syncing git repository..."
+    keyringer_exec git "$BASEDIR" pull
+    echo ""
+  fi
+}
+
 # Check recipients
 # TODO: break in smaller pieces
 function keyringer_check_recipients {
@@ -523,13 +550,6 @@ function keyringer_check_recipients {
 
   # Local variables
   local processed=":"
-
-  # Sync the repository
-  if [ "$BASENAME" == "check" ]; then
-    echo "Syncing git repository..."
-    keyringer_exec git "$BASEDIR" pull
-    echo ""
-  fi
 
   # Check if recipients file is empty.
   if [ "`grep -vE "^#|^$" "$RECIPIENTS"/* | wc -l`" == 0 ] && [ "$SUBCOMMAND" != "edit" ]; then

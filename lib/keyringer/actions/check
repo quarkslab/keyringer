@@ -22,10 +22,7 @@ source "$LIB" || exit 1
 # Pull the keyring repository.
 # Git maintenance operations.
 # Fetch absent keys from all recipients.
-# TODO: Check if keys in all recipients files are about to expire.
-# TODO: Time to expire can be configured via repository options.
-# TODO: Users can be alerted by mail if configured by user preferences.
-# TODO: Outgoing emails can be encrypted.
+# Check key expirations
 
 # This should be done here:
 # TODO: Check canaries' timestamps, warning by mail if configured by user preferences.

@@ -540,8 +540,54 @@ function keyringer_check_repository {
   fi
 }
 
+# Receive keys from keyservers
+# TODO: gpg-maintenance trickery
+# TODO: should be controlled by user preference
+function keyringer_recv_keys {
+  local recipient="$1"
+
+  echo "Trying to receive missing key $recipient..."
+  gpg --batch --recv-keys "$recipient"
+}
+
+# Refresh keys from keyserver
+# TODO: gpg-maintenance trickery
+# TODO: should be controlled by user preference
+function keyringer_refresh_keys {
+  local recipient="$1"
+
+  echo "Trying to refresh key $recipient..."
+  gpg --batch --refresh-keys "$recipient"
+}
+
+# Check recipient size
+function keyringer_check_recipient_size {
+  local recipient="$1"
+  local size=$(echo "$recipient" | wc -c)
+
+  if (( $size < 41 )); then
+    echo "Fatal: please set the full GPG signature hash for key ID $recipient:"
+    cat <<-EOF
+
+Please provide a full OpenPGP fingerprint, for example:
+
+  john@doe.com ABCD1234ABCD12345678ABCD1234ABCD12345678
+
+Short key ids (for example, DEADBEEF or DECAF123) are not allowed in
+recipient files because they are easy to spoof. Researchers have proven
+that it is possible to build fake keys to match any possible short key
+id by using a few gigabytes of disk space, and a day of computation on
+common hardware.
+
+Otherwise, the encryption can be broken, if someone spoofs a short key
+id, and causes a participant in a keyringer repository to encrypt
+secrets to a fake key.
+EOF
+   exit 1
+ fi
+}
+
 # Check recipients
-# TODO: break in smaller pieces
 function keyringer_check_recipients {
   # Shall we check recipients?
   if [ "$KEYRINGER_CHECK_RECIPIENTS" == "false" ]; then
@@ -577,85 +623,81 @@ function keyringer_check_recipients {
       processed="$processed$recipient:"
     fi
 
-    size=$(echo "$recipient" | wc -c)
-    if (( $size < 41 )); then
-      echo "Fatal: please set the full GPG signature hash for key ID $recipient:"
-      cat <<-EOF
+    # Check recipient size
+    keyringer_check_recipient_size "$recipient"
 
-Please provide a full OpenPGP fingerprint, for example:
+    # Check if key is present
+    keyringer_check_recipient_key "$recipient"
 
-  john@doe.com ABCD1234ABCD12345678ABCD1234ABCD12345678
-
-Short key ids (for example, DEADBEEF or DECAF123) are not allowed in
-recipient files because they are easy to spoof. Researchers have proven
-that it is possible to build fake keys to match any possible short key
-id by using a few gigabytes of disk space, and a day of computation on
-common hardware.
-
-Otherwise, the encryption can be broken, if someone spoofs a short key
-id, and causes a participant in a keyringer repository to encrypt
-secrets to a fake key.
-EOF
-      exit 1
-    else
-      gpg --list-key "$recipient" &> /dev/null
-      if [ "$?" != "0" ]; then
-        if [ "$BASENAME" == "check" ]; then
-          # TODO: gpg-maintenance trickery
-          # TODO: should be controlled by user preference
-          refresh="no"
-          echo "Trying to receive missing key $recipient..."
-          gpg --batch --recv-keys "$recipient"
-          echo ""
-          if [ "$?" != 0 ]; then
-            echo "Error fetching $recipient from keyservers."
-            continue
-          fi
-        else
-          echo "Fatal: no such key $recipient on your GPG keyring."
-          echo "Please check for this key or fix the recipient file."
-
-          exit 1
-        fi
-      fi
-
-      # Refresh keys
-      if [ "$BASENAME" == "check" ] && [ "$refresh" != "no" ]; then
-        # TODO: gpg-maintenance trickery
-        # TODO: should be controlled by user preference
-        echo "Trying to refresh key $recipient..."
-        gpg --batch --refresh-keys "$recipient"
-        echo ""
-      fi
-
-      # Current date
-      seconds="`date +%s`"
-
-      # Check the main key
-      expiry="`gpg --with-colons --fixed-list-mode --list-keys "$recipient" | grep ^pub | cut -d : -f 7`"
-
-      # Check if key is expired
-      # TODO: check if key is about to expire
-      if [ ! -z "$expiry" ] && [[ "$seconds" -gt "$expiry" ]]; then
-        echo "Fatal: primary key for $recipient expired on `date --date="@$expiry"`"
-        exit 1
-      else
-        # Check the subkeys
-        for expiry in `gpg --with-colons --fixed-list-mode --list-keys "$recipient" | grep ^sub | cut -d : -f 7`; do
-          if [[ "$seconds" -lt "$expiry" ]]; then
-            # TODO: check if subkey is about to expire
-            not_expired="1"
-          fi
-
-          if [ "$not_expired" != "1" ]; then
-            echo "Fatal: key $recipient has no keys suitable for encryption: all subkeys expired."
-            exit 1
-          fi
-        done
-      fi
-
+    # Refresh keys
+    if [ "$BASENAME" == "check" ] && [ "$refresh" != "no" ]; then
+      keyringer_refresh_keys "$recipient"
+      echo ""
     fi
+
+    # Check key expiration
+    keyringer_check_expiration "$recipient"
+
   done
+}
+
+# Check if a key is present
+function keyringer_check_recipient_key {
+  local recipient="$1"
+
+  gpg --list-key "$recipient" &> /dev/null
+  if [ "$?" != "0" ]; then
+    if [ "$BASENAME" == "check" ]; then
+      refresh="no"
+      keyringer_recvs_keys "$recipient"
+      if [ "$?" != 0 ]; then
+        echo "Error fetching $recipient from keyservers."
+        continue
+      fi
+      echo ""
+    else
+      echo "Fatal: no such key $recipient on your GPG keyring."
+      echo "Please check for this key or fix the recipient file."
+
+      exit 1
+    fi
+  fi
+}
+
+# Check key expiration
+# TODO: Check if keys in all recipients files are about to expire.
+# TODO: Time to expire can be configured via repository options.
+# TODO: Users can be alerted by mail if configured by user preferences.
+# TODO: Outgoing emails can be encrypted.
+function keyringer_check_expiration {
+  # Variables
+  local recipient="$1"
+
+  # Current date
+  seconds="`date +%s`"
+
+  # Check the main key
+  expiry="`gpg --with-colons --fixed-list-mode --list-keys "$recipient" | grep ^pub | cut -d : -f 7`"
+
+  # Check if key is expired
+  # TODO: check if key is about to expire
+  if [ ! -z "$expiry" ] && [[ "$seconds" -gt "$expiry" ]]; then
+    echo "Fatal: primary key for $recipient expired on `date --date="@$expiry"`"
+    exit 1
+  else
+    # Check the subkeys
+    for expiry in `gpg --with-colons --fixed-list-mode --list-keys "$recipient" | grep ^sub | cut -d : -f 7`; do
+      if [[ "$seconds" -lt "$expiry" ]]; then
+        # TODO: check if subkey is about to expire
+        not_expired="1"
+      fi
+
+      if [ "$not_expired" != "1" ]; then
+        echo "Fatal: key $recipient has no keys suitable for encryption: all subkeys expired."
+        exit 1
+      fi
+    done
+  fi
 }
 
 # Set recipients

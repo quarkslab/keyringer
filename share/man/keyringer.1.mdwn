@@ -62,7 +62,7 @@ ls <*path*>
 mkdir <*path*>
 :   Create a directory inside the repository *keys* folder.
 
-:rmdir <*path*>
+rmdir <*path*>
 :   Remove an empty folder inside the repository *keys* folder.
 
 tree <*path*>
@@ -83,6 +83,9 @@ shell
 teardown
 :   Remove permanently a local copy of a repository, very dangerous if you
     have just a single copy.
+
+check
+:   Run maintenance checks in a keyring.
 
 # SECRET MANIPULATION ACTIONS
 

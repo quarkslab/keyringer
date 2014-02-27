@@ -715,7 +715,7 @@ function keyringer_check_expiration {
   done
 
   # All subkeys are expired
-  if [ "$not_expired" != "1" ]; then
+  if [ ! -z "$expiry" ] && [ "$not_expired" != "1" ]; then
     echo "Fatal: key $recipient has no keys suitable for encryption: all subkeys expired."
     exit 1
   fi

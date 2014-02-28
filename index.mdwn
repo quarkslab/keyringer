@@ -206,6 +206,9 @@ given key), but it's possible to:
 Never decrypt a key and write it to the disk, except if you're adding it to
 your personall keyring.
 
+Check [this page](https://wiki.koumbit.net/PasswordManagementService/SoftwareComparison)
+a comparison on different password management tools.
+
 Requirements
 ------------
 

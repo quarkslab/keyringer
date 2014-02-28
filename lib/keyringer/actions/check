@@ -7,6 +7,7 @@
 #   - git://lair.fifthhorseman.net/~mjgoins/cur
 #   - https://gitorious.org/key-report
 #   - https://github.com/ilf/gpg-maintenance.git
+#   - https://github.com/EtiennePerot/parcimonie.sh
 #   - https://gaffer.ptitcanardnoir.org/intrigeri/code/parcimonie/
 #
 # This script can run from a crontab, client or server side to check

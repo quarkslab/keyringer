@@ -172,7 +172,7 @@ Basic idea is:
 
   - Let users keep it in sync with the repository and the secrets are shared :)
 
-For "secrets" it's meant anything as the script work with stdin and output things to
+Secrets can be any regular file as the script work with stdin and output things to
 files, so it can be passphrases, private keys or other kind of information.
 
 With theses scripts, the workflow is more or less like this:

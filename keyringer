@@ -97,7 +97,7 @@ function keyringer_init {
     echo "Now you have to edit the default recipient configuration to be able to encrypt secrets."
     echo "Press any key to proceed editing..."
     read key
-    keyringer $KEYRING recipients edit default
+    keyringer_exec recipients "$BASEDIR" edit default
 
     # Stage and commit
     keyringer_exec git "$BASEDIR" add .
@@ -162,7 +162,7 @@ fi
 source "$LIB" || exit 1
 
 # Check if keyring exist
-if [ ! -f "$CONFIG_BASE/$KEYRING" ]; then
+if [ ! -f "$CONFIG_BASE/$KEYRING" ] && [ "$ACTION" != "init" ]; then
   echo "No such keyring $KEYRING"
   exit 1
 fi

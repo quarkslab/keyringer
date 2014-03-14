@@ -39,6 +39,18 @@ function keyringer_init {
     exit 1
   fi
 
+  # Check user configuration: git might complain if those aren't set
+  if [ -z "`git config --global --get user.name`" ] || [ -z "`git config --global --get user.email`" ]; then
+    echo "Please chose the name and email address that should identify your changes in the new keyring."
+    read -p "Enter your desired name/pseudonym: " name
+    read -p "Enter your desired email address: " email
+
+    if [ -z "$name" ] || [ -z "$email" ]; then
+      echo "Aborting."
+      exit 1
+    fi
+  fi
+
   # Setup
   if [ ! -z "$URL" ]; then
     git clone "$URL" "$BASEDIR"
@@ -92,6 +104,10 @@ function keyringer_init {
   if ! keyringer_is_git "$BASEDIR"; then
     keyringer_exec git "$BASEDIR" init
     keyringer_git_ignore 'tmp/*'
+
+    # Git configuration
+    git config user.email "$email"
+    git config user.name  "$name"
 
     # Edit default recipients
     echo "Now you have to edit the default recipient configuration to be able to encrypt secrets."
@@ -161,7 +177,7 @@ fi
 # Load functions
 source "$LIB" || exit 1
 
-# Check if keyring exist
+# Check if keyring exists
 if [ ! -f "$CONFIG_BASE/$KEYRING" ] && [ "$ACTION" != "init" ]; then
   echo "No such keyring $KEYRING"
   exit 1

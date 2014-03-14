@@ -711,10 +711,10 @@ function keyringer_check_expiration {
   for expiry in `gpg --with-colons --fixed-list-mode --list-keys "$recipient" | grep ^sub | cut -d : -f 7`; do
     if [[ "$seconds" -lt "$expiry" ]]; then
       not_expired="1"
-    fi
 
-    if [[ "$ahead" -gt "$expiry" ]] && [ "$BASENAME" == "check" ]; then
-      echo "Warning: subkey from $recipient will expire soon, on `date --date="@$expiry"`"
+      if [[ "$ahead" -gt "$expiry" ]] && [ "$BASENAME" == "check" ]; then
+        echo "Warning: subkey from $recipient will expire soon, on `date --date="@$expiry"`"
+      fi
     fi
   done
 

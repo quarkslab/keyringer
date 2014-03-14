@@ -189,8 +189,8 @@ With theses scripts, the workflow is more or less like this:
   - Optionally, other users pulls the changes but they dont need to
     decrypt anything until they need to use the keys.
 
-So it's just gpg-encrypted data atop of a git repository (one can think of a
-kind of distributed encrypted filesystem).
+In summary, keyringer data store is basically gpg-encrypted data atop of a git
+repository (one can think of a kind of distributed encrypted filesystem).
 
 Git was chosen to host encrypted info mostly for two reasos: easy to distribute
 and its the only VCS known to make easier repository history manipulation.

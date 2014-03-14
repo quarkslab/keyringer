@@ -180,7 +180,7 @@ With theses scripts, the workflow is more or less like this:
   - You have a git repo for secret keys.
 
   - You run the "encrypt" command and paste your private key to this
-    command (so no plaintext disk write).
+    command (so no plaintext is written to disk).
 
   - The encrypt command writes an encrypted file to the repo.
 

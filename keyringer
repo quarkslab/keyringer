@@ -161,6 +161,12 @@ fi
 # Load functions
 source "$LIB" || exit 1
 
+# Check if keyring exist
+if [ ! -f "$CONFIG_BASE/$KEYRING" ]; then
+  echo "No such keyring $KEYRING"
+  exit 1
+fi
+
 # Setup main configuration and load preferences
 keyringer_config_load
 

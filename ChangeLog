@@ -1,5 +1,7 @@
 2014-02-25 - Silvio Rhatto  <rhatto@riseup.net>
 
+	Try to get an initial recipient (#32)
+
 	New action: check (#39)
 
 	Enhanced secret finder at keyringer_get_file and on find action

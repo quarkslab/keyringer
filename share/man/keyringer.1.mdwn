@@ -50,6 +50,9 @@ init <*path*> [*remote*]
     Also, an entry will be added to `$HOME/.keyringer/config` allowing keyringer to
     find the keyring by its alias.
 
+destroy
+:   Alias for *teardown* action.
+
 git <*action*> <*options*>
 :   Git wrapper that operates from the toplevel keyring repository. You can issue any
     *GIT(1)* subcommand with this action to have it applied in the keyring repository.

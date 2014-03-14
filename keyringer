@@ -40,8 +40,8 @@ function keyringer_init {
   fi
 
   # Check user configuration: git might complain if those aren't set
-  if [ -z "`git config --global --get user.name`" ] || [ -z "`git config --global --get user.email`" ]; then
-    echo "Please chose the name and email address that should identify your changes in the new keyring."
+  if [ -z "`git config --global --includes --get user.name`" ] || [ -z "`git config --global --includes --get user.email`" ]; then
+    echo "No git config found, so please chose a name and email address to identify your changes in the new keyring repository."
     read -p "Enter your desired name/pseudonym: " name
     read -p "Enter your desired email address: " email
 

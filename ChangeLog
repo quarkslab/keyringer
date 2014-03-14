@@ -1,5 +1,7 @@
 2014-03-14 - Silvio Rhatto  <rhatto@riseup.net>
 
+	Subkey expiration date check shall not happen with expired keys
+
 	Make usage more readable
 
 	Added "destroy" alias to "teardown" action

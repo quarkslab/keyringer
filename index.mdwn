@@ -168,7 +168,7 @@ Concepts
 
 Basic idea is:
 
-  - Encrypt screts using multiple users's OpenPGP public keys and commit the output in a git repo.
+  - Encrypt screts using multiple users's OpenPGP public keys and commit the output in a git repository.
 
   - Let users keep it in sync with the repository and the secrets are shared :)
 

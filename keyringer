@@ -177,8 +177,11 @@ fi
 # Load functions
 source "$LIB" || exit 1
 
-# Check if keyring exists
-if [ ! -f "$CONFIG_BASE/$KEYRING" ] && [ "$ACTION" != "init" ]; then
+# Basic checks
+if [ -z "$KEYRING" ]; then
+  keyringer_usage
+  exit 1
+elif [ ! -f "$CONFIG_BASE/$KEYRING" ] && [ "$ACTION" != "init" ]; then
   echo "No such keyring $KEYRING"
   exit 1
 fi
@@ -187,10 +190,7 @@ fi
 keyringer_config_load
 
 # Dispatch
-if [ -z "$KEYRING" ]; then
-  keyringer_usage
-  exit 1
-elif [ -z "$ACTION" ]; then
+if [ -z "$ACTION" ]; then
   # Run shell if no action were given
   keyringer $KEYRING shell
 elif [ "$ACTION" == "init" ]; then

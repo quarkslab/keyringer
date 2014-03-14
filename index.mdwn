@@ -197,7 +197,9 @@ and its the only VCS known to make easier repository history manipulation.
 
 One possible drawback: the repo has pubkey information attached, which can be
 linked to real people (and then disclose the information about who has access to a
-given key), but it's possible to:
+given key).
+
+To mitigate that, it's possible to:
 
   - Keep the repo just atop of an encrypted and non-public place.        
 

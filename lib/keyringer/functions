@@ -519,7 +519,7 @@ function keyringer_usage {
 
   printf "Keyringer $KEYRINGER_VERSION\n"
   printf "Usage: %s <keyring> <action> [arguments]\n\n" "$BASENAME"
-  printf "Available commands: \n\n"
+  printf "Available actions: \n\n"
   keyringer_show_actions | sed -e 's/^/\t/'
 
   # Display only when not in a keyring context

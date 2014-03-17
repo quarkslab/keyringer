@@ -544,7 +544,7 @@ function keyringer_check_repository {
   # Git maintenance operations
   echo "Running git maintenance operations..."
   keyringer_exec git "$BASEDIR" fsck
-  keyringer_exec git "$BASEDIR" gc --prune=all
+  keyringer_exec git "$BASEDIR" gc
   echo ""
 
   # Sync the repository

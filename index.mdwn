@@ -26,7 +26,7 @@ Just clone
 And then leave it somewhere, optionally adding it to your `$PATH` environment variable
 or package it to your preferred distro.
 
-If you're using debian `jessie` or `unstable`, just run
+If you're using Debian `jessie` or `unstable`, just run
 
     apt-get install keyringer
 
@@ -60,7 +60,7 @@ want to checkout it, use
 Managing recipients
 -------------------
 
-Your next step is tell keyringer the GPG key ids to encrypt files to:
+Your next step is tell keyringer the OpenPGP key IDs to encrypt files to:
 
     keyringer <keyring> recipients edit [recipient-name]
     keyringer <keyring> recipients ls

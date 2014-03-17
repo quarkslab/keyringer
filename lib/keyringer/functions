@@ -581,7 +581,7 @@ function keyringer_check_recipient_size {
   local size=$(echo "$recipient" | wc -c)
 
   if (( $size < 41 )); then
-    echo "Fatal: please set the full GPG signature hash for key ID $recipient:"
+    echo "Fatal: please set the full OpenPGP fingerprint for key ID $recipient:"
     cat <<-EOF
 
 Please provide a full OpenPGP fingerprint, for example:
@@ -671,8 +671,8 @@ function keyringer_check_recipient_key {
       fi
       echo ""
     else
-      echo "Fatal: no such key $recipient on your GPG keyring."
-      echo "Please check for this key or fix the recipient file."
+      echo "Fatal: no such key $recipient on your OpenPGP keyring."
+      echo "Please retrieve this key yourself or fix the recipient file."
 
       exit 1
     fi

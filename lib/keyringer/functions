@@ -432,7 +432,7 @@ function keyringer_get_file {
     candidates=(`keyringer_exec find "$BASEDIR" | grep -i "$1" | grep -e '.asc$'`)
 
     if [ ! -z "$candidates" ]; then
-      echo "Could not find exact match \"$1\", please chose one of the following secrets:"
+      echo "Could not find exact match for \"$1\", please choose one of the following secrets:"
       echo ""
 
       for candidate in ${candidates[@]}; do

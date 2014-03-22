@@ -16,8 +16,8 @@ It also supports encryption to multiple recipients and groups of
 recipients, to allow a workgroup to share access to a single repository
 while restricting some secrets to subsets of the group.
 .PP
-Secrets are encrypted using GPG and added to a Git tree so that they can
-be synced with remote branches later.
+Secrets are encrypted using OpenPGP and added to a Git tree so that they
+can be synced with remote branches later.
 .SH ACTIONS
 .PP
 Keyringer has three types of actions:
@@ -219,7 +219,7 @@ password-store convention.
 .RE
 .TP
 .B xclip <\f[I]secret\f[]>
-Alis to clip action.
+Alias to clip action.
 .RS
 .RE
 .SH CONFIGURATION ACTIONS
@@ -286,7 +286,7 @@ file\f[C]$KEYRING_FOLDER/config/recipients/accounting\f[].
 .PP
 Each line in a recipients file has entries in the format
 \[aq]john\@doe.com XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\[aq], where
-\f[I]john\@doe.com\f[] is an alias for the GPG public key whose
+\f[I]john\@doe.com\f[] is an alias for the OpenPGP public key whose
 fingerprint is \f[I]XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.\f[]
 .PP
 All lines starting with the hash (#) character are interpreted as

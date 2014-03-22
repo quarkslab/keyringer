@@ -652,7 +652,6 @@ function keyringer_check_recipients {
 
     # Check key expiration
     keyringer_check_expiration "$recipient"
-
   done
 }
 

@@ -572,7 +572,7 @@ function keyringer_refresh_keys {
   local recipient="$1"
 
   echo "Trying to refresh key $recipient..."
-  gpg --batch --refresh-keys "$recipient"
+  gpg --batch --recv-keys "$recipient"
 }
 
 # Check recipient size
@@ -671,7 +671,7 @@ function keyringer_check_recipient_key {
       fi
       echo ""
     else
-      echo "Fatal: no such key $recipient on your OpenPGP keyring."
+      echo "Fatal: no such key $recipient on your GnuPG keyring."
       echo "Please retrieve this key yourself or fix the recipient file."
 
       exit 1

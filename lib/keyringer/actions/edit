@@ -38,6 +38,7 @@ fi
 
 # Prompt
 echo "Press any key to open the decrypted data with $APP, Ctrl-C to abort"
+echo "WARNING: please make sure that $APP doesn't leak data to external applications os files"
 read key
 $APP "$TMPWORK"
 

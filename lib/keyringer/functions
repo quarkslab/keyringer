@@ -284,6 +284,13 @@ function keyringer_set_env {
     fi
   fi
 
+  # Avoid viminfo, see https://keyringer.pw/trac/ticket/50
+  if $EDITOR --help | grep -q -e "^VIM"; then
+    if ! echo $EDITOR | grep -q -- "-i NONE"; then
+      EDITOR="$EDITOR -i NONE"
+    fi
+  fi
+
   if [ ! -f "$OPTIONS" ]; then
     echo "No option config was found"
     exit 1

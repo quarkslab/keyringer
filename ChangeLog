@@ -1,5 +1,7 @@
 2014-03-27 - Silvio Rhatto <rhatto@riseup.net>
 
+	Align command output
+
 	Avoid viminfo if VIM is set as $EDITOR (#50)
 
 2014-03-22 - 0.3.3 - Silvio Rhatto  <rhatto@riseup.net>

@@ -517,7 +517,7 @@ function keyringer_action_usage {
 
 # Return available actions
 function keyringer_show_actions {
-  ls $ACTIONS
+  ls -C $ACTIONS
 }
 
 # Usage
@@ -538,6 +538,7 @@ function keyringer_usage {
     printf "\tinit <path> [remote]\n" $BASENAME
   fi
   keyringer_show_actions | sed -e 's/^/\t/'
+  printf "\n"
 }
 
 # Check repository integrity

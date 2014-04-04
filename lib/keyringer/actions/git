@@ -10,8 +10,9 @@ source "$LIB" || exit 1
 # Aditional parameters
 CWD="`pwd`"
 
-# Run git command
+# Fix positional arguments
 shift
 
+# Run git command
 mkdir -p "$BASEDIR" && cd "$BASEDIR" && git $*
 cd "$CWD"

@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# Git commit wrapper.
+#
+
+# Load functions
+LIB="`dirname $0`/../functions"
+source "$LIB" || exit 1
+
+keyringer_exec git "$BASEDIR" commit $*

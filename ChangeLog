@@ -1,4 +1,6 @@
-2014-03-27 - Silvio Rhatto <rhatto@riseup.net>
+2014-04-04 - Silvio Rhatto <rhatto@riseup.net>
+
+	Adding "commit" action which is a wrapper around "git commit"
 
 	Align command output
 

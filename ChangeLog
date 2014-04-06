@@ -1,5 +1,7 @@
 2014-04-06 - Silvio Rhatto <rhatto@riseup.net>
 
+	Fix recryption error when using gpg-agent in text mode (#55)
+
 	Be more verbose on recrypt errors
 
 	Adding "commit" action which is a wrapper around "git commit"

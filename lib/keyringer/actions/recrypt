@@ -16,7 +16,7 @@ function keyringer_recrypt {
   keyringer_set_recipients "$FILE"
 
   # Decrypt
-  decrypted="$($GPG --use-agent -d "$KEYDIR/$FILE" 2> /dev/null)"
+  decrypted="$($GPG --use-agent -d "$KEYDIR/$FILE")"
 
   if [ "$?" != "0" ]; then
     echo "Decryption error on $1."

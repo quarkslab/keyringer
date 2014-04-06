@@ -1,4 +1,6 @@
-2014-04-04 - Silvio Rhatto <rhatto@riseup.net>
+2014-04-06 - Silvio Rhatto <rhatto@riseup.net>
+
+	Be more verbose on recrypt errors
 
 	Adding "commit" action which is a wrapper around "git commit"
 

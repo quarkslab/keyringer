@@ -66,7 +66,7 @@ Your next step is tell keyringer the OpenPGP key IDs to encrypt files to:
     keyringer <keyring> recipients ls
 
 Keyringer support multiple recipients in a per-folder style. Try it by
-creating a sample keyringer
+creating a sample recipient file:
 
     keyringer <keyring> recipients edit closest-friends
 
@@ -76,6 +76,10 @@ Fill it with your friends key IDs. Now encrypt a secret just for then:
 
 In other words, if keyringer finds a recipient file matching a given path,
 it will use it instead of the global recipients file.
+
+You can even create recipient files with your friends' key IDs but without
+yours: then you shall be able to encrypt secrets for them that even you cannot
+access. Try to find an use case for that ;)
 
 Each recipient list is defined in a file placed at `config/recipients` in your
 keyring repository. Take care to add just trustable recipients.

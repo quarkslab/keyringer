@@ -57,6 +57,9 @@ git <*action*> <*options*>
 :   Git wrapper that operates from the toplevel keyring repository. You can issue any
     *GIT(1)* subcommand with this action to have it applied in the keyring repository.
 
+commit [*arguments*]
+:   Alias to "git commit".
+
 ls <*path*>
 :   List contents from the toplevel repository *keys* folder or from relative paths
     if *path* is specified. Like the git wrapper, this is a wrapper around the *LS(1)*

@@ -525,7 +525,7 @@ function keyringer_usage {
   local keyrings="$(ls --color=never `dirname $CONFIG` | sed -e 's/config//' | xargs)"
 
   printf "Keyringer $KEYRINGER_VERSION\n"
-  printf "Usage: %s <keyring> <action> [arguments]\n\n" "$BASENAME"
+  printf "Usage: keyringer <keyring> <action> [arguments]\n\n"
 
   # Display only when not in a keyring context
   if [ ! -z "$keyrings" ] && [ -z "$1" ]; then

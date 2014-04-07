@@ -1,5 +1,7 @@
 2014-04-06 - Silvio Rhatto <rhatto@riseup.net>
 
+	Fix usage message inside keyringer shell.
+
 	Fix recryption error when using gpg-agent in text mode (#55)
 
 	Be more verbose on recrypt errors

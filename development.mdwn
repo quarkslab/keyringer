@@ -37,6 +37,11 @@ These steps should be run once in a while to ensure we have an up to date packag
 
     DIST=sid sudo cowbuilder --update
 
+Development workflow
+--------------------
+
+We use [git-flow](https://github.com/nvie/gitflow) for the development workflow.
+
 Release workflow
 ----------------
 

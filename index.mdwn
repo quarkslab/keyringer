@@ -218,7 +218,7 @@ Keyringer needs:
 
   - [Bash](http://tiswww.case.edu/php/chet/bash/bashtop.html)
   - [Git](http://git-scm.com)
-  - [GNU](Privacy Guard - http://gnupg.org)
+  - [GNU Privacy Guard](http://gnupg.org)
   - Grep, awk, tail, cut, sed and other GNU tools
 
 Optional dependencies if you want to manage ssl keys:

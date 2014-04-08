@@ -12,7 +12,7 @@ function genpair_ssh {
   read -p "Hit ENTER to continue." prompt
 
   # We're using empty passphrases
-  ssh-keygen -t rsa -P '' -f "$TMPWORK/id_rsa" -C "root@$NODE"
+  ssh-keygen -t rsa -b 4096 -P '' -f "$TMPWORK/id_rsa" -C "root@$NODE"
 
   # Encrypt the result
   echo "Encrypting secret key into keyringer..."

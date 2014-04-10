@@ -132,7 +132,7 @@ EOF
   cat openssl.conf
   read -p "Hit ENTER to continue." prompt
 
-  openssl req -batch -nodes -config openssl.conf -newkey rsa:2048 -sha256 \
+  openssl req -batch -nodes -config openssl.conf -newkey rsa:4096 -sha256 \
           -keyout ${NODE}_privatekey.pem -out ${NODE}_csr.pem
 
   openssl req -noout -text -in ${NODE}_csr.pem

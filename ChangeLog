@@ -1,6 +1,6 @@
-2014-04-08 - Silvio Rhatto <rhatto@riseup.net>
+2014-04-10 - Silvio Rhatto <rhatto@riseup.net>
 
-	Genpair: generate ssh keys with 4096 bits
+	Genpair: generate ssh and ssl keys with 4096 bits size
 
 	Fix usage message inside keyringer shell
 

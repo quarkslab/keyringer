@@ -248,31 +248,31 @@ $KEYRING_FOLDER/config/options
 Keyringer currently has the following limitations:
 
 1. Metadata is not encrypted, meaning that an attacker with access to a keyringer
-  repository can discover all public key IDs used for encryption, and which secrets
-  are encrypted to which keys. This can be improved in the future by encrypting
-  the repository configuration with support for the *--hidden-recipient* GnuPG
-  option.
+   repository can discover all public key IDs used for encryption, and which secrets
+   are encrypted to which keys. This can be improved in the future by encrypting
+   the repository configuration with support for the *--hidden-recipient* GnuPG
+   option.
 
 2. History is not rewritten by default when secrets are removed from a keyringer
-  repository. After a secret is removed with the *del* action, it will still be
-  available in the repository history even after a commit. This is by design
-  for the following reasons:
+   repository. After a secret is removed with the *del* action, it will still be
+   available in the repository history even after a commit. This is by design
+   for the following reasons:
 
   - It's the default behavior of the Git content tracker. Forcing the
-     deletion by default could break the expected behavior and hence limit
-     the repository's backup features, which can be helpful if someone
-     mistakenly overwrites a secret.
+    deletion by default could break the expected behavior and hence limit
+    the repository's backup features, which can be helpful if someone
+    mistakenly overwrites a secret.
 
   - History rewriting cannot be considered a security measure against the
-     unauthorized access to a secret as it doesn't automatically update all
-     working copies of the repository.
+    unauthorized access to a secret as it doesn't automatically update all
+    working copies of the repository.
 
-     In the case that the secret is a passphrase, the recommended measure
-     against such attacks is to change the passphrase, making useless the
-     knowledge of the previous secret.
+    In the case that the secret is a passphrase, the recommended measure
+    against such attacks is to change the passphrase, making useless the
+    knowledge of the previous secret.
 
-     Users wishing to edit their repository history should proceed manually
-     using the *git* action.
+    Users wishing to edit their repository history should proceed manually
+    using the *git* action.
 
 # SEE ALSO
 

@@ -57,9 +57,11 @@ if [ ! -z "$3" ]; then
     #
     # Useful when opening files and the application needs the
     # extension to guess the file type.
-    if ! echo $BASEPATH | grep -q -e "\.$EXTENSION$"; then
+    if [ "$KEYRINGER_ADD_EXTENSION" != "false" ] && ! echo $BASEPATH | grep -q -e "\.$EXTENSION$"; then
       echo "Appending '$EXTENSION' into secret name..."
       FILE="$BASEPATH.$EXTENSION"
+    else
+      FILE="$BASEPATH"
     fi
   else
     FILE="$BASEPATH"

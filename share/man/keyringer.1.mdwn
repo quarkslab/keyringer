@@ -132,7 +132,7 @@ mv <*secret*> <*dest*>
 :   Rename a secret.
 
 edit <*secret*>
-:   Edit a secret by temporarily decrypting it, opening the decrypted copy into the 
+:   Edit a secret by temporarily decrypting it, opening the decrypted copy into the
     text editor defined by the *$EDITOR* environment variable and then re-encrypting it.
 
 encrypt <*secret*> [*file*]
@@ -251,7 +251,10 @@ Keyringer currently has the following limitations:
    repository can discover all public key IDs used for encryption, and which secrets
    are encrypted to which keys. This can be improved in the future by encrypting
    the repository configuration with support for the *--hidden-recipient* GnuPG
-   option.
+   option and encrypted repository options.
+
+   To mitigate that, it's possible to keep the repo just atop of an encrypted and
+   non-public place.
 
 2. History is not rewritten by default when secrets are removed from a keyringer
    repository. After a secret is removed with the *del* action, it will still be
@@ -273,6 +276,10 @@ Keyringer currently has the following limitations:
 
     Users wishing to edit their repository history should proceed manually
     using the *git* action.
+
+3. Keyringer does not protect data which were not encrypted to a keyring,
+   so be careful when decrypting secrets and writing them to the disk or
+   other storage media.
 
 # SEE ALSO
 

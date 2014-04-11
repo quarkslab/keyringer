@@ -40,7 +40,7 @@ a new keyring (or register an existing one with your config file), run:
 
     keyringer <keyring> init <path> [remote]
 
-This will 
+This will
 
   1. Add an entry at `$HOME/.keyringer/config` aliasing 'keyring' to 'path'.
   2. Initialize a git repository if needed.
@@ -49,56 +49,21 @@ For example,
 
     keyringer friends init $HOME/keyrings/friends
 
-will create an alias "friends" pointing to `$HOME/keyrings/friends`. All
-other keyring actions should be called using this alias.
+creates an alias "friends" pointing to `$HOME/keyrings/friends`. All
+other keyring actions for this keyring should be called using this alias.
 
 If there is an existing remote keyring git repository and you just
 want to checkout it, use
 
     keyringer friends init $HOME/keyrings/friends <repository-url>
 
-Managing recipients
--------------------
-
-Your next step is tell keyringer the OpenPGP key IDs to encrypt files to:
-
-    keyringer <keyring> recipients edit [recipient-name]
-    keyringer <keyring> recipients ls
-
-Keyringer support multiple recipients in a per-folder style. Try it by
-creating a sample recipient file:
-
-    keyringer <keyring> recipients edit closest-friends
-
-Fill it with your friends key IDs. Now encrypt a secret just for then:
-
-    keyringer <keyring> encrypt closest-friends/secret
-
-In other words, if keyringer finds a recipient file matching a given path,
-it will use it instead of the global recipients file.
-
-You can even create recipient files with your friends' key IDs but without
-yours: then you shall be able to encrypt secrets for them that even you cannot
-access. Try to find an use case for that ;)
-
-Each recipient list is defined in a file placed at `config/recipients` in your
-keyring repository. Take care to add just trustable recipients.
-
 Managing secrets
 ----------------
 
-Each secret has a corresponding file in your `keys` subdirectory.
+Each `secret` has a corresponding file inside `keys` subdirectory from the
+keyring folder. Keyringer has plenty of actions to operate in these secrets:
 
-Keyringer is agnostic about how you store your secrets. You may choose to have
-one encrypted file that contains one line for each secret, e.g. a single file called
-secrets with lines such as:
-
-    emma : root : secret1
-    emma - /dev/hda : : secret2
-
-Or you may also have a different encrypted file for each secret, e.g. a file called
-emma.root that contains the root passphrase for the server named `emma` and
-another called emma.hda with the passphrase to decrypt `/dev/hda` on `emma`.
+   keyringer <keyring> commands
 
 Encrypting a secret
 
@@ -131,9 +96,6 @@ Listing secrets
 
     keyringer <keyring> ls [arguments]
 
-Each `<secret>` is stored as a file inside the `keys/` folder of your keyring
-directory.
-
 Git wrapper
 -----------
 
@@ -143,17 +105,29 @@ Keyringer comes with a simple git wrapper to ease common management tasks:
     keyringer <keyring> git push keyringer master
     keyringer <keyring> git pull
 
-Configuration files, preferences and options
---------------------------------------------
+Configuration files, preferences, options and recipients
+--------------------------------------------------------
+
+Basic keyringer operation depends in a set of configuration files:
 
   1. Main config file: `$HOME/.keyringer/config`: store the location of
      each keyring.
 
   2. User preferences per keyring: `$HOME/.keyringer/<keyring>`: managed by
-     "keyringer <keyring> preferences".
+     "keyringer <keyring> preferences". Preferences aren't shared among
+     users, so each user can have it's own set of preferences.
 
   3. Custom keyring options: `$KEYRING_FOLDER/config/options`: managed by
-     "keyringer <keyring> options".
+     "keyringer <keyring> options". Options are shared among all
+     keyring users.
+
+  4. Recipients: `$KEYRING_FOLDER/config/recipients/`: controls the list of
+     OpenPGP public key fingerprints that should be used when encrypting content.
+     Multiple recipients are supported, so secrets can be encrypted to
+     different sets of OpenPGP pubkeys in the same keyring.
+
+Other configuration parameters used by keyringer and it's actions are stored at
+`$KEYRING_FOLDER/config/`.
 
 Using a non-default OpenPGP key
 -------------------------------
@@ -167,32 +141,104 @@ Example:
 
     keyringer <keyring> preferences add KEYID=0123456789ABCDEF0123456789ABCDE012345678
 
-Concepts
+Managing recipients
+-------------------
+
+Keyringer uses the `default` recipient stored at `$KEYRING_FOLDER/config/recipients/default`
+as the standard list of OpenPGP public key fingerprints to which secrets should be encrypted.
+
+Additionally, keyringer supports multiple `recipient` files which can have a different set
+of OpenPGP public key fingerprints used for encryption.
+
+Recipients are matched against secrets according to it's path. If there exists a recipient
+called `accounting`, the following secret will be encrypted using it's OpenPGP public key
+fingerprints:
+
+    keyringer <keyring> encrypt accounting/balance
+
+In other words, the `accounting` recipient file is used because the secret name begins
+with `accounting`.
+
+So it's the case that recipients listed in the `default` recipient but not in the
+`accounting` recipients won't be able to decrypt this secret.
+
+When you first initalized your keyring, keyringer might have asked you to populate
+the `default` recipient list or you cloned a keyring repository which already has
+the `default` recipient.
+
+If you want more recipient files, your next step is tell keyringer the OpenPGP
+key IDs to encrypt files to:
+
+    keyringer <keyring> recipients edit [recipient-name]
+    keyringer <keyring> recipients ls
+
+Remember that keyringer support multiple recipients in a per-folder style. Try
+it by creating a sample recipient file:
+
+    keyringer <keyring> recipients edit closest-friends
+
+Fill it with your friends key IDs. Now encrypt a secret just for then:
+
+    keyringer <keyring> encrypt closest-friends/secret
+
+In other words, if keyringer finds a recipient file matching a given path,
+it will use it instead of the global recipients file.
+
+You can even create recipient files with your friends' key IDs but without
+yours: then you shall be able to encrypt secrets for them that even you cannot
+access. Try to find an use case for that ;)
+
+Each recipient list is defined in a file placed at `config/recipients` in your
+keyring repository. Take care to add just trustable recipients.
+
+Design
+------
+
+Keyringer's basic concepts are as follows:
+
+  - Each secret is encrypted using multiple users's OpenPGP public keys and commit the
+    output in a git repository we call a "keyring".
+
+  - A "recipient" a list of OpenPGP keys associated with a path in the keyring, so each
+    keyring can have multiple recipient definitions so secret compartmentalization is
+    builtin. All encryption should respect recipient definition.
+
+  - Users can keep their keyring copies in sync using any git remote and push/pull
+    strategy they like, so key sharing gets easy.
+
+  - A secret is not limited to passphrases or text: keyringer supports any file encryption,
+    so managing private keys, spreadsheets and media files are handled without distinction.
+
+  - Secret is stored with OpenPGP ASCII-armoured output, so one doesn't need any special
+    program besides GnuPG to actually decrypt information.
+
+  - Keyringer is agnostic about how you store your secrets. You may choose to have
+    one encrypted file that contains one line for each secret, e.g. a single file called
+    secrets with lines such as:
+
+      emma : root : secret1
+      emma - /dev/hda : : secret2
+
+    Or you may also have a different encrypted file for each secret, e.g. a file called
+    `emma.root` that contains the root passphrase for the server named `emma` and
+    another called `emma.hda` with the passphrase to decrypt `/dev/hda` on `emma`.
+
+    Creating a logical structure to store your secrets is up to you :)
+
+Workflow
 --------
 
-Basic idea is:
+Keyringer can be used as a personal or shared password/secret manager:
 
-  - Encrypt screts using multiple users's OpenPGP public keys and commit the
-    output in a git repository.
+  - Each keyring is a full git repository used to store encrypted secrets
+    using ASCII-armoured OpenPGP.
 
-  - Let users keep it in sync with the repository and the secrets are shared :)
+  - Actions like `encrypt` allows you to paste your secrets directly to
+    GnuPG so no plaintext is written to disk.
 
-Secrets can be any regular file as the script work with stdin and output things to
-files, so it can be passphrases, private keys or other kind of information.
-
-With theses scripts, the workflow is more or less like this:
-
-  - You have a git repo used to store secrets encrypted with GnuPG.
-
-  - You run the "encrypt" command and paste your private key to this
-    command (so no plaintext is written to disk).
-
-  - The encrypt command writes an encrypted file to the repo.
-
-  - You manually add it to git and push it to remote repositories.
-
-  - Optionally, other users pulls the changes but they dont need to
-    decrypt anything until they need to use the keys.
+  - By commiting, pushing and pulling each keyring repository, you can
+    easily share secrets with other people and systems and they don't
+    need to decrypt this information until they need.
 
 In summary, keyringer data store is basically gpg-encrypted data atop of a git
 repository (one can think of a kind of distributed encrypted filesystem).
@@ -200,21 +246,13 @@ repository (one can think of a kind of distributed encrypted filesystem).
 Git was chosen to host encrypted info mostly for two reasos: easy to distribute
 and its the only VCS known to make easier repository history manipulation.
 
-One possible drawback: the repo has pubkey information attached, which can be
-linked to real people (and then disclose the information about who has access to a
-given key).
+Limitations
+-----------
 
-To mitigate that, it's possible to:
+  - See the [manpage](share/man/keyringer.1) for details.
 
-  - Keep the repo just atop of an encrypted and non-public place.        
-
-  - Or to consider an integration with gpg's --hidden-recipient option.
-
-Never decrypt a key and write it to the disk, except if you're adding it to
-your personall keyring.
-
-Check [this page](https://wiki.koumbit.net/PasswordManagementService/SoftwareComparison)
-a comparison on different password management tools.
+  - Check [this page](https://wiki.koumbit.net/PasswordManagementService/SoftwareComparison)
+    a comparison on different password management tools.
 
 Requirements
 ------------

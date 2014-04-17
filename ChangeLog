@@ -1,5 +1,7 @@
 2014-04-11 - Silvio Rhatto <rhatto@riseup.net>
 
+	Edit/open: wait for background process to finish (#49)
+
 	Edit: use encrypt action
 
 	Encrypt: support for KEYRINGER_ADD_EXTENSION environment variable

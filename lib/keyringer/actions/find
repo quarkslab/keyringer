@@ -15,5 +15,5 @@ shift
 ARGS="`echo "$*" | sed -e "s|^/*||"`"
 
 # Run find command
-cd "$KEYDIR/$RELATIVE_PATH" && find -iname "*$ARGS*" | sed -e 's|^./||g'
+cd "$KEYDIR/$RELATIVE_PATH" && find | grep -i "$ARGS" | sed -e 's|^./||g'
 cd "$CWD"

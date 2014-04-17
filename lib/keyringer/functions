@@ -436,7 +436,7 @@ function keyringer_get_file {
   elif [ ! -f "$KEYDIR/$FILE" ]; then
     # Try to find a similar file
     count=0
-    candidates=(`keyringer_exec find "$BASEDIR" "$1*.asc"`)
+    candidates=(`keyringer_exec find "$BASEDIR" | grep -i "$1" | grep -e '.asc$'`)
 
     if [ ! -z "$candidates" ]; then
       echo "Could not find exact match for \"$1\", please choose one of the following secrets:"

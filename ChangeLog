@@ -1,5 +1,7 @@
 2014-04-11 - Silvio Rhatto <rhatto@riseup.net>
 
+	Find: rollback: use find+grep instead of 'find -iname' (#53)
+
 	Edit/open: wait for background process to finish (#49)
 
 	Edit: use encrypt action

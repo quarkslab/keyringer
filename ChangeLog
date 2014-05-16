@@ -1,4 +1,4 @@
-2014-05-16 - Silvio Rhatto <rhatto@riseup.net>
+2014-05-16 - 0.3.4 - Silvio Rhatto <rhatto@riseup.net>
 
 	Workaround for open/edit action returning instantaneously (#49)
 

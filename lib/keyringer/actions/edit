@@ -39,7 +39,8 @@ fi
 # Prompt
 echo "Press any key to open the decrypted data with $APP, Ctrl-C to abort"
 echo "WARNING: please make sure that $APP doesn't leak data to external applications or files"
-read key
+echo "Press ENTER to continue"
+read -s key
 $APP "$TMPWORK"
 
 # Wait for background process to finish
@@ -53,7 +54,7 @@ wait
 # of the unencrypted file in the application, which can lead to information leakage if the user
 # saves the file and leaves the editor.
 echo "Press any key when done using the file and you're sure that $APP is closed."
-read -n 1
+read -s -n 1
 
 # Encrypt again
 export KEYRINGER_ADD_EXTENSION=false

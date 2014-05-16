@@ -38,12 +38,27 @@ fi
 
 # Prompt
 echo "Press any key to open the decrypted data with $APP, Ctrl-C to abort"
-echo "WARNING: please make sure that $APP doesn't leak data to external applications os files"
-read key
+echo "WARNING: please make sure that $APP doesn't leak data to external applications or files"
+echo "Press ENTER to continue"
+read -s key
 $APP "$TMPWORK"
 
+# Wait for background process to finish
+wait
+
+# Workaround for some applications running in client/server mode, handling open file requests
+# to a daemon and exiting immediatelly, making keyringer guess the editing is over and the file
+# must be encrypted again (See #49).
+#
+# Thus, we cannot just wipe the file and exit keyringer, as the user might have a buffered copy
+# of the unencrypted file in the application, which can lead to information leakage if the user
+# saves the file and leaves the editor.
+echo "Press any key when done using the file and you're sure that $APP is closed."
+read -s -n 1
+
 # Encrypt again
-$GPG --yes -o "$KEYDIR/$FILE" --use-agent --armor -e -s $(keyringer_recipients "$RECIPIENTS_FILE") "$TMPWORK"
+export KEYRINGER_ADD_EXTENSION=false
+keyringer_exec encrypt "$BASEDIR" "$FILE" "$TMPWORK"
 
 # Check exit status
 errcrypt="$?"

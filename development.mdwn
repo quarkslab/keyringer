@@ -37,6 +37,13 @@ These steps should be run once in a while to ensure we have an up to date packag
 
     DIST=sid sudo cowbuilder --update
 
+Coding standards
+----------------
+
+  - Respect the existing coding style.
+
+  - Be clear: easy audability must be one of keyringer's requirements.
+
 Development workflow
 --------------------
 
@@ -45,9 +52,10 @@ We use [git-flow](https://github.com/nvie/gitflow) for the development workflow.
 Release workflow
 ----------------
 
-Go to master branch
+Go to develop branch and start a new release
 
-    git checkout master
+    git checkout develop
+    git flow release start VERSION
 
 Prepare the source code:
 
@@ -57,6 +65,8 @@ Prepare the source code:
 
 Create and upload a new release:
 
+    git flow release finish $VERSION
+    git checkout master
     make release
 
 Update the debian branch:

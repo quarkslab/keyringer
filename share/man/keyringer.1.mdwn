@@ -135,6 +135,9 @@ edit <*secret*>
 :   Edit a secret by temporarily decrypting it, opening the decrypted copy into the
     text editor defined by the *$EDITOR* environment variable and then re-encrypting it.
 
+    Please make sure to use an *$EDITOR* which does not leak data like history buffers.
+    Keyringer tries to detect if *$EDITOR* is set to VIM and disables the *.viminfo* file.
+
 encrypt <*secret*> [*file*]
 :   Encrypts content from standard input or *file* into *secret* pathname. No spaces
     are supported in the *secret* name. If *file* is actually a folder, keyringer

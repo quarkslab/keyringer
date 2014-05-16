@@ -1,5 +1,7 @@
 2014-05-16 - Silvio Rhatto <rhatto@riseup.net>
 
+	Workaround for open/edit action returning instantaneously (#49)
+
 	Use 'nobackup' and 'nowritebackup' if VIM is set as $EDITOR (#50)
 
 	Find: rollback: use find+grep instead of 'find -iname' (#53)

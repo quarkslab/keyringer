@@ -287,7 +287,7 @@ function keyringer_set_env {
   # Avoid viminfo, see https://keyringer.pw/trac/ticket/50
   if $EDITOR --help | grep -q -e "^VIM"; then
     if ! echo $EDITOR | grep -q -- "-i NONE"; then
-      EDITOR="$EDITOR -i NONE"
+      EDITOR="$EDITOR -i NONE '+set nowritebackup' '+set nobackup'"
     fi
   fi
 

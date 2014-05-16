@@ -1,4 +1,6 @@
-2014-04-11 - Silvio Rhatto <rhatto@riseup.net>
+2014-05-16 - Silvio Rhatto <rhatto@riseup.net>
+
+	Use 'nobackup' and 'nowritebackup' if VIM is set as $EDITOR (#50)
 
 	Find: rollback: use find+grep instead of 'find -iname' (#53)
 

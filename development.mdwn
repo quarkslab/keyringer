@@ -68,11 +68,7 @@ Create and upload a new release:
 
 Update the debian branch:
 
-    git checkout debian
-    git-import-orig --upstream-vcs-tag=$VERSION ../tarballs/keyringer-$VERSION.tar.bz2
-    dch -e # fine tune the changelog prepared by git-dch
-    git commit -a -m "Updating debian/changelog"
-    git-buildpackage --git-tag-only --git-sign-tags
+    make debian
 
 Push everything:
 

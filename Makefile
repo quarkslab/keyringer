@@ -26,6 +26,8 @@ install_lib:
 	$(INSTALL) -D --mode=0755 lib/keyringer/functions $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/functions
 	$(INSTALL) -D --mode=0755 -d lib/keyringer/actions $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/actions
 	$(INSTALL) -D --mode=0755 lib/keyringer/actions/* $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/actions
+	$(INSTALL) -D --mode=0755 -d lib/keyringer/editors $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/actions
+	$(INSTALL) -D --mode=0755 lib/keyringer/editors/* $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/actions
 
 install_bin:
 	$(INSTALL) -D --mode=0755 keyringer $(DESTDIR)/$(PREFIX)/bin/keyringer
@@ -56,9 +58,12 @@ tarball:
 release:
 	@make build_man
 	git commit -a -m "Keyringer $(VERSION)"
+	git flow release finish -s -m "Keyringer $(VERSION)" $(VERSION)
+	git checkout master
 	@make tarball
 	gpg --use-agent --armor --detach-sign --output ../tarballs/keyringer-$(VERSION).tar.bz2.asc ../tarballs/keyringer-$(VERSION).tar.bz2
 	scp ../tarballs/keyringer-$(VERSION).tar.bz2* keyringer:/var/sites/keyringer/releases/
 	# We're doing tagging afterwards:
 	# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=568375
-	git tag -s $(VERSION) -m "Keyringer $(VERSION)"
+	#git tag -s $(VERSION) -m "Keyringer $(VERSION)"
+	git checkout develop

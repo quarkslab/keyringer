@@ -1,3 +1,7 @@
+2014-05-20 - 0.3.5 - Silvio Rhatto <rhatto@riseup.net>
+
+	Use a custom .vimrc so VIM command line is not messed with quotes (#50)
+
 2014-05-16 - 0.3.4 - Silvio Rhatto <rhatto@riseup.net>
 
 	Workaround for open/edit action returning instantaneously (#49)

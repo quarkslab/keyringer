@@ -54,7 +54,6 @@ Release workflow
 
 Go to develop branch and start a new release
 
-    git checkout develop
     git flow release start VERSION
 
 Prepare the source code:
@@ -65,8 +64,6 @@ Prepare the source code:
 
 Create and upload a new release:
 
-    git flow release finish $VERSION
-    git checkout master
     make release
 
 Update the debian branch:

@@ -1,0 +1,5 @@
+" Use sane defaults for VIM to avoid data leakage
+" See https://keyringer.pw/trac/ticket/50
+set nowritebackup
+set nobackup
+set viminfo="NONE"

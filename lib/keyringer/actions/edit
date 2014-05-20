@@ -36,9 +36,12 @@ elif [ "$BASENAME" == "open" ]; then
   fi
 fi
 
+# Set APPNAME
+APPNAME="`echo $APP | awk '{ print $1 }'`"
+
 # Prompt
-echo "Press any key to open the decrypted data with $APP, Ctrl-C to abort"
-echo "WARNING: please make sure that $APP doesn't leak data to external applications or files"
+echo "Press any key to open the decrypted data with $APPNAME, Ctrl-C to abort"
+echo "WARNING: please make sure that $APPNAME doesn't leak data to external applications or files"
 echo "Press ENTER to continue"
 read -s key
 $APP "$TMPWORK"
@@ -53,7 +56,7 @@ wait
 # Thus, we cannot just wipe the file and exit keyringer, as the user might have a buffered copy
 # of the unencrypted file in the application, which can lead to information leakage if the user
 # saves the file and leaves the editor.
-echo "Press any key when done using the file and you're sure that $APP is closed."
+echo "Press any key when done using the file and you're sure that $APPNAME is closed."
 read -s -n 1
 
 # Encrypt again

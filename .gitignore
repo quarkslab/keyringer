@@ -3,4 +3,5 @@ debian/keyringer
 debian/files
 debian/files
 debian/keyringer.substvars
+tarballs
 .pc

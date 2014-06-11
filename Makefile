@@ -14,10 +14,11 @@
 #  Place - Suite 330, Boston, MA 02111-1307, USA
 #
 
-PACKAGE = keyringer
-VERSION = $(shell ./keyringer | head -n 1 | cut -d ' ' -f 2)
-PREFIX ?= /usr/local
-INSTALL = /usr/bin/install
+PACKAGE  = keyringer
+VERSION  = $(shell ./keyringer | head -n 1 | cut -d ' ' -f 2)
+PREFIX  ?= /usr/local
+ARCHIVE ?= tarballs
+INSTALL  = /usr/bin/install
 
 clean:
 	find . -name *~ | xargs rm -f # clean local backups
@@ -53,7 +54,8 @@ build_man:
 	sed -i -e 's/--/\\-\\-/g' share/man/keyringer.1
 
 tarball:
-	git archive --prefix=keyringer-$(VERSION)/ --format=tar HEAD | bzip2 >../tarballs/keyringer-$(VERSION).tar.bz2
+	mkdir -p $(ARCHIVE)
+	git archive --prefix=keyringer-$(VERSION)/ --format=tar HEAD | bzip2 > $(ARCHIVE)/keyringer-$(VERSION).tar.bz2
 
 release:
 	@make build_man
@@ -65,8 +67,8 @@ release:
 	git flow release finish -s $(VERSION)
 	git checkout master
 	@make tarball
-	gpg --use-agent --armor --detach-sign --output ../tarballs/keyringer-$(VERSION).tar.bz2.asc ../tarballs/keyringer-$(VERSION).tar.bz2
-	scp ../tarballs/keyringer-$(VERSION).tar.bz2* keyringer:/var/sites/keyringer/releases/
+	gpg --use-agent --armor --detach-sign --output $(ARCHIVE)/keyringer-$(VERSION).tar.bz2.asc $(ARCHIVE)/keyringer-$(VERSION).tar.bz2
+	scp $(ARCHIVE)/keyringer-$(VERSION).tar.bz2* keyringer:/var/sites/keyringer/releases/
 	# We're doing tagging afterwards:
 	# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=568375
 	#git tag -s $(VERSION) -m "Keyringer $(VERSION)"
@@ -74,7 +76,7 @@ release:
 
 debian:
 	git checkout debian
-	git-import-orig --upstream-vcs-tag=$(VERSION) ../tarballs/keyringer-$(VERSION).tar.bz2
+	git-import-orig --upstream-vcs-tag=$(VERSION) $(ARCHIVE)/keyringer-$(VERSION).tar.bz2
 	# Fine tune debian/changelog prepared by git-dch
 	dch -e
 	git commit -a -m "Updating debian/changelog"

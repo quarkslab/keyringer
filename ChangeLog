@@ -1,3 +1,8 @@
+2014-07-06 - Silvio Rhatto <rhatto@riseup.net>
+
+	Reset 'expiry' on keyringer_check_expiration, reported and fixed
+	by Jamie (closes #62)
+
 2014-05-20 - 0.3.6 - Silvio Rhatto <rhatto@riseup.net>
 
 	Makefile fix

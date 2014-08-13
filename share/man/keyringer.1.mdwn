@@ -284,6 +284,13 @@ Keyringer currently has the following limitations:
    so be careful when decrypting secrets and writing them to the disk or
    other storage media.
 
+   Pay special attention that keyringer outputs data to stdout, which could
+   be easilly spotted by any agent looking directly at you computer screen.
+
+   The xclip action even copies secret data to the X11 clipboard, which can
+   be accessed by any application running in the user's X11 session, so use
+   this feature carefully.
+
 # SEE ALSO
 
 The *README* file distributed with Keyringer contains full documentation.

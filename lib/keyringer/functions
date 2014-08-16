@@ -72,7 +72,7 @@ function keyringer_exec {
   action="$1"
   basedir="$2"
   shift 2
-  
+
   # Dispatch
   if keyringer_has_action "$action"; then
     "$ACTIONS/$action" "$basedir" $*
@@ -171,7 +171,7 @@ function keyringer_set_tmpfile {
   else
     TMPWORK="$(mktemp "$template")"
   fi
-  
+
   if [ "$?" != "0" ]; then
     printf "Error: can't set TMPWORK %s\n" "$TMPWORK"
     exit 1
@@ -250,7 +250,7 @@ function keyringer_git_ignore {
 function keyringer_set_env {
   if [ -z "$1" ]; then
     echo "Error: missing arguments for keyringer_set_env"
-    exit 1    
+    exit 1
   fi
 
   ACTIONS="`dirname $0`"
@@ -429,7 +429,7 @@ function keyringer_get_option {
 # Get a file argument
 function keyringer_get_file {
   FILE="$(keyringer_filename "$RELATIVE_PATH/$1")"
-  
+
   if [ -z "$FILE" ]; then
     keyringer_action_usage
     exit 1

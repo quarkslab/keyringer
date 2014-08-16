@@ -1,4 +1,6 @@
-2014-07-06 - Silvio Rhatto <rhatto@riseup.net>
+2014-08-16 - Silvio Rhatto <rhatto@riseup.net>
+
+	New 'cp' action
 
 	Reset 'expiry' on keyringer_check_expiration, reported and fixed
 	by Jamie (closes #62)

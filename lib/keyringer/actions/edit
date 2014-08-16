@@ -59,9 +59,9 @@ wait
 echo "Press any key when done using the file and you're sure that $APPNAME is closed."
 read -s -n 1
 
-# Encrypt again
+# Encrypt again. Unset RELATIVE_PATH as it was already used to determine FILE path
 export KEYRINGER_ADD_EXTENSION=false
-keyringer_exec encrypt "$BASEDIR" "$FILE" "$TMPWORK"
+RELATIVE_PATH="" keyringer_exec encrypt "$BASEDIR" "$FILE" "$TMPWORK"
 
 # Check exit status
 errcrypt="$?"

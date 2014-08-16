@@ -1,5 +1,7 @@
 2014-08-16 - Silvio Rhatto <rhatto@riseup.net>
 
+	Edit: Unset RELATIVE_PATH before encrypting file
+
 	New 'cp' action
 
 	Reset 'expiry' on keyringer_check_expiration, reported and fixed

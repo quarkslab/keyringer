@@ -149,13 +149,6 @@ ACTION="$2"
 # Turn off pathname expansion so expansion can work properly
 set -f
 
-# Export globals for other scripts
-export PREFERENCES="`dirname $CONFIG`/$KEYRING"
-export KEYRINGER_VERSION
-export CONFIG_VERSION
-export KEYRING
-export CONFIG
-
 # Set functions location
 if [ -e "`dirname $(readlink -f $0)`/lib/$NAME/functions" ]; then
   # Development or local installation layout
@@ -163,6 +156,15 @@ if [ -e "`dirname $(readlink -f $0)`/lib/$NAME/functions" ]; then
 else
   # System installation layout
   LIB="`dirname $(readlink -f $0)`/../lib/$NAME/functions"
+fi
+
+# Set shared files location
+if [ -e "`dirname $(readlink -f $0)`/share/$NAME" ]; then
+  # Development or local installation layout
+  SHARE="`dirname $(readlink -f $0)`/share/$NAME"
+else
+  # System installation layout
+  SHARE="`dirname $(readlink -f $0)`/../share/$NAME"
 fi
 
 # Set actions location
@@ -173,6 +175,14 @@ else
   # System installation layout
   ACTIONS="`dirname $(readlink -f $0)`/../lib/$NAME/actions"
 fi
+
+# Export globals for other scripts
+export PREFERENCES="`dirname $CONFIG`/$KEYRING"
+export KEYRINGER_VERSION
+export CONFIG_VERSION
+export KEYRING
+export CONFIG
+export SHARE
 
 # Load functions
 source "$LIB" || exit 1

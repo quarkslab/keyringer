@@ -27,8 +27,8 @@ install_lib:
 	$(INSTALL) -D --mode=0755 lib/keyringer/functions $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/functions
 	$(INSTALL) -D --mode=0755 -d lib/keyringer/actions $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/actions
 	$(INSTALL) -D --mode=0755 lib/keyringer/actions/* $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/actions
-	$(INSTALL) -D --mode=0755 -d lib/keyringer/editors $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/editors
-	$(INSTALL) -D --mode=0644 lib/keyringer/editors/* $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/editors
+	$(INSTALL) -D --mode=0755 -d share/keyringer/editors $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/editors
+	$(INSTALL) -D --mode=0644 share/keyringer/editors/* $(DESTDIR)/$(PREFIX)/lib/$(PACKAGE)/editors
 
 install_bin:
 	$(INSTALL) -D --mode=0755 keyringer $(DESTDIR)/$(PREFIX)/bin/keyringer

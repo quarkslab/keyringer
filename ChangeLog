@@ -1,5 +1,7 @@
 2014-08-21 - Silvio Rhatto <rhatto@riseup.net>
 
+	Init: just set git user/mail if needed
+
 	Shell completions: use KEYRINGER_CHECK_RECIPIENTS=false to avoid
 	fatal errors
 

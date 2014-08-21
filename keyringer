@@ -106,8 +106,10 @@ function keyringer_init {
     keyringer_git_ignore 'tmp/*'
 
     # Git configuration
-    git config user.email "$email"
-    git config user.name  "$name"
+    if [ ! -z "$email" ]; then
+      git config user.email "$email"
+      git config user.name  "$name"
+    fi
 
     # Edit default recipients
     echo "Now you have to edit the default recipient configuration to be able to encrypt secrets."

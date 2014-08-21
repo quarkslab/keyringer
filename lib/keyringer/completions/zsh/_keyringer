@@ -19,9 +19,8 @@ _keyringer() {
     fi
 
     # Process config
-    source $config/config
     local keyrings="`ls --color=never $config | sed -e '/^config$/d' | xargs`"
-    local keyring_path="`eval echo '$'$words[2]`"
+    local keyring_path="`grep -e "^$words[2]=" "$config/config" | tail -n 1 | cut -d = -f 2 | sed -e 's/"//g' -e "s/'//g" | sed -e 's/ *#.*$//'`"
     local instances="`echo $keyrings | sed -e 's/ /$\\\|^/g' -e 's/^/^/' -e 's/$/$/'`"
 
     _arguments        \

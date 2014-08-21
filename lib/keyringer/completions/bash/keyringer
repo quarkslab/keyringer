@@ -69,7 +69,6 @@ _keyringer() {
   fi
 
   # Process config
-  source $config/config
   keyrings="`ls --color=never $config | sed -e '/^config$/d' | xargs`"
 
   # Available instances
@@ -77,7 +76,7 @@ _keyringer() {
 
   # The current instance
   instance="${COMP_WORDS[1]}"
-  path="`eval echo '$'$instance`"
+  path="`grep -e "^$instance=" "$config/config" | tail -n 1 | cut -d = -f 2 | sed -e 's/"//g' -e "s/'//g" | sed -e 's/ *#.*$//'`"
 
   # Command completions
   if [ "${#COMP_WORDS[@]}" == "2" ]; then

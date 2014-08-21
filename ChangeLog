@@ -1,4 +1,6 @@
-2014-08-16 - Silvio Rhatto <rhatto@riseup.net>
+2014-08-21 - Silvio Rhatto <rhatto@riseup.net>
+
+	Shell completions: fix handling of keyrings with '-' in their names
 
 	Edit: Unset RELATIVE_PATH before encrypting file
 

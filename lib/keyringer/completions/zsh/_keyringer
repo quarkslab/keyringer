@@ -70,7 +70,7 @@ _keyringer() {
         case "$words[3]" in
           recipients)
             words[5]="$(echo $words[5] | sed -e "s|^/||")" # TODO: avoid leading slash
-            compadd "$@" $(cd $keyring_path/config/recipients && ls --color=never -p $words[5]'*' 2> /dev/null)
+            compadd "$@" $(cd $keyring_path/config/recipients && ls --color=never -p $words[5]* 2> /dev/null)
             ;;
           genpair)
             words[5]="$(echo $words[5] | sed -e "s|^/||")" # TODO: avoid leading slash
@@ -87,7 +87,7 @@ _keyringer() {
         esac
         ;;
       *)
-        if [ $words[3] == "git" ]; then
+        if [[ $words[3] == "git" ]]; then
           # TODO
           true
         fi

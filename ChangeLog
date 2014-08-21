@@ -1,7 +1,11 @@
 2014-08-21 - Silvio Rhatto <rhatto@riseup.net>
 
+	Shell completions: use KEYRINGER_CHECK_RECIPIENTS=false to avoid
+	fatal errors
+
+	Shell completions: minor zsh fixes
+
 	Shell completions: fix handling of keyrings with '-' in their names
-	and minor zsh fixes.
 
 	Edit: Unset RELATIVE_PATH before encrypting file
 

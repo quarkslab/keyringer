@@ -1,3 +1,21 @@
+2014-08-21 - 0.3.7 - Silvio Rhatto <rhatto@riseup.net>
+
+	Init: just set git user/mail if needed
+
+	Shell completions: use KEYRINGER_CHECK_RECIPIENTS=false to avoid
+	fatal errors
+
+	Shell completions: minor zsh fixes
+
+	Shell completions: fix handling of keyrings with '-' in their names
+
+	Edit: Unset RELATIVE_PATH before encrypting file
+
+	New 'cp' action
+
+	Reset 'expiry' on keyringer_check_expiration, reported and fixed
+	by Jamie (closes #62)
+
 2014-05-20 - 0.3.6 - Silvio Rhatto <rhatto@riseup.net>
 
 	Makefile fix

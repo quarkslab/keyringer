@@ -164,6 +164,11 @@ Alias for \f[I]del\f[] action.
 .RS
 .RE
 .TP
+.B cp <\f[I]secret\f[]> <\f[I]dest\f[]>
+Copy a secret.
+.RS
+.RE
+.TP
 .B mv <\f[I]secret\f[]> <\f[I]dest\f[]>
 Rename a secret.
 .RS
@@ -370,6 +375,13 @@ using the \f[I]git\f[] action.
 Keyringer does not protect data which were not encrypted to a keyring,
 so be careful when decrypting secrets and writing them to the disk or
 other storage media.
+.PP
+Pay special attention that keyringer outputs data to stdout, which could
+be easilly spotted by any agent looking directly at you computer screen.
+.PP
+The xclip action even copies secret data to the X11 clipboard, which can
+be accessed by any application running in the user\[aq]s X11 session, so
+use this feature carefully.
 .SH SEE ALSO
 .PP
 The \f[I]README\f[] file distributed with Keyringer contains full

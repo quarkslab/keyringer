@@ -1,3 +1,7 @@
+2014-09-02 - Silvio Rhatto <rhatto@riseup.net>
+
+	Ensure destination folder exists at 'cp' action
+
 2014-08-21 - 0.3.7 - Silvio Rhatto <rhatto@riseup.net>
 
 	Init: just set git user/mail if needed

@@ -86,7 +86,7 @@ Run lintian (or [add it to your pbuilder hooks](http://askubuntu.com/questions/1
 Notes:
 
 * `git-import-orig` takes care of running `pristine-tar commit`, of merging of the tag and orig tarball into the upstream branch, and then it merges the result into the debian branch. With the above configuration, it also runs git-dch to do the bulk of the work in `debian/changelog`.
-* To build a development package, checkout the debian branch, merge master, run `git-dch --auto --snapshot` and build. 
+* To build a development package, checkout the debian branch, merge master, run `git-dch --auto --snapshot` and build.
 
 Adding or changing a subcommand
 -------------------------------

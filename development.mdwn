@@ -5,44 +5,11 @@ Index
 
 [[!toc levels=4]]
 
-Development environment
------------------------
-
-The following steps needs to be run just once for each arch and distro version.
-
-### Create the `debian/` structure
-
-    if [ ! -d "debian" ]; then
-      dh_make -p keyringer_0.1 --createorig
-    fi
-
-### Setup a sid pbuilder chroot
-
-    DIST=sid git-pbuilder create
-
-### Setup a sid cowbuilder chroot
-
-    DIST=sid sudo cowbuilder --create
-
-Environment maintenance
------------------------
-
-These steps should be run once in a while to ensure we have an up to date packaging environment.
-
-### Pbuilder
-
-    DIST=sid git-pbuilder update
-
-### Cowbuilder
-
-    DIST=sid sudo cowbuilder --update
-
 Coding standards
 ----------------
 
-  - Respect the existing coding style.
-
-  - Be clear: easy audability must be one of keyringer's requirements.
+* Respect the existing coding style.
+* Be clear: easy audability must be one of keyringer's requirements.
 
 Development workflow
 --------------------
@@ -87,6 +54,11 @@ Notes:
 
 * `git-import-orig` takes care of running `pristine-tar commit`, of merging of the tag and orig tarball into the upstream branch, and then it merges the result into the debian branch. With the above configuration, it also runs git-dch to do the bulk of the work in `debian/changelog`.
 * To build a development package, checkout the debian branch, merge master, run `git-dch --auto --snapshot` and build.
+
+Packaging workflow
+------------------
+
+We recommend [this packaging workflow](https://git.sarava.org/?p=debian.git;a=blob;f=README.md;hb=HEAD).
 
 Adding or changing a subcommand
 -------------------------------

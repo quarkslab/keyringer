@@ -196,9 +196,9 @@ CWD="`pwd`"
 
 # Verify
 if [ -z "$NODE" ]; then
-  echo -e "Usage: keyringer <keyring> $BASENAME <gpg|ssh|x509|x509-self> <file> <hostname> [outfile]"
+  echo -e "Usage: keyringer <keyring> $BASENAME <gpg|ssh|x509|x509-self|ssl|ssl-self> <file> <hostname> [outfile]"
   echo -e "Options:"
-  echo -e "\t gpg|ssh|x509[-self]: key type."
+  echo -e "\t gpg|ssh|x509[-self]|ssl|ssl[-self]: key type."
   echo -e "\t file                      : base file name for encrypted output (relative to keys folder),"
   echo -e "\t                             without spaces"
   echo -e "\t hostname                  : host for the key pair"

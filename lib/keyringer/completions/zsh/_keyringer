@@ -53,8 +53,8 @@ _keyringer() {
             words[4]="`echo $words[4] | sed -e "s|^/*||"`" # avoid leading slash
             compadd "$@" $(KEYRINGER_CHECK_RECIPIENTS=false KEYRINGER_CHECK_VERSION=false keyringer $words[2] ls -p -d $words[4]'*' 2> /dev/null)
             ;;
-          genpair)
-            compadd "$@" gpg ssh ssl ssl-self
+          genkeys|genpair)
+            compadd "$@" gpg ssh x509 x509-self ssl ssl-self
             ;;
           git)
             compadd "$@" $(_keyringer_git_complete $words[4])
@@ -76,7 +76,7 @@ _keyringer() {
             words[5]="$(echo $words[5] | sed -e "s|^/||")" # TODO: avoid leading slash
             compadd "$@" $(cd $keyring_path/config/recipients && ls --color=never -p $words[5]* 2> /dev/null)
             ;;
-          genpair)
+          genkeys|genpair)
             words[5]="$(echo $words[5] | sed -e "s|^/||")" # TODO: avoid leading slash
             compadd "$@" $(KEYRINGER_CHECK_RECIPIENTS=false KEYRINGER_CHECK_VERSION=false keyringer $words[2] ls -p -d $words[5]'*' 2> /dev/null)
             ;;

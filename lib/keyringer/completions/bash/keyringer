@@ -97,8 +97,8 @@ _keyringer() {
         cur="`echo ${cur} | sed -e "s|^/*||"`" # avoid leading slash
         opts="$(bash -c "set -f && export KEYRINGER_CHECK_RECIPIENTS=false && export KEYRINGER_CHECK_VERSION=false && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
         ;;
-      genpair)
-        opts="gpg ssh ssl ssl-self"
+      genkeys|genpair)
+        opts="gpg ssh x509 x509-self ssl ssl-self"
         ;;
       git)
         opts="$(_keyringer_git_complete ${cur})"
@@ -120,7 +120,7 @@ _keyringer() {
         cur="`echo ${cur} | sed -e "s|^/*||"`" # avoid leading slash
         opts="$(cd $path/config/recipients && ls --color=never -p ${cur}* 2> /dev/null)"
         ;;
-      genpair)
+      genkeys|genpair)
         cur="`echo ${cur} | sed -e "s|^/*||"`" # avoid leading slash
         opts="$(bash -c "set -f && export KEYRINGER_CHECK_RECIPIENTS=false && export KEYRINGER_CHECK_VERSION=false && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
         ;;

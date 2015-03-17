@@ -150,8 +150,11 @@ encrypt-batch <*secret*> [*file*]
 :   Encrypt content, batch mode. Behavior is identical to *encrypt* action, but less
     verbose. Useful inside scripts.
 
-genpair <*ssh*|*gpg*|*ssl*|*ssl-self*> [*options*]
+genkeys <*ssh*|*gpg*|*x509*|*x509-self*|*ssl*|*ssl-self*> [*options*]
 :   Wrapper to generate encryption key-pairs, useful for automated key deployment.
+
+genpair <*ssh*|*gpg*|*x509*|*x509-self*|*ssl*|*ssl-self*> [*options*]
+:   Alias for *genkeys* action.
 
 open <*secret*>
 :   Decrypt a secret into a temporary folder and open it using xdg-open, which

@@ -1,3 +1,7 @@
+2015-03-17 - Silvio Rhatto <rhatto@riseup.net>
+
+	Rename genpair action and option (#69)
+
 2014-09-02 - Silvio Rhatto <rhatto@riseup.net>
 
 	Ensure destination folder exists at 'cp' action

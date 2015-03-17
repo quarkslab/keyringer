@@ -4,10 +4,10 @@
 #
 # This script is just a wrapper to easily generate keys for
 # automated systems.
-# 
+#
 
 # Generate a keypair, ssh version
-function genpair_ssh {
+function genkeys_ssh {
   echo "Make sure that $KEYDIR is atop of an encrypted volume."
   read -p "Hit ENTER to continue." prompt
 
@@ -27,11 +27,11 @@ function genpair_ssh {
     cat "$TMPWORK/id_rsa.pub" > "$OUTFILE.pub"
   fi
 
-  echo "Done"  
+  echo "Done"
 }
 
 # Generate a keypair, gpg version
-function genpair_gpg {
+function genkeys_gpg {
   echo "Make sure that $KEYDIR is atop of an encrypted volume."
 
   passphrase="no"
@@ -47,7 +47,7 @@ function genpair_gpg {
       echo "Password don't match."
     fi
   done
-  
+
   # TODO: insert random bytes
   # TODO: custom Name-Comment and Name-Email
   # TODO: allow for empty passphrases
@@ -78,11 +78,16 @@ EOF
     $GPG --armor --homedir "$TMPWORK" --export             > "$OUTFILE.pub"
   fi
 
-  echo "Done"  
+  echo "Done"
+}
+
+# Alias
+function genkeys_ssl {
+  genkeys_x509 $*
 }
 
 # Generate a keypair, ssl version
-function genpair_ssl {
+function genkeys_x509 {
   echo "Make sure that $KEYDIR is atop of an encrypted volume."
   read -p "Hit ENTER to continue." prompt
 
@@ -148,7 +153,7 @@ EOF
   cat "${NODE}_privatekey.pem" | keyringer_exec encrypt "$BASEDIR" "$FILE.pem"
   echo "Encrypting certificate request into keyringer..."
   cat "${NODE}_csr.pem"        | keyringer_exec encrypt "$BASEDIR" "$FILE.csr"
-  
+
   if [ "$KEYTYPE" == "ssl-self" ]; then
     echo "Encrypting certificate into keyringer..."
     cat "${NODE}.crt" | keyringer_exec encrypt "$BASEDIR" "$FILE.crt"
@@ -191,9 +196,9 @@ CWD="`pwd`"
 
 # Verify
 if [ -z "$NODE" ]; then
-  echo -e "Usage: keyringer <keyring> $BASENAME <gpg|ssh|ssl|ssl-self> <file> <hostname> [outfile]"
+  echo -e "Usage: keyringer <keyring> $BASENAME <gpg|ssh|x509|x509-self> <file> <hostname> [outfile]"
   echo -e "Options:"
-  echo -e "\t gpg|ssh|ssl[-self]: key type."
+  echo -e "\t gpg|ssh|x509[-self]: key type."
   echo -e "\t file                      : base file name for encrypted output (relative to keys folder),"
   echo -e "\t                             without spaces"
   echo -e "\t hostname                  : host for the key pair"
@@ -210,10 +215,10 @@ keyringer_set_tmpfile genpair -d
 
 # Dispatch
 echo "Generating $KEYTYPE key for $NODE..."
-if [ "$KEYTYPE" == "ssl-self" ]; then
-  genpair_ssl
+if [ "$KEYTYPE" == "ssl-self" ] || [ "$KEYTYPE" == "x509-self" ]; then
+  genkeys_x509
 else
-  genpair_"$KEYTYPE"
+  genkeys_"$KEYTYPE"
 fi
 
 # Cleanup

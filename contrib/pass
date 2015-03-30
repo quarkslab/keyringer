@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Sample wrapper program for simplying the use of keyringer.
 # This wrapper assumes you are using one key file with many

@@ -1,3 +1,12 @@
+2015-03-30 - 0.3.8 - Silvio Rhatto <rhatto@riseup.net>
+
+	Eliminates hardcoded bash path, reported and fixed by
+	polynomial (closes https://github.com/rhatto/keyringer/pull/1).
+
+	Rename genpair action and option (#69)
+
+	Ensure destination folder exists at 'cp' action
+
 2014-08-21 - 0.3.7 - Silvio Rhatto <rhatto@riseup.net>
 
 	Init: just set git user/mail if needed

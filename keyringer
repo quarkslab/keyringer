@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # Keyringer key management system.
 #
@@ -140,7 +140,7 @@ function keyringer_dispatch {
 
 # Config
 NAME="keyringer"
-KEYRINGER_VERSION="0.3.7"
+KEYRINGER_VERSION="0.3.8"
 CONFIG_VERSION="0.1"
 CONFIG_BASE="$HOME/.$NAME"
 CONFIG="$CONFIG_BASE/config"

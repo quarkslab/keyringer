@@ -93,12 +93,12 @@ _keyringer() {
       recipients)
         opts="ls edit"
         ;;
-      ls|tree|mkdir|encrypt|encrypt-batch|decrypt|edit|append|append-batch|del|rm|recrypt|open|clip|xclip|find)
+      ls|tree|mkdir|encrypt|encrypt-batch|decrypt|edit|append|append-batch|del|rm|recrypt|open|clip|xclip|find|mv|cp)
         cur="`echo ${cur} | sed -e "s|^/*||"`" # avoid leading slash
         opts="$(bash -c "set -f && export KEYRINGER_CHECK_RECIPIENTS=false && export KEYRINGER_CHECK_VERSION=false && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
         ;;
-      genpair)
-        opts="gpg ssh ssl ssl-self"
+      genkeys|genpair)
+        opts="gpg ssh x509 x509-self ssl ssl-self"
         ;;
       git)
         opts="$(_keyringer_git_complete ${cur})"
@@ -112,11 +112,15 @@ _keyringer() {
     esac
   elif [ "${#COMP_WORDS[@]}" == "5" ]; then
     case "${command}" in
+      mv|cp)
+        cur="`echo ${cur} | sed -e "s|^/*||"`" # avoid leading slash
+        opts="$(bash -c "set -f && export KEYRINGER_CHECK_RECIPIENTS=false && export KEYRINGER_CHECK_VERSION=false && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
+        ;;
       recipients)
         cur="`echo ${cur} | sed -e "s|^/*||"`" # avoid leading slash
         opts="$(cd $path/config/recipients && ls --color=never -p ${cur}* 2> /dev/null)"
         ;;
-      genpair)
+      genkeys|genpair)
         cur="`echo ${cur} | sed -e "s|^/*||"`" # avoid leading slash
         opts="$(bash -c "set -f && export KEYRINGER_CHECK_RECIPIENTS=false && export KEYRINGER_CHECK_VERSION=false && keyringer $instance ls -p -d ${cur}*" 2> /dev/null)"
         ;;

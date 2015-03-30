@@ -201,10 +201,18 @@ Useful inside scripts.
 .RS
 .RE
 .TP
-.B genpair <\f[I]ssh\f[]|\f[I]gpg\f[]|\f[I]ssl\f[]|\f[I]ssl-self\f[]>
+.B genkeys
+<\f[I]ssh\f[]|\f[I]gpg\f[]|\f[I]x509\f[]|\f[I]x509-self\f[]|\f[I]ssl\f[]|\f[I]ssl-self\f[]>
 [\f[I]options\f[]]
 Wrapper to generate encryption key-pairs, useful for automated key
 deployment.
+.RS
+.RE
+.TP
+.B genpair
+<\f[I]ssh\f[]|\f[I]gpg\f[]|\f[I]x509\f[]|\f[I]x509-self\f[]|\f[I]ssl\f[]|\f[I]ssl-self\f[]>
+[\f[I]options\f[]]
+Alias for \f[I]genkeys\f[] action.
 .RS
 .RE
 .TP
@@ -377,7 +385,7 @@ so be careful when decrypting secrets and writing them to the disk or
 other storage media.
 .PP
 Pay special attention that keyringer outputs data to stdout, which could
-be easilly spotted by any agent looking directly at you computer screen.
+be easily spotted by any agent looking directly at you computer screen.
 .PP
 The xclip action even copies secret data to the X11 clipboard, which can
 be accessed by any application running in the user\[aq]s X11 session, so

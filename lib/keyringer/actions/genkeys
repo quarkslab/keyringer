@@ -1,0 +1,227 @@
+#!/usr/bin/env bash
+#
+# Generate keypairs.
+#
+# This script is just a wrapper to easily generate keys for
+# automated systems.
+#
+
+# Generate a keypair, ssh version
+function genkeys_ssh {
+  echo "Make sure that $KEYDIR is atop of an encrypted volume."
+  read -p "Hit ENTER to continue." prompt
+
+  # We're using empty passphrases
+  ssh-keygen -t rsa -b 4096 -P '' -f "$TMPWORK/id_rsa" -C "root@$NODE"
+
+  # Encrypt the result
+  echo "Encrypting secret key into keyringer..."
+  cat "$TMPWORK/id_rsa"     | keyringer_exec encrypt "$BASEDIR" "$FILE"
+  echo "Encrypting public key into keyringer..."
+  cat "$TMPWORK/id_rsa.pub" | keyringer_exec encrypt "$BASEDIR" "$FILE.pub"
+
+  if [ ! -z "$OUTFILE" ]; then
+    mkdir -p `dirname $OUTFILE`
+    printf "Saving copies at %s and %s.pub\n" "$OUTFILE" "$OUTFILE"
+    cat "$TMPWORK/id_rsa"     > "$OUTFILE"
+    cat "$TMPWORK/id_rsa.pub" > "$OUTFILE.pub"
+  fi
+
+  echo "Done"
+}
+
+# Generate a keypair, gpg version
+function genkeys_gpg {
+  echo "Make sure that $KEYDIR is atop of an encrypted volume."
+
+  passphrase="no"
+  passphrase_confirm="confirm"
+
+  while [ "$passphrase" != "$passphrase_confirm" ]; do
+    read -s -p "Enter password for the private key: " passphrase
+    printf "\n"
+    read -s -p "Enter password again: " passphrase_confirm
+    printf "\n"
+
+    if [ "$passphrase" != "$passphrase_confirm" ]; then
+      echo "Password don't match."
+    fi
+  done
+
+  # TODO: insert random bytes
+  # TODO: custom Name-Comment and Name-Email
+  # TODO: allow for empty passphrases
+  $GPG --homedir "$TMPWORK" --gen-key --batch <<EOF
+    Key-Type: RSA
+    Key-Length: 4096
+    Subkey-Type: ELG-E
+    Subkey-Length: 4096
+    Name-Real: $NODE
+    Name-Email: root@$NODE
+    Expire-Date: 0
+    Passphrase: $passphrase
+    %commit
+EOF
+
+  # Encrypt the result
+  echo "Encrypting secret key into keyringer..."
+  $GPG --armor --homedir "$TMPWORK" --export-secret-keys | keyringer_exec encrypt "$BASEDIR" "$FILE"
+  echo "Encrypting public key into keyringer..."
+  $GPG --armor --homedir "$TMPWORK" --export             | keyringer_exec encrypt "$BASEDIR" "$FILE.pub"
+  echo "Encrypting passphrase into keyringer..."
+  echo "Passphrase for $FILE: $passphrase"               | keyringer_exec encrypt "$BASEDIR" "$FILE.passwd"
+
+  if [ ! -z "$OUTFILE" ]; then
+    mkdir -p `dirname $OUTFILE`
+    printf "Saving copies at %s and %s.pub\n" "$OUTFILE" "$OUTFILE"
+    $GPG --armor --homedir "$TMPWORK" --export-secret-keys > "$OUTFILE"
+    $GPG --armor --homedir "$TMPWORK" --export             > "$OUTFILE.pub"
+  fi
+
+  echo "Done"
+}
+
+# Alias
+function genkeys_ssl {
+  genkeys_x509 $*
+}
+
+# Generate a keypair, ssl version
+function genkeys_x509 {
+  echo "Make sure that $KEYDIR is atop of an encrypted volume."
+  read -p "Hit ENTER to continue." prompt
+
+  # Check for wildcard certs
+  if [ "`echo $NODE | cut -d . -f 1`" == "*" ]; then
+    WILDCARD="yes"
+    CNAME="$NODE"
+    NODE="`echo $NODE | sed -e 's/^\*\.//'`"
+  else
+    CNAME="${NODE}"
+  fi
+
+  # Setup
+  cd "$TMPWORK"
+
+  # Generate certificate
+cat <<EOF >> openssl.conf
+[ req ]
+default_keyfile         = ${NODE}_privatekey.pem
+distinguished_name      = req_distinguished_name
+encrypt_key             = no
+req_extensions          = v3_req # Extensions to add to certificate request
+string_mask             = nombstr
+
+[ req_distinguished_name ]
+commonName_default              = ${CNAME}
+organizationName                = Organization Name
+organizationalUnitName          = Organizational Unit Name
+emailAddress                    = Email Address
+localityName                    = Locality
+stateOrProvinceName             = State
+countryName                     = Country Name
+commonName                      = Common Name
+
+[ v3_req ]
+extendedKeyUsage=serverAuth,clientAuth
+EOF
+
+  # Add SubjectAltNames so wildcard certs can work correctly.
+  if [ "$WILDCARD" == "yes" ]; then
+cat <<EOF >> openssl.conf
+subjectAltName=DNS:${NODE}, DNS:${CNAME}
+EOF
+  fi
+
+  echo "Please review your OpenSSL configuration:"
+  cat openssl.conf
+  read -p "Hit ENTER to continue." prompt
+
+  openssl req -batch -nodes -config openssl.conf -newkey rsa:4096 -sha256 \
+          -keyout ${NODE}_privatekey.pem -out ${NODE}_csr.pem
+
+  openssl req -noout -text -in ${NODE}_csr.pem
+
+  # Self-sign
+  if [ "$KEYTYPE" == "ssl-self" ]; then
+    openssl x509 -in "${NODE}_csr.pem" -out "$NODE.crt" -req -signkey "${NODE}_privatekey.pem" -days 365
+    chmod 600 "${NODE}_privatekey.pem"
+  fi
+
+  # Encrypt the result
+  echo "Encrypting private key into keyringer..."
+  cat "${NODE}_privatekey.pem" | keyringer_exec encrypt "$BASEDIR" "$FILE.pem"
+  echo "Encrypting certificate request into keyringer..."
+  cat "${NODE}_csr.pem"        | keyringer_exec encrypt "$BASEDIR" "$FILE.csr"
+
+  if [ "$KEYTYPE" == "ssl-self" ]; then
+    echo "Encrypting certificate into keyringer..."
+    cat "${NODE}.crt" | keyringer_exec encrypt "$BASEDIR" "$FILE.crt"
+  elif [ -f "$BASEDIR/keys/$FILE.crt.asc" ]; then
+    # Remove any existing crt
+    keyringer_exec del "$BASEDIR" "$FILE.crt"
+  fi
+
+  cd "$CWD"
+
+  if [ ! -z "$OUTFILE" ]; then
+    mkdir -p `dirname $OUTFILE`
+    printf "Saving copies at %s\n" "`dirname $OUTFILE`"
+    cat "$TMPWORK/${NODE}_privatekey.pem" > "$OUTFILE.pem"
+    cat "$TMPWORK/${NODE}_csr.pem"        > "$OUTFILE.csr"
+
+    if [ -f "$TMPWORK/${NODE}.crt" ]; then
+      cat "$TMPWORK/${NODE}.crt" > "$OUTFILE.crt"
+    fi
+  fi
+
+  # Show cert fingerprint
+  if [ "$KEYTYPE" == "ssl-self" ]; then
+    openssl x509 -noout -in "$TMPWORK/${NODE}.crt" -fingerprint
+  fi
+
+  echo "Done"
+}
+
+# Load functions
+LIB="`dirname $0`/../functions"
+source "$LIB" || exit 1
+
+# Aditional parameters
+KEYTYPE="$2"
+FILE="$RELATIVE_PATH/$3"
+NODE="$4"
+OUTFILE="$5"
+CWD="`pwd`"
+
+# Verify
+if [ -z "$NODE" ]; then
+  echo -e "Usage: keyringer <keyring> $BASENAME <gpg|ssh|x509|x509-self|ssl|ssl-self> <file> <hostname> [outfile]"
+  echo -e "Options:"
+  echo -e "\t gpg|ssh|x509[-self]|ssl|ssl[-self]: key type."
+  echo -e "\t file                              : base file name for encrypted output (relative to keys folder),"
+  echo -e "\t                                     without spaces"
+  echo -e "\t hostname                          : host for the key pair"
+  echo -e "\t outfile                           : optional unencrypted output file, useful for deployment,"
+  echo -e "\t                                     without spaces"
+  exit 1
+elif [ ! -e "$KEYDIR" ]; then
+  echo "Folder not found: $KEYDIR, leaving"
+  exit 1
+fi
+
+# Set a tmp file
+keyringer_set_tmpfile genpair -d
+
+# Dispatch
+echo "Generating $KEYTYPE key for $NODE..."
+if [ "$KEYTYPE" == "ssl-self" ] || [ "$KEYTYPE" == "x509-self" ]; then
+  genkeys_x509
+else
+  genkeys_"$KEYTYPE"
+fi
+
+# Cleanup
+cd "$CWD"
+rm -rf "$TMPWORK"
+trap - EXIT

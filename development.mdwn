@@ -99,3 +99,4 @@ References
 * [Generating pristine tarballs from git repositories](http://joeyh.name/blog/entry/generating_pristine_tarballs_from_git_repositories/).
 * [Debian Packaging](https://wiki.debian.org/Packaging).
 * [Debian Upstream Guide](https://wiki.debian.org/UpstreamGuide).
+* [DanielKahnGillmor/preferred_packaging - Debian Wiki](https://wiki.debian.org/DanielKahnGillmor/preferred_packaging).

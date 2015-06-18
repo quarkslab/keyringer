@@ -34,7 +34,7 @@ install_bin:
 	$(INSTALL) -D --mode=0755 keyringer $(DESTDIR)/$(PREFIX)/bin/keyringer
 
 install_doc:
-	$(INSTALL) -D --mode=0644 index.mdwn $(DESTDIR)/$(PREFIX)/share/doc/$(PACKAGE)/README
+	$(INSTALL) -D --mode=0644 index.mdwn $(DESTDIR)/$(PREFIX)/share/doc/$(PACKAGE)/README.md
 	$(INSTALL) -D --mode=0644 LICENSE $(DESTDIR)/$(PREFIX)/share/doc/$(PACKAGE)/LICENSE
 
 install_man:

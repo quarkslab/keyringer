@@ -41,107 +41,7 @@
 </head>
 <body style="padding-top: 60px; padding-bottom: 60px;">
 
-<script src="<TMPL_VAR BASEURL>/js/jquery.min.js" type="text/javascript"></script>
-<script src="<TMPL_VAR BASEURL>bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-
-<!--
-<div class="navbar navbar-inverse navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
-
-      <TMPL_IF HAVE_ACTIONS>
-
-      <TMPL_IF OTHERLANGUAGES>
-      <TMPL_IF HTML5><nav id="otherlanguages"><TMPL_ELSE><div id="otherlanguages"></TMPL_IF>
-      <ul class="nav">
-      <TMPL_LOOP OTHERLANGUAGES>
-      <li>
-      <a href="<TMPL_VAR URL>"><TMPL_VAR LANGUAGE></a>
-      <TMPL_IF MASTER>
-      (master)
-      <TMPL_ELSE>
-      &nbsp;(<TMPL_VAR PERCENT>%)
-      </TMPL_IF>
-      </li>
-      </TMPL_LOOP>
-      </ul>
-      <TMPL_IF HTML5></nav><TMPL_ELSE></div></TMPL_IF>
-      </TMPL_IF>
-
-      <TMPL_IF HTML5><nav class="actions"><TMPL_ELSE><div class="actions"></TMPL_IF>
-      <ul class="nav">
-      <TMPL_IF EDITURL>
-      <li><a href="<TMPL_VAR EDITURL>" rel="nofollow">Edit</a></li>
-      </TMPL_IF>
-      <TMPL_IF RECENTCHANGESURL>
-      <li><a href="<TMPL_VAR RECENTCHANGESURL>">RecentChanges</a></li>
-      </TMPL_IF>
-      <TMPL_IF HISTORYURL>
-      <li><a href="<TMPL_VAR HISTORYURL>">History</a></li>
-      </TMPL_IF>
-      <TMPL_IF GETSOURCEURL>
-      <li><a href="<TMPL_VAR GETSOURCEURL>">Source</a></li>
-      </TMPL_IF>
-      <TMPL_IF PREFSURL>
-      <li><a href="<TMPL_VAR PREFSURL>">Preferences</a></li>
-      </TMPL_IF>
-      <TMPL_IF ACTIONS>
-      <TMPL_LOOP ACTIONS>
-      <li><TMPL_VAR ACTION></li>
-      </TMPL_LOOP>
-      </TMPL_IF>
-      <TMPL_IF COMMENTSLINK>
-      <li><TMPL_VAR COMMENTSLINK></li>
-      <TMPL_ELSE>
-      <TMPL_IF DISCUSSIONLINK>
-      <li><TMPL_VAR DISCUSSIONLINK></li>
-      </TMPL_IF>
-      </TMPL_IF>
-      </ul>
-      <TMPL_IF HTML5></nav><TMPL_ELSE></div></TMPL_IF>
-      </TMPL_IF>
-    </div>
-  </div>
-</div>
--->
-
 <div class="container">
-
-  <!--
-  <div class="row-fluid">
-    <div class="navbar span12">
-      <div class="navbar-inner">
-        <TMPL_IF HAS_PARENTLINKS>
-        <TMPL_LOOP PARENTLINKS>
-          <TMPL_IF NAME="DEPTH_0">
-            <a class="brand" href="<TMPL_VAR URL>"><TMPL_VAR PAGE></a>
-          </TMPL_IF>
-        </TMPL_LOOP>
-        <TMPL_ELSE>
-          <a class="brand" href="<TMPL_VAR BASEURL>"><TMPL_VAR TITLE></a>
-        </TMPL_IF>
-        <ul class="nav">
-          <li><a href="<TMPL_VAR BASEURL>page">Page Title</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-  -->
-
-  <!--
-  <div class="row-fluid">
-    <TMPL_IF HTML5><header class="span12"><TMPL_ELSE><div class="span12"></TMPL_IF>
-      <h1><TMPL_IF NAME="DEPTH_0"><TMPL_VAR PAGE></TMPL_IF></h1>
-
-      <ul class="breadcrumb">
-      <TMPL_LOOP PARENTLINKS>
-          <li><a href="<TMPL_VAR URL>"><TMPL_VAR PAGE></a> <span class="divider">/</span> </li>
-      </TMPL_LOOP>
-      <li><TMPL_VAR TITLE></li>
-      </ul>
-    <TMPL_IF HTML5></header><TMPL_ELSE></div></TMPL_IF>
-  </div>
-  -->
 
   <TMPL_IF HTML5><article class="page row-fluid"><TMPL_ELSE><div class="page row-fluid"></TMPL_IF>
 
@@ -243,17 +143,17 @@
     </TMPL_UNLESS>
     <!-- from <TMPL_VAR WIKINAME> -->
     <TMPL_IF HTML5></footer><TMPL_ELSE></div></TMPL_IF>
-    
+
   </div>
-  
+
   <div class="span4">
 
     <TMPL_IF SIDEBAR>
     <TMPL_IF HTML5><aside class="sidebar"><TMPL_ELSE><div class="sidebar"></TMPL_IF>
     <TMPL_VAR SIDEBAR>
     <TMPL_IF HTML5></aside><TMPL_ELSE></div></TMPL_IF>
-    </TMPL_IF>  
-  
+    </TMPL_IF>
+
   </div>
 
   <TMPL_IF HTML5></article><TMPL_ELSE></div></TMPL_IF>

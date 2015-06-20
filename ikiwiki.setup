@@ -32,6 +32,8 @@ use IkiWiki::Setup::Standard {
   diffurl => "https://git.sarava.org/?p=keyringer.git;a=blobdiff;h=[[sha1_to]];hp=[[sha1_from]];hb=[[sha1_parent]];f=[[file]]",
 	#gitorigin_branch => "origin",
 	#gitmaster_branch => "master",
+	# See https://ikiwiki.info/tips/laptop_wiki_with_git/
+	gitorigin_branch => '',
 
 	# Tla stuff.
 	#rcs => "tla"

@@ -86,4 +86,4 @@ wiki:
 	@ikiwiki --setup ikiwiki.setup
 
 wiki_deploy:
-	@rsync -avz --delete keyringer/ blog:/var/sites/keyringer/www/
+	@rsync -avz --delete www/ blog:/var/sites/keyringer/www/

@@ -6,3 +6,4 @@ debian/keyringer.substvars
 tarballs
 www
 .pc
+.ikiwiki

@@ -212,5 +212,5 @@ use IkiWiki::Setup::Standard {
 	#po_slave_languages => [ 'pt|Portuguese' ],
 
   # See http://ikiwiki.info/plugins/rsync/
-  #rsync_command => 'rsync -qa --delete . user@host:/path/to/docroot/',
+  #rsync_command => 'rsync -qa --delete . keyringer:/var/sites/keyringer/www/',
 }

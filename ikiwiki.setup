@@ -152,7 +152,7 @@ use IkiWiki::Setup::Standard {
   disable_plugins => [qw{openid editpage}],
   # To add a directory to the perl search path, use this.
   #libdir => "/home/me/.ikiwiki/",
-  
+
   # To override environment variable settings, you can list values here.
   #ENV => {
   #  TZ => "America/New_York",
@@ -176,19 +176,19 @@ use IkiWiki::Setup::Standard {
   #  mirror1 => "http://hostname1",
   #  mirror2 => "http://hostname2/mirror",
   #},
-  
+
   # For use with the anonok plugin, a PageSpec specifying what
   # pages anonymous users can edit
   #anonok_pagespec => "*",
-  
+
   # For use with the aggregate plugin, to allow aggregation to be
   # triggered via the web.
   #aggregate_webtrigger => 1,
-  
+
   # For use with the pinger plugin, how many seconds to wait before
   # timing out.
   #pinger_timeout => 15.
-  
+
   # For use with the amazon S3 plugin, your public access key id.
   #amazon_s3_key_id => 'XXXXXXXXXXXXXXXXXXXX',
   # And a file holding your secret key. This file *must* not be
@@ -202,7 +202,7 @@ use IkiWiki::Setup::Standard {
   #amazon_s3_location => "EU",
   # Uncomment if you need to store each index file twice.
   #amazon_s3_dupindex => 1,
-  
+
   # For use with the attachment plugin, a program that returns
   # nonzero if its standard input contains an virus.
   #virus_checker => "clamdscan -",

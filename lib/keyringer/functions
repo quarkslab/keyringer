@@ -480,7 +480,7 @@ function keyringer_get_new_file {
   fi
 
   # Sanitize and complete file name
-  FILE="`echo $FILE | sed -e 's/[^A-Za-z0-9.\/\-]/_/g'`"
+  FILE="`echo $FILE | sed -e 's/[^A-Za-z0-9@.\/\-]/_/g'`"
 
   # Warn user about file name change
   if [ "`basename "$*"`" != "`basename $FILE`" ]; then

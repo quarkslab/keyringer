@@ -430,16 +430,18 @@ function keyringer_get_option {
 function keyringer_get_file {
   FILE="$(keyringer_filename "$RELATIVE_PATH/$1")"
 
-  if [ -z "$FILE" ]; then
-    keyringer_action_usage
-    exit 1
-  elif [ ! -f "$KEYDIR/$FILE" ]; then
+  if [ ! -f "$KEYDIR/$FILE" ]; then
     # Try to find a similar file
+    FILE=""
     count=0
     candidates=(`keyringer_exec find "$BASEDIR" | grep -i "$1" | grep -e '.asc$'`)
 
     if [ ! -z "$candidates" ]; then
-      echo "Could not find exact match for \"$1\", please choose one of the following secrets:"
+      if [ ! -z "$1" ]; then
+        echo "Could not find exact match for \"$1\""
+      fi
+
+      echo "Choose one of the following or type a pattern:"
       echo ""
 
       for candidate in ${candidates[@]}; do
@@ -452,14 +454,19 @@ function keyringer_get_file {
 
       if [[ "$option" =~ ^[0-9]+$ ]] && [ ! -z "${candidates[$option]}" ]; then
         FILE="$(keyringer_filename "$RELATIVE_PATH/${candidates[$option]}")"
-      else
-        echo "Invalid option"
-        exit 1
+      elif [ ! -z "$option" ]; then
+        keyringer_get_file $option
       fi
     else
-      echo "File not found: $KEYDIR/$FILE"
-      exit 1
+      echo "Nothing matches $option, try again."
+      keyringer_get_file
     fi
+  fi
+
+  # Probably Ctrl-D was hit
+  if [ -z "$FILE" ]; then
+    echo ""
+    exit
   fi
 }
 

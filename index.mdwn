@@ -21,7 +21,7 @@ Installation
 
 Just clone
 
-    git clone git://git.sarava.org/keyringer.git
+    git clone git://git.fluxo.info/keyringer.git
 
 And then leave it somewhere, optionally adding it to your `$PATH` environment variable
 or package it to your preferred distro.

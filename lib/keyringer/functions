@@ -4,7 +4,7 @@
 # Common variables.
 #
 
-DEFAULT_RECIPIENTS_FILE="default.r"
+DEFAULT_RECIPIENTS_FILE="default"
 
 
 #
@@ -638,14 +638,14 @@ function keyringer_check_recipients {
   local processed=":"
 
   # Check if recipients file is empty.
-  if [ "`grep -vE "^#|^$" "$RECIPIENTS"/* | wc -l`" == 0 ] && [ "$SUBCOMMAND" != "edit" ]; then
+  if [ "`grep -rvE "^#|^$" "$RECIPIENTS"/* | wc -l`" == 0 ] && [ "$SUBCOMMAND" != "edit" ]; then
     echo "Fatal: no recipients configured for this keyring."
     echo "Please edit your recipients file first."
     exit 1
   fi
 
   # Check recipients header for updates.
-  if grep -qe ' XXXXXXXX$' "$RECIPIENTS"/*; then
+  if grep -qre ' XXXXXXXX$' "$RECIPIENTS"/*; then
     echo "Updating recipients file..."
     sed -i -e 's/ XXXXXXXX$/ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/' "$RECIPIENTS"/*
   fi
@@ -655,7 +655,7 @@ function keyringer_check_recipients {
     return
   fi
 
-  for recipient in $(cat "$RECIPIENTS"/* | grep -v '^#' | awk '{ print $2 }'); do
+  for recipient in $(find "$RECIPIENTS" -name "$DEFAULT_RECIPIENTS_FILE" -o -name "*.r" | xargs cat | grep -v '^#' | awk '{ print $2 }'); do
     # Process a recipient just once
     if echo $processed | grep -q "$recipient:"; then
       continue
@@ -755,18 +755,26 @@ function keyringer_set_recipients {
   if [ -z "$1" ]; then
     keyringer_set_default_recipients
   else
-    candidate="$1"
-    candidate_no_extension="`echo $1 | sed -e 's/.asc$//'`"
+    candidate="$1.r"
+    candidate_no_extension="`echo $1 | sed -e 's/.asc$//'`.r"
 
-    # Find the first matching recipient
+    # Look for immediate recipient file
+    if [ -e "$RECIPIENTS/$candidate" ]; then
+      RECIPIENTS_FILE="$RECIPIENTS/$candidate"
+      RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$candidate"
+      return
+    elif [ -e "$RECIPIENTS/$candidate_no_extension" ]; then
+      RECIPIENTS_FILE="$RECIPIENTS/$candidate_no_extension"
+      RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$candidate_no_extension"
+      return
+    fi
+
+    # Look for the first matching default recipient file
     while [ ! -z "$candidate" ] && [ "$candidate" != "." ] && [ "$candidate" != "/" ] && [ "$candidate" != "/." ]; do
+      candidate="`dirname $candidate`/$DEFAULT_RECIPIENTS_FILE"
       if [ -e "$RECIPIENTS/$candidate" ]; then
         RECIPIENTS_FILE="$RECIPIENTS/$candidate"
         RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$candidate"
-        return
-      elif [ -e "$RECIPIENTS/$candidate_no_extension" ]; then
-        RECIPIENTS_FILE="$RECIPIENTS/$candidate_no_extension"
-        RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$candidate_no_extension"
         return
       fi
 

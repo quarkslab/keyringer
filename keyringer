@@ -104,6 +104,7 @@ function keyringer_init {
   if ! keyringer_is_git "$BASEDIR"; then
     keyringer_exec git "$BASEDIR" init
     keyringer_git_ignore 'tmp/*'
+    keyringer_git_ignore '*~'
 
     # Git configuration
     if [ ! -z "$email" ]; then

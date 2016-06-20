@@ -144,7 +144,7 @@ Example:
 Managing recipients
 -------------------
 
-Keyringer uses the `default` recipient stored at `$KEYRING_FOLDER/config/recipients/default.r`
+Keyringer uses the `default` recipient stored at `$KEYRING_FOLDER/config/recipients/default`
 as the standard list of OpenPGP public key fingerprints to which secrets should be encrypted.
 
 Additionally, keyringer supports multiple `recipient` files which can have a different set
@@ -169,7 +169,7 @@ the `default` recipient.
 If you want more recipient files, your next step is tell keyringer the OpenPGP
 key IDs to encrypt files to:
 
-    keyringer <keyring> recipients edit [recipient-name]
+    keyringer <keyring> recipients edit [recipient-name].r
     keyringer <keyring> recipients ls
 
 Remember that keyringer support multiple recipients in a per-folder style. Try
@@ -181,8 +181,9 @@ Fill it with your friends key IDs. Now encrypt a secret just for then:
 
     keyringer <keyring> encrypt closest-friends/secret
 
-In other words, if keyringer finds a recipient file matching a given path,
-it will use it instead of the global recipients file.
+In other words, if keyringer finds a recipient file (with the '.r' extension) matching a given path,
+it will use it instead of the global recipients file. And default recipients file for the
+closest folder is chosen again the global recipients file.
 
 You can even create recipient files with your friends' key IDs but without
 yours: then you shall be able to encrypt secrets for them that even you cannot

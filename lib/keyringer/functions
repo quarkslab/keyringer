@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+
+#
+# Common variables.
+#
+
+DEFAULT_RECIPIENTS_FILE="default.r"
+
+
 #
 # Common functions.
 #
@@ -386,8 +394,8 @@ function keyringer_upgrade {
       echo "Converting recipients to the new scheme..."
       mv $RECIPIENTS $RECIPIENTS.tmp
       mkdir $RECIPIENTS
-      mv $RECIPIENTS.tmp $RECIPIENTS/default
-      keyringer_exec git "$BASEDIR" add $RECIPIENTS_BASE/default
+      mv $RECIPIENTS.tmp $RECIPIENTS/$DEFAULT_RECIPIENTS_FILE
+      keyringer_exec git "$BASEDIR" add $RECIPIENTS_BASE/$DEFAULT_RECIPIENTS_FILE
       keyringer_exec git "$BASEDIR" commit -m "Config-upgrade-0.1"
     fi
 
@@ -772,9 +780,9 @@ function keyringer_set_recipients {
 
 # Set default recipients
 function keyringer_set_default_recipients {
-  if [ -e "$RECIPIENTS/default" ]; then
-    RECIPIENTS_FILE="$RECIPIENTS/default"
-    RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/default"
+  if [ -e "$RECIPIENTS/$DEFAULT_RECIPIENTS_FILE" ]; then
+    RECIPIENTS_FILE="$RECIPIENTS/$DEFAULT_RECIPIENTS_FILE"
+    RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$DEFAULT_RECIPIENTS_FILE"
   else
     echo "Fatal: no suitable recipient file found for path $1"
     exit 1

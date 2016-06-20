@@ -144,7 +144,7 @@ Example:
 Managing recipients
 -------------------
 
-Keyringer uses the `default` recipient stored at `$KEYRING_FOLDER/config/recipients/default`
+Keyringer uses the `default` recipient stored at `$KEYRING_FOLDER/config/recipients/default.r`
 as the standard list of OpenPGP public key fingerprints to which secrets should be encrypted.
 
 Additionally, keyringer supports multiple `recipient` files which can have a different set

@@ -75,7 +75,7 @@ function keyringer_init {
       mkdir -p "$BASEDIR/"{config,keys}
 
       # Setup recipients
-      keyringer_create_new_recipients "$RECIPIENTS/default"
+      keyringer_create_new_recipients "$RECIPIENTS/$DEFAULT_RECIPIENTS_FILE"
 
       # Setup options
       touch "$OPTIONS"
@@ -116,7 +116,7 @@ function keyringer_init {
     echo "Now you have to edit the default recipient configuration to be able to encrypt secrets."
     echo "Press any key to proceed editing..."
     read key
-    keyringer_exec recipients "$BASEDIR" edit default
+    keyringer_exec recipients "$BASEDIR" edit $DEFAULT_RECIPIENTS_FILE
 
     # Stage and commit
     keyringer_exec git "$BASEDIR" add .

@@ -236,7 +236,7 @@ function keyringer_unset_tmpfile {
 
 # Add a pattern into gitignore
 function keyringer_git_ignore {
-  if [ ! -z "$BASEDIR/.gitignore" ]; then
+  if [ ! -e "$BASEDIR/.gitignore" ]; then
     echo "$1" > "$BASEDIR/.gitignore"
     keyringer_exec git "$BASEDIR" add .gitignore
   else

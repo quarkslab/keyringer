@@ -38,7 +38,7 @@ elif [ "$COMMAND" == "edit" ]; then
     keyringer_exec git "$BASEDIR" add "$RECIPIENTS_FILE_BASE"
   else
     echo "Please specify one recipient to edit among the available:"
-    ls $RECIPIENTS | sed -e 's/^/\t/'
+    ls -B $RECIPIENTS | sed -e 's/^/\t/'
     exit 1
   fi
 else

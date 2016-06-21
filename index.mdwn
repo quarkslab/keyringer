@@ -1,5 +1,8 @@
 # Keyringer: encrypted and distributed secret sharing software
 
+> NB: We've just forked this project to add a key feature for us: recipients management
+> per folder, otherwise you can't have subfolders with different recipients.
+
 Keyringer lets you manage and share secrets using GnuPG and Git with custom
 commands to encrypt, decrypt, recrypt, create key pairs, etc.
 

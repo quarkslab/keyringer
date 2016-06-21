@@ -7,7 +7,7 @@ commands to encrypt, decrypt, recrypt, create key pairs, etc.
 - Manpage: [keyringer.1](share/man/keyringer.1)
 - License: [GPLv3+](LICENSE)
 - Issue tracker: [https://keyringer.pw/trac](https://keyringer.pw/trac)
-- Tor hidden service: [http://wewbqck6m3ffkn44.onion](http://wewbqck6m3ffkn44.onion)
+- Tor hidden service: [http://4qt45wbulqipigwa.onion](http://4qt45wbulqipigwa.onion)
 - Releases: [https://keyringer.pw/releases](releases)
 - Contact: rhatto at riseup.net
 
@@ -19,14 +19,14 @@ Index
 Installation
 ------------
 
-Just clone
+Just clone:
 
-    git clone git://git.sarava.org/keyringer.git
+    git clone git://git.fluxo.info/keyringer.git
 
 And then leave it somewhere, optionally adding it to your `$PATH` environment variable
 or package it to your preferred distro.
 
-If you're using Debian `jessie` or `unstable`, just run
+If you're using Debian `jessie` or newer, just run:
 
     apt-get install keyringer
 
@@ -40,59 +40,60 @@ a new keyring (or register an existing one with your config file), run:
 
     keyringer <keyring> init <path> [remote]
 
-This will
+This will:
 
   1. Add an entry at `$HOME/.keyringer/config` aliasing 'keyring' to 'path'.
   2. Initialize a git repository if needed.
 
-For example,
+For example:
 
     keyringer friends init $HOME/keyrings/friends
 
 creates an alias "friends" pointing to `$HOME/keyrings/friends`. All
 other keyring actions for this keyring should be called using this alias.
+An advantage is you don't need to be into the keyring to perform operations on it.
 
 If there is an existing remote keyring git repository and you just
-want to checkout it, use
+want to checkout it, use:
 
     keyringer friends init $HOME/keyrings/friends <repository-url>
 
 Managing secrets
 ----------------
 
-Each `secret` has a corresponding file inside `keys` subdirectory from the
+Each `secret` has a corresponding encrypted file inside `keys` subdirectory from the
 keyring folder. Keyringer has plenty of actions to operate in these secrets:
 
    keyringer <keyring> commands
 
-Encrypting a secret
+Encrypting a secret from stdin:
 
     keyringer <keyring> encrypt <secret>
 
-Encrypting a secret from a file
+Encrypting a secret from a file:
 
     keyringer <keyring> encrypt <secret> <plaintext-file>
 
-Decrypting a secret (only to stdout)
+Decrypting a secret (only to stdout):
 
     keyringer <keyring> decrypt <secret>
 
-Re-encrypting a secret or the whole repository
+Re-encrypting a secret or the whole repository:
 
     keyringer <keyring> recrypt [secret]
 
-Appending information to a secret
+Appending information to a secret:
 
     keyringer <keyring> append <secret>
 
-Editing a secret
+Editing a secret:
 
     keyringer <keyring> edit <secret>
 
 Use this option with caution as it keeps temporary unencrypted data
 into a temporary folder.
 
-Listing secrets
+Listing secrets:
 
     keyringer <keyring> ls [arguments]
 
@@ -133,7 +134,7 @@ Using a non-default OpenPGP key
 -------------------------------
 
 If you want to use a different key other than your default for a given
-keyringer, use
+keyringer, use:
 
     keyringer <keyring> preferences add KEYID=<fingerprint>
 
@@ -144,62 +145,98 @@ Example:
 Managing recipients
 -------------------
 
+Global default
+~~~~~~~~~~~~~~
+
 Keyringer uses the `default` recipient stored at `$KEYRING_FOLDER/config/recipients/default`
 as the standard list of OpenPGP public key fingerprints to which secrets should be encrypted.
+
+When you have first initialized your keyring, keyringer might have asked you to populate
+the `default` recipient list or you cloned a keyring repository which already has
+the `default` recipient.
+
+Recipients for a specific secret
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Additionally, keyringer supports multiple `recipient` files which can have a different set
 of OpenPGP public key fingerprints used for encryption.
 
-Recipients are matched against secrets according to it's path. If there exists a recipient
-called `accounting`, the following secret will be encrypted using it's OpenPGP public key
-fingerprints:
+Recipients are matched against secrets according to their paths. If it exists a recipient
+called `accounting/balance` (located at `$KEYRING_FOLDER/config/recipients/accounting/balance.r`),
+the following secret will be encrypted using it's OpenPGP public key fingerprints:
 
     keyringer <keyring> encrypt accounting/balance
 
-In other words, the `accounting` recipient file is used because the secret name begins
-with `accounting`.
+In other words, the `accounting/balance` recipient is used because there is an exact match between
+the secret name and the recipient name.
 
 So it's the case that recipients listed in the `default` recipient but not in the
-`accounting` recipients won't be able to decrypt this secret.
+`accounting/balance` recipients won't be able to decrypt this secret.
 
-When you first initalized your keyring, keyringer might have asked you to populate
-the `default` recipient list or you cloned a keyring repository which already has
-the `default` recipient.
+Default recipients per folder
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you want more recipient files, your next step is tell keyringer the OpenPGP
-key IDs to encrypt files to:
+If you don't want to specify recipients for each secret, you can define `default` recipient
+for a specific folder, just as the `default` recipient (see above) works for the top folder.
+
+For example, if it exists a recipient called `accounting/default`, the following secret will be
+encrypted using it's OpenPGP public key fingerprints:
+
+    keyringer <keyring> encrypt accounting/invoices
+
+In other words, the `accounting/default` recipient is used because there no exact match between
+the secret name and any recipient but there is a default recipient for the concerned folder.
+
+In there is no default recipient for the concerned folder, keyringer will look up on the folder above, and
+again and again until it hits the `default` recipient file at the top.
+
+Manage recipients
+~~~~~~~~~~~~~~~~~
+
+you want more recipients, next step is tell keyringer the OpenPGP key IDs to encrypt files to:
 
     keyringer <keyring> recipients edit [recipient-name]
     keyringer <keyring> recipients ls
 
 Remember that keyringer support multiple recipients in a per-folder style. Try
-it by creating a sample recipient file:
+it by creating a default recipient within a folder:
 
-    keyringer <keyring> recipients edit closest-friends
+    keyringer <keyring> recipients edit closest-friends/default
 
-Fill it with your friends key IDs. Now encrypt a secret just for then:
+Fill it with your friends key IDs. Now encrypt a secret just for them:
 
     keyringer <keyring> encrypt closest-friends/secret
 
-In other words, if keyringer finds a recipient file matching a given path,
-it will use it instead of the global recipients file.
+In other words, if keyringer finds a recipient matching a given path,
+it will use it instead of the global recipient. And default recipient within the
+closest folder is chosen again the global recipient.
 
-You can even create recipient files with your friends' key IDs but without
-yours: then you shall be able to encrypt secrets for them that even you cannot
+You can even create recipient with your friends' key IDs but without
+yours: then you shall be able to encrypt secrets for them that even you can not
 access. Try to find an use case for that ;)
 
 Each recipient list is defined in a file placed at `config/recipients` in your
 keyring repository. Take care to add just trustable recipients.
+
+Recipients against recipient files
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+You may have notice that the recipient file for a specific secret ends with the ".r" extension,
+and that default recipient files are just "default" files.
+It's a builtin feature to allow you manage a tree view for your secrets, and to allow you to create
+secrets called "default".
+You don't have to care about that, except if you want to manage directly the recipient files, which is not
+recommended. See the `Manage recipients` section just above to manage recipients instead of recipient files.
 
 Design
 ------
 
 Keyringer's basic concepts are as follows:
 
-  - Each secret is encrypted using multiple users's OpenPGP public keys and commit the
-    output in a git repository we call a "keyring".
+  - Each secret is encrypted using multiple users's OpenPGP public keys and committed
+    in a git repository we call a "keyring".
 
-  - A "recipient" a list of OpenPGP keys associated with a path in the keyring, so each
+  - A "recipient" is a list of OpenPGP keys associated with a path in the keyring, so each
     keyring can have multiple recipient definitions so secret compartmentalization is
     builtin. All encryption should respect recipient definition.
 
@@ -248,6 +285,9 @@ and its the only VCS known to make easier repository history manipulation.
 
 Limitations
 -----------
+
+  - You can't have a secret ending with "default", because it's the recipient file name
+    for the folder's default recipients list.
 
   - See the [manpage](share/man/keyringer.1) for details.
 

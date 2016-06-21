@@ -81,3 +81,9 @@ debian:
 	dch -e
 	git commit -a -m "Updating debian/changelog"
 	git-buildpackage --git-tag-only --git-sign-tags
+
+web:
+	@ikiwiki --setup ikiwiki.setup
+
+web_deploy:
+	@rsync -avz --delete www/ blog:/var/sites/keyringer/www/

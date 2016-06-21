@@ -4,4 +4,9 @@ debian/files
 debian/files
 debian/keyringer.substvars
 tarballs
+www
 .pc
+.ikiwiki
+/.ikiwiki
+/recentchanges
+/www

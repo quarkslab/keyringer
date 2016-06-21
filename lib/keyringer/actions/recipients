@@ -23,8 +23,8 @@ if [ "$COMMAND" == "ls" ]; then
       exit 1
     fi
   else
-    for recipients in `ls $RECIPIENTS`; do
-      echo "In recipients file $recipients:"
+    for recipients in `cd "$RECIPIENTS" && find * -name "$DEFAULT_RECIPIENTS_FILE" -o -name "*.r"`; do
+      echo "In recipient '$(echo $recipients|sed s/.r$//)' (recipient file is '$recipients'):"
       echo "-----------------------------------------------------------------------------------"
       cat $RECIPIENTS/$recipients
       echo ""
@@ -38,7 +38,7 @@ elif [ "$COMMAND" == "edit" ]; then
     keyringer_exec git "$BASEDIR" add "$RECIPIENTS_FILE_BASE"
   else
     echo "Please specify one recipient to edit among the available:"
-    ls $RECIPIENTS | sed -e 's/^/\t/'
+    (cd "$RECIPIENTS" && tree -f -P "*.r|$DEFAULT_RECIPIENTS_FILE"|sed s,./,,|sed s/.r$//)
     exit 1
   fi
 else

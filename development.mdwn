@@ -74,7 +74,7 @@ Test environment
 
 Setup:
 
-    keyringer test init ~/code/tests/keyringer
+    keyringer test init ~/temp/tests/keyringer
 
 Teardown:
 

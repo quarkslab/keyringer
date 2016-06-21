@@ -24,5 +24,8 @@ if ! echo "$ORIG" | grep -q '*' && [ ! -e "$KEYDIR/$RELATIVE_PATH/$ORIG" ]; then
   exit 1
 fi
 
+# Ensure destination path exists
+mkdir -p "`dirname $KEYDIR/$RELATIVE_PATH/$DEST`"
+
 # Run move command
 keyringer_exec git "$BASEDIR" mv "keys/$RELATIVE_PATH/$ORIG" "keys/$FILE"

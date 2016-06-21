@@ -1,4 +1,12 @@
 #!/usr/bin/env bash
+
+#
+# Common variables.
+#
+
+DEFAULT_RECIPIENTS_FILE="default"
+
+
 #
 # Common functions.
 #
@@ -236,13 +244,15 @@ function keyringer_unset_tmpfile {
 
 # Add a pattern into gitignore
 function keyringer_git_ignore {
-  if [ ! -z "$BASEDIR/.gitignore" ]; then
-    echo "$1" > "$BASEDIR/.gitignore"
-    keyringer_exec git "$BASEDIR" add .gitignore
-  else
-    if ! grep -q -e "^$1$" "$BASEDIR/.gitignore"; then
-      echo "$1" >> "$BASEDIR/.gitignore"
+  GITIGNOREFILE=".gitignore"
+  GITIGNOREPATH="$BASEDIR/$GITIGNOREFILE"
+  if [ ! -e "$GITIGNOREPATH" ] || ! grep -q -e "^$1$" "$GITIGNOREPATH"; then
+    if [ ! -e "$GITIGNOREPATH" ]; then
+      echo "$1" > "$GITIGNOREPATH"
+    else
+      echo "$1" >> "$GITIGNOREPATH"
     fi
+    keyringer_exec git "$BASEDIR" add $GITIGNOREFILE
   fi
 }
 
@@ -384,8 +394,8 @@ function keyringer_upgrade {
       echo "Converting recipients to the new scheme..."
       mv $RECIPIENTS $RECIPIENTS.tmp
       mkdir $RECIPIENTS
-      mv $RECIPIENTS.tmp $RECIPIENTS/default
-      keyringer_exec git "$BASEDIR" add $RECIPIENTS_BASE/default
+      mv $RECIPIENTS.tmp $RECIPIENTS/$DEFAULT_RECIPIENTS_FILE
+      keyringer_exec git "$BASEDIR" add $RECIPIENTS_BASE/$DEFAULT_RECIPIENTS_FILE
       keyringer_exec git "$BASEDIR" commit -m "Config-upgrade-0.1"
     fi
 
@@ -430,16 +440,18 @@ function keyringer_get_option {
 function keyringer_get_file {
   FILE="$(keyringer_filename "$RELATIVE_PATH/$1")"
 
-  if [ -z "$FILE" ]; then
-    keyringer_action_usage
-    exit 1
-  elif [ ! -f "$KEYDIR/$FILE" ]; then
+  if [ ! -f "$KEYDIR/$FILE" ]; then
     # Try to find a similar file
+    FILE=""
     count=0
     candidates=(`keyringer_exec find "$BASEDIR" | grep -i "$1" | grep -e '.asc$'`)
 
     if [ ! -z "$candidates" ]; then
-      echo "Could not find exact match for \"$1\", please choose one of the following secrets:"
+      if [ ! -z "$1" ]; then
+        echo "Could not find exact match for \"$1\""
+      fi
+
+      echo "Choose one of the following or type a pattern:"
       echo ""
 
       for candidate in ${candidates[@]}; do
@@ -452,14 +464,19 @@ function keyringer_get_file {
 
       if [[ "$option" =~ ^[0-9]+$ ]] && [ ! -z "${candidates[$option]}" ]; then
         FILE="$(keyringer_filename "$RELATIVE_PATH/${candidates[$option]}")"
-      else
-        echo "Invalid option"
-        exit 1
+      elif [ ! -z "$option" ]; then
+        keyringer_get_file $option
       fi
     else
-      echo "File not found: $KEYDIR/$FILE"
-      exit 1
+      echo "Nothing matches $option, try again."
+      keyringer_get_file
     fi
+  fi
+
+  # Probably Ctrl-D was hit
+  if [ -z "$FILE" ]; then
+    echo ""
+    exit
   fi
 }
 
@@ -473,7 +490,7 @@ function keyringer_get_new_file {
   fi
 
   # Sanitize and complete file name
-  FILE="`echo $FILE | sed -e 's/[^A-Za-z0-9.\/\-]/_/g'`"
+  FILE="`echo $FILE | sed -e 's/[^A-Za-z0-9@.\/\-]/_/g'`"
 
   # Warn user about file name change
   if [ "`basename "$*"`" != "`basename $FILE`" ]; then
@@ -621,14 +638,15 @@ function keyringer_check_recipients {
   local processed=":"
 
   # Check if recipients file is empty.
-  if [ "`grep -vE "^#|^$" "$RECIPIENTS"/* | wc -l`" == 0 ] && [ "$SUBCOMMAND" != "edit" ]; then
+  if [ "`grep -rvE "^#|^$" "$RECIPIENTS"/* | wc -l`" == 0 ] && [ "$SUBCOMMAND" != "edit" ]; then
     echo "Fatal: no recipients configured for this keyring."
     echo "Please edit your recipients file first."
     exit 1
   fi
 
   # Check recipients header for updates.
-  if grep -qe ' XXXXXXXX$' "$RECIPIENTS"/*; then
+  # TODO: tree view
+  if grep -qre ' XXXXXXXX$' "$RECIPIENTS"/*; then
     echo "Updating recipients file..."
     sed -i -e 's/ XXXXXXXX$/ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/' "$RECIPIENTS"/*
   fi
@@ -638,7 +656,12 @@ function keyringer_check_recipients {
     return
   fi
 
-  for recipient in $(cat "$RECIPIENTS"/* | grep -v '^#' | awk '{ print $2 }'); do
+  # Check if the recipient file is empty
+  if [ ! -z "$RECIPIENTS_FILE" ] && [ $(grep -v "^#" "$RECIPIENTS_FILE"|grep -v "^\s*$"|wc -l) == 0 ]; then
+      echo "Be careful, you've created an empty recipient file: '$RECIPIENTS_FILE'"
+  fi
+
+  for recipient in $(find "$RECIPIENTS" -name "$DEFAULT_RECIPIENTS_FILE" -o -name "*.r" | xargs cat | grep -v '^#' | awk '{ print $2 }'); do
     # Process a recipient just once
     if echo $processed | grep -q "$recipient:"; then
       continue
@@ -738,18 +761,26 @@ function keyringer_set_recipients {
   if [ -z "$1" ]; then
     keyringer_set_default_recipients
   else
-    candidate="$1"
-    candidate_no_extension="`echo $1 | sed -e 's/.asc$//'`"
+    candidate="$1.r"
+    candidate_no_extension="`echo $1 | sed -e 's/.asc$//'`.r"
 
-    # Find the first matching recipient
+    # Look for immediate recipient file
+    if [ -e "$RECIPIENTS/$candidate" ]; then
+      RECIPIENTS_FILE="$RECIPIENTS/$candidate"
+      RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$candidate"
+      return
+    elif [ -e "$RECIPIENTS/$candidate_no_extension" ]; then
+      RECIPIENTS_FILE="$RECIPIENTS/$candidate_no_extension"
+      RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$candidate_no_extension"
+      return
+    fi
+
+    # Look for the first matching default recipient file
     while [ ! -z "$candidate" ] && [ "$candidate" != "." ] && [ "$candidate" != "/" ] && [ "$candidate" != "/." ]; do
+      candidate="`dirname $candidate`/$DEFAULT_RECIPIENTS_FILE"
       if [ -e "$RECIPIENTS/$candidate" ]; then
         RECIPIENTS_FILE="$RECIPIENTS/$candidate"
         RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$candidate"
-        return
-      elif [ -e "$RECIPIENTS/$candidate_no_extension" ]; then
-        RECIPIENTS_FILE="$RECIPIENTS/$candidate_no_extension"
-        RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$candidate_no_extension"
         return
       fi
 
@@ -763,9 +794,9 @@ function keyringer_set_recipients {
 
 # Set default recipients
 function keyringer_set_default_recipients {
-  if [ -e "$RECIPIENTS/default" ]; then
-    RECIPIENTS_FILE="$RECIPIENTS/default"
-    RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/default"
+  if [ -e "$RECIPIENTS/$DEFAULT_RECIPIENTS_FILE" ]; then
+    RECIPIENTS_FILE="$RECIPIENTS/$DEFAULT_RECIPIENTS_FILE"
+    RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$DEFAULT_RECIPIENTS_FILE"
   else
     echo "Fatal: no suitable recipient file found for path $1"
     exit 1
@@ -777,8 +808,12 @@ function keyringer_set_new_recipients {
   if [ -z "$1" ]; then
     keyringer_set_default_recipients
   else
-    RECIPIENTS_FILE="$RECIPIENTS/$1"
-    RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$1"
+    local recipients="$1"
+    if [[ ! "$recipients" == *default ]]; then
+      recipients="$recipients.r"
+    fi
+    RECIPIENTS_FILE="$RECIPIENTS/$recipients"
+    RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$recipients"
   fi
 }
 
@@ -789,10 +824,9 @@ function keyringer_create_new_recipients {
   local key
   local uid
   local fpr
-
   if [ ! -e "$recipients" ]; then
     mkdir -p "`dirname $recipients`"
-    echo "# Use entries in the form of 'john@doe.com XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'" > "$1"
+    echo "# Use entries in the form of 'john@doe.com XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'" > "$recipients"
     echo "" >> "$recipients"
 
     # Try to get an initial recipient

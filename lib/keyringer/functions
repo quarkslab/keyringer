@@ -645,6 +645,7 @@ function keyringer_check_recipients {
   fi
 
   # Check recipients header for updates.
+  # TODO: tree view
   if grep -qre ' XXXXXXXX$' "$RECIPIENTS"/*; then
     echo "Updating recipients file..."
     sed -i -e 's/ XXXXXXXX$/ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/' "$RECIPIENTS"/*
@@ -653,6 +654,11 @@ function keyringer_check_recipients {
   if [ "$1" == "edit" ]; then
     # Don't do the other checks at edit mode.
     return
+  fi
+
+  # Check if the recipient file is empty
+  if [ ! -z "$RECIPIENTS_FILE" ] && [ $(grep -v "^#" "$RECIPIENTS_FILE"|grep -v "^\s*$"|wc -l) == 0 ]; then
+      echo "Be careful, you've created an empty recipient file: '$RECIPIENTS_FILE'"
   fi
 
   for recipient in $(find "$RECIPIENTS" -name "$DEFAULT_RECIPIENTS_FILE" -o -name "*.r" | xargs cat | grep -v '^#' | awk '{ print $2 }'); do
@@ -802,8 +808,12 @@ function keyringer_set_new_recipients {
   if [ -z "$1" ]; then
     keyringer_set_default_recipients
   else
-    RECIPIENTS_FILE="$RECIPIENTS/$1"
-    RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$1"
+    local recipients="$1"
+    if [[ ! "$recipients" == *default ]]; then
+      recipients="$recipients.r"
+    fi
+    RECIPIENTS_FILE="$RECIPIENTS/$recipients"
+    RECIPIENTS_FILE_BASE="$RECIPIENTS_BASE/$recipients"
   fi
 }
 
@@ -814,10 +824,9 @@ function keyringer_create_new_recipients {
   local key
   local uid
   local fpr
-
   if [ ! -e "$recipients" ]; then
     mkdir -p "`dirname $recipients`"
-    echo "# Use entries in the form of 'john@doe.com XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'" > "$1"
+    echo "# Use entries in the form of 'john@doe.com XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'" > "$recipients"
     echo "" >> "$recipients"
 
     # Try to get an initial recipient
